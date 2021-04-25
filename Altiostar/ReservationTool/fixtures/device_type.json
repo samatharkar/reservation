@@ -3,7 +3,7 @@
       "model": "ReservationTool.Device",
       "pk": 1,
       "fields": {
-        "device_type": 1234
+        "device_type": "CU"
         
       }
     }

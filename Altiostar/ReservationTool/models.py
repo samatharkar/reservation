@@ -1,14 +1,21 @@
 from django.db import models
+from ReservationTool import fixtures
 
 # Create your models here.
 
 class SetupType(models.Model):
     name = models.CharField(max_length=125)
+    is_booked = models.BooleanField(default=False)
+    
+    def __str__(self):
+      return self.name
 
 class DeviceType(models.Model):
     name = models.CharField(max_length=125)
     is_acquired = models.BooleanField(default=False)
-
+ 
+    def __str__(self):
+      return self.name
 
 class Device(models.Model):
     hostname = models.CharField(max_length=125)
@@ -20,7 +27,7 @@ class Device(models.Model):
 
 
     def __str__(self):
-      return self.device_type
+      return self.hostname
 
 class Setup(models.Model):
     setup_name = models.CharField(max_length=125)
