@@ -17,7 +17,7 @@ def add_setup(request):
         device_id = request.POST.get("device_type")
         device_type = Device.objects.get(id=device_id)
         Setup.objects.create(
-            setup_name=setup_name, 
+            setup_name = setup_name, 
             device_type = device_type
         )
         return render(

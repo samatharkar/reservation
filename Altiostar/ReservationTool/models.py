@@ -3,12 +3,12 @@ from django.db import models
 
 # Create your models here.
 
-# class SetupType(models.Model):
-#     name = models.CharField(max_length=125)
-#     is_booked = models.BooleanField(default=False)
-    
-#     def __str__(self):
-#       return self.name
+class SetupType(models.Model):
+     name = models.CharField(max_length=125, default="Setup Name")
+     is_booked = models.BooleanField(default=False)
+   
+     def __str__(self):
+       return self.name
 
 # class DeviceType(models.Model):
 #     name = models.CharField(max_length=125)
@@ -39,12 +39,12 @@ class Device(models.Model):
 
 class Setup(models.Model):
     setup_name = models.CharField(max_length=125 , null = True)
-    # attenuator = models.IntegerField()
-    # attenuator_db = models.CharField(max_length=125)
-    # rf_cable = models.IntegerField()
-    # rf_shield_box = models.IntegerField()
+    attenuator = models.IntegerField(default=0)
+    attenuator_db = models.CharField(max_length=125, default="10db")
+    rf_cable = models.IntegerField(default=0)
+    rf_shield_box = models.IntegerField(default=0)
     device_type = models.ForeignKey(Device, on_delete=models.PROTECT )
-    #setup_type = models.ForeignKey(SetupType, on_delete=models.PROTECT)
+    setup_type = models.ForeignKey(SetupType, on_delete=models.PROTECT , null = True)
 
     
 
