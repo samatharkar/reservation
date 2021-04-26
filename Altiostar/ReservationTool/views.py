@@ -15,9 +15,13 @@ def add_setup(request):
     if request.method == "POST":
         setup_name = request.POST.get("setup_name")
         device_id = request.POST.get("device_type")
+        attenuator_quantity = request.POST.get("attenuator_quantity")
+        attenuator_db = request.POST.get("attenuator_db")
         device_type = Device.objects.get(id=device_id)
         Setup.objects.create(
-            setup_name = setup_name, 
+            setup_name = setup_name,
+            attenuator_quantity = attenuator_quantity, 
+            attenuator_db = attenuator_db,
             device_type = device_type
         )
         return render(

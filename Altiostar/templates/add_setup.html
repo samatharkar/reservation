@@ -19,12 +19,12 @@ Add Setup
          <label for="exampleFormControlInput1">Add Device</label><br>
         <select name = "device_type" >
           {% for device in devices %}
-          <option value = "{{device.id}}"> {{ device.device_type }}</option>
+          <option value = "{{device.id}}"> {{ device.device_type }} || {{device.hostname}} || {{ device.serial_number}} || {{device.ip}} </option>
           {% endfor %}
 
         </select> 
     
-          {% comment %} <div class="form-group">
+           {% comment %} <div class="form-group">
             <label for="exampleFormControlInput1">Type of The Setup</label>
             <select input type="text" class="form-control" id="exampleFormControlInput1" name= "setup_type" required>
             <option>Single UE Setup </option>
@@ -36,13 +36,13 @@ Add Setup
 
 
           </select>          
-          </div>
+          </div> {% endcomment %}
   
        <div id="attenuator">
-        <div class='label'>Attenuator</div>
+        <div class='label' >Attenuator</div>
             <div id="content">
-                <span>Quantity :<input type="number" name="width[]" value="" /></span>
-                <span>DB :<input type="text"  name="length[]" value="" /></span>
+                <span>Quantity :<input type="number" name="attenuator_quantity" value="" /></span>
+                <span>DB :<input type="text"  name="attenuator_db" value="" /></span>
                 
             </div>
                  <input type="button" id="more_fields" onclick="add_fields();" value="Add 1 More Attenuator" />
@@ -59,17 +59,7 @@ Add Setup
     <ul class="new_option">
     </ul>
   </li>
-</ul> {% endcomment %}
- {% comment %} <div class="form-group">
-            <label for="exampleFormControlInput1">Add Device</label>
-            <select input type="text" class="form-control" id="exampleFormControlInput1" name= "device" required>
-            <option>Device 1</option>
-            <option>Device 2</option>
-            <option>Device 3</option>
-
-           </select>          
-          </div> {% endcomment %}
-      
+</ul> 
 
           </div>
           <button type="submit" class="btn btn-primary"> Submit </button>
@@ -105,13 +95,12 @@ var rf_cable = "<li><label>RF Cable :</label></li><li><input type='tel' pattern=
 
 {% comment %} JS for adding add misc button END {% endcomment %} 
 
-{% comment %} function add_fields() {
+function add_fields() {
    var d = document.getElementById("content");
   
    d.innerHTML += "<br /><span>Quantity :<input type='number' value=''/></span> <span>DB :<input type='text' value='' /></span>";
 
-} {% endcomment %}
-
+} 
 
 
 {% endblock %}

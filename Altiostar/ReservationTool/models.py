@@ -39,15 +39,13 @@ class Device(models.Model):
 
 class Setup(models.Model):
     setup_name = models.CharField(max_length=125 , null = True)
-    attenuator = models.IntegerField(default=0)
+    attenuator_quantity = models.IntegerField(default=0)
     attenuator_db = models.CharField(max_length=125, default="10db")
     rf_cable = models.IntegerField(default=0)
     rf_shield_box = models.IntegerField(default=0)
     device_type = models.ForeignKey(Device, on_delete=models.PROTECT )
     setup_type = models.ForeignKey(SetupType, on_delete=models.PROTECT , null = True)
-
     
-
    # attenuator = models.CharField(max_length=125)
 
 
