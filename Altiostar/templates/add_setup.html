@@ -17,7 +17,7 @@ Add Setup
           <input type="text" class="form-control" id = "setup" name= "setup_name" required>
         </div>
          <label for="exampleFormControlInput1">Add Device</label><br>
-        <select name = "device" >
+        <select name = "device_type" >
           {% for device in devices %}
           <option value = "{{device.id}}"> {{ device.device_type }}</option>
           {% endfor %}

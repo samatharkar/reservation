@@ -14,11 +14,11 @@ def home(request):
 def add_setup(request):
     if request.method == "POST":
         setup_name = request.POST.get("setup_name")
-        device_type = request.POST.get("device_type")
-       # device = Device.objects.get(id=device_id)
+        device_id = request.POST.get("device_type")
+        device_type = Device.objects.get(id=device_id)
         Setup.objects.create(
             setup_name=setup_name, 
-            device = device
+            device_type = device_type
         )
         return render(
             request,
