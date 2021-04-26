@@ -9,14 +9,22 @@ Add Setup
 
 
 <div class="container">
-    <form method="POST" action="/add_setup/">
+    <form method="POST" action="{% url 'add_setup' %}">
         {% csrf_token %}
 
         <div class="form-group">
-          <label for="setup">Name Of The Setup</label>
-          <input type="text" class="form-control" id="setup" name= "setup_name" placeholder="1 UE, 2 UE" required>
+          <label for="setup_name">Name Of The Setup</label>
+          <input type="text" class="form-control" id = "setup" name= "setup_name" required>
         </div>
-          <div class="form-group">
+         <label for="exampleFormControlInput1">Add Device</label><br>
+        <select name = "device" >
+          {% for device in devices %}
+          <option value = "{{device.id}}"> {{ device.device_type }}</option>
+          {% endfor %}
+
+        </select> 
+    
+          {% comment %} <div class="form-group">
             <label for="exampleFormControlInput1">Type of The Setup</label>
             <select input type="text" class="form-control" id="exampleFormControlInput1" name= "setup_type" required>
             <option>Single UE Setup </option>
@@ -51,8 +59,8 @@ Add Setup
     <ul class="new_option">
     </ul>
   </li>
-</ul>
- <div class="form-group">
+</ul> {% endcomment %}
+ {% comment %} <div class="form-group">
             <label for="exampleFormControlInput1">Add Device</label>
             <select input type="text" class="form-control" id="exampleFormControlInput1" name= "device" required>
             <option>Device 1</option>
@@ -60,18 +68,22 @@ Add Setup
             <option>Device 3</option>
 
            </select>          
-          </div>
+          </div> {% endcomment %}
       
 
           </div>
           <button type="submit" class="btn btn-primary"> Submit </button>
       </form>
+
+      {% if msg %}
+      <h1>{{msg}}</h1>
+      {% endif %}
 {% endblock %}
 {% block script_block %}
 
  {% comment %} JS for adding add misc button start {% endcomment %}
 
-var rf_shield_box = "<li><label>RF Shield Box</label></li><li><input type='tel' pattern='[0-9]{10}' class='added_rf_shield_box' name='mobilephone' value='' maxlength='20' /></li>";
+{% comment %} var rf_shield_box = "<li><label>RF Shield Box</label></li><li><input type='tel' pattern='[0-9]{10}' class='added_rf_shield_box' name='mobilephone' value='' maxlength='20' /></li>";
 var rf_cable = "<li><label>RF Cable :</label></li><li><input type='tel' pattern='[0-9]{10}' class='added_workphone' name='workphone' value='' maxlength='20' /></li>";
 
     $('#id_contact_options').unbind('change').bind('change', function() {
@@ -88,17 +100,17 @@ var rf_cable = "<li><label>RF Cable :</label></li><li><input type='tel' pattern=
                  });
         break;
       };
-});
+}); {% endcomment %}
 
 
 {% comment %} JS for adding add misc button END {% endcomment %} 
 
-function add_fields() {
+{% comment %} function add_fields() {
    var d = document.getElementById("content");
   
    d.innerHTML += "<br /><span>Quantity :<input type='number' value=''/></span> <span>DB :<input type='text' value='' /></span>";
 
-}
+} {% endcomment %}
 
 
 

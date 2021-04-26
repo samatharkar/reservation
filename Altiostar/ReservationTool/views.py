@@ -10,6 +10,34 @@ from .filters import DeviceFilter
 def home(request):
 	return render(request, "home.html", {})
 
+
+def add_setup(request):
+    if request.method == "POST":
+        setup_name = request.POST.get("setup_name")
+        device_type = request.POST.get("device_type")
+       # device = Device.objects.get(id=device_id)
+        Setup.objects.create(
+            setup_name=setup_name, 
+            device = device
+        )
+        return render(
+            request,
+            "add_setup.html",
+            {
+                'devices':Device.objects.all(),
+                'msg':'Setup Added!'
+
+            }
+        )        
+    else:
+         return render(
+             request,
+             "add_setup.html",
+             {
+                 'devices':Device.objects.all()
+             }
+           )
+
 def add_device(request):
     if request.method == "POST":
         hostname = request.POST.get('hostname')
@@ -18,10 +46,50 @@ def add_device(request):
         mac = request.POST.get('mac')
         device_type = request.POST.get('device')
         make = request.POST.get('make')
+        Device.objects.create(
+            hostname=hostname , 
+            ip=ip , 
+            serial_number=serial_number , 
+            mac=mac , 
+            device_type=device_type , 
+            make=make
+        )
+        return render(
+            request,
+            "add_device.html",
+
+        )
+    else:
+        return render(
+            request,
+            "add_device.html",
+
+        )
+
+
+
+# def add_device(request):
+#     if request.method == "POST":
+#         hostname = request.POST.get('hostname')
+#         ip = request.POST.get('ip')
+#         serial_number = request.POST.get('serial_number')
+#         mac = request.POST.get('mac')
+#         device_type = request.POST.get('device')
+#         make = request.POST.get('make')
+#         Device.objects.create(
+#             hostname=hostname , ip=ip , serial_number=serial_number , mac=mac , device_type=device_type , make=make
+#         )
+#     else:
+#         return render(
+#             request,
+#             "add_device.html",
+#             {}
+#         )
+
      
-        device = Device(hostname=hostname , ip=ip , serial_number=serial_number , mac=mac , device_type=device_type , make=make) 
-        device.save()
-    return render(request, "add_device.html", {})
+#         device = Device(hostname=hostname , ip=ip , serial_number=serial_number , mac=mac , device_type=device_type , make=make) 
+#         device.save()
+#     return render(request, "add_device.html", {})
 
 def view_device(request):
     context = {}
@@ -29,15 +97,30 @@ def view_device(request):
     context['entries'] = entries
     return render(request, 'view_device.html', context)
 
-def add_setup(request):
+# def add_setup(request):
 
-        if request.method == "POST":
-            setup_name = request.POST.get('setup_name')
+#         if request.method == "POST":
+#             setup_name = request.POST.get("setup_name")
+#             device_id = request.POST.get("device")
+#             device = Device.objects.get(id=device_id)
+#             Setup.objects.create(
+#                 setup_name=setup_name,
+#                 device = device
+#             )
+#         else:
+#             return render(
+#                 request,
+#                 "add_setup.html",
+#                 {
+#                     'device':Device.objects.all()
+#                 }
+#             )
+            #setup_name = request.POST.get('setup_name')
             # device_type = 
             #new_setup = request.POST.get(Device.objects.values('device_type'))
             #setup_name = Setup(setup_name=setup_name , new_setup=new_setup) 
-            setup_name.save()
-        return render(request, "add_setup.html",{}) 
+            #setup_name.save()
+        #return render(request, "add_setup.html",{}) 
 
 
 def view_setup(request):

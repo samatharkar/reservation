@@ -8,7 +8,7 @@ Add Device
 <h3>Add Device </h3>
 
  <div class="container">
-    <form method="POST" action="/add_device/">
+    <form method="POST" action="{% url 'add_device' %}">
         {% csrf_token %}
         
         <div class="form-group">
@@ -103,4 +103,8 @@ Add Device
           <button type="submit" class="btn btn-primary"> Submit </button>
 
       </form>
+
+      {% if msg %}
+      <h1>{{msg}}</h1>
+      {% endif %}
 {% endblock %}
