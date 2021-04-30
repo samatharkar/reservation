@@ -75,8 +75,8 @@ class ServerType(models.Model):
     def __str__(self):
       return self.server_type_name
     
-    class Meta:
-      db_table = "server_type"
+    # class Meta:
+    #   db_table = "server_type"
 
 class Server(models.Model):
    # server_id = models.AutoField(primary_key=True , default=0)
@@ -85,18 +85,18 @@ class Server(models.Model):
     #server_model = models.CharField(max_length=125, default="NA")
     server_serial_number = models.CharField(max_length=125, default="NA")
     server_po_number = models.CharField(max_length=125, default="NA")
-    server_po_date = models.CharField(max_length=125, default="NA")
+    server_po_date = models.DateField()
     server_vendor = models.CharField(max_length=125, default="NA")
     server_invoice  = models.CharField(max_length=125, default="NA")
     server_hdd_number = models.CharField(max_length=125, default="NA")
     server_bond = models.CharField(max_length=125, default="NA")
     server_bond_number = models.CharField(max_length=125, default="NA")
     server_type = models.CharField(max_length=125, default="NA")
-    server_ship_date = models.CharField(max_length=125, default="NA")
-    server_arrival_date = models.CharField(max_length=125, default="NA")
+    server_ship_date = models.DateField()
+    server_arrival_date = models.DateField()
     server_warranty = models.CharField(max_length=125, default="NA")
     server_added_byuser = models.CharField(max_length=125, default="NA")
-    server_added_ondate = models.CharField(max_length=125, default="NA")
+    server_added_ondate = models.DateField()
     server_ownership = models.CharField(max_length=125, default="NA")
     server_ip_address = models.CharField(max_length=125, default="NA")
     server_hostname = models.CharField(max_length=125, default="NA")
@@ -111,5 +111,58 @@ class Server(models.Model):
     def __str__(self):
       return self.server_name
     
-    class Meta:
-      db_table = "add_server"
+    # class Meta:
+    #   db_table = "add_server"
+
+
+
+# class RrhType(models.Model):
+#   #  server_type_id = models.AutoField(primary_key=True, default=0)
+#    # rrh_id = models.CharField(max_length=10, default=uuid.uuid4)
+#     rrh_type_name = models.CharField(max_length=125, default="NA")
+#     rrh_part_number  = models.CharField(max_length=125, default="NA")
+#     rrh_model_number = models.CharField(max_length=125, default="NA")
+#     rrh_band = models.CharField(max_length=125, default="NA")
+#     rrh_remark = models.CharField(max_length=125, default="NA")
+
+#     def __str__(self):
+#       return self.rrh_type_name
+    
+#     # class Meta:
+#     #   db_table = "rrh_type"
+
+# class RRH(models.Model):
+#    # server_id = models.AutoField(primary_key=True , default=0)
+#     rrh_type_name = models.ForeignKey(RrhType, on_delete=models.PROTECT)
+#     rrh_name  = models.CharField(max_length=125, default="NA")
+#     #rrh_model = models.CharField(max_length=125, default="NA")
+#     rrh_serial_number = models.CharField(max_length=125, default="NA")
+#     rrh_po_number = models.CharField(max_length=125, default="NA")
+#     rrh_po_date = models.DateField()
+#     rrh_vendor = models.CharField(max_length=125, default="NA")
+#     rrh_invoice  = models.CharField(max_length=125, default="NA")
+#     rrh_hdd_number = models.CharField(max_length=125, default="NA")
+#     rrh_bond = models.CharField(max_length=125, default="NA")
+#     rrh_bond_number = models.CharField(max_length=125, default="NA")
+#     rrh_oftype = models.CharField(max_length=125, default="NA")
+#     rrh_ship_date = models.DateField()
+#     rrh_arrival_date = models.DateField()
+#     rrh_warranty = models.CharField(max_length=125, default="NA")
+#     rrh_added_byuser = models.CharField(max_length=125, default="NA")
+#     rrh_added_ondate = models.DateField()
+#     rrh_ownership = models.CharField(max_length=125, default="NA")
+#     rrh_ip_address = models.CharField(max_length=125, default="NA")
+#     rrh_hostname = models.CharField(max_length=125, default="NA")
+#     rrh_mgmt_mac = models.CharField(max_length=125, default="NA")
+#     rrh_lan_mac = models.CharField(max_length=125, default="NA")
+#     rrh_os = models.CharField(max_length=125, default="NA")
+#     rrh_fversion = models.CharField(max_length=125, default="NA")
+#     rrh_hardware_revision = models.CharField(max_length=125, default="NA")
+#     rrh_setup_id = models.CharField(max_length=125, default="NA")
+#     rrh_remark = models.CharField(max_length=125, default="NA")
+
+#     def __str__(self):
+#       return self.rrh_name
+    
+#     # class Meta:
+#     #   db_table = "add_rrh"

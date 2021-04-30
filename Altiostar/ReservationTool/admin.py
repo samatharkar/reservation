@@ -1,5 +1,5 @@
 from django.contrib import admin
-from ReservationTool.models import *
+from ReservationTool.models import Server , ServerType
 #from ReservationTool.models import Test
 from import_export.admin import ImportExportModelAdmin
 
@@ -10,6 +10,7 @@ from import_export.admin import ImportExportModelAdmin
 # admin.site.register(Setup)
 admin.site.register(ServerType)
 admin.site.register(Server)
-# admin.site.register(DeviceType)
+# admin.site.register(RrhType)
+# admin.site.register(RRH)
 
 # admin.site.register(Test)
