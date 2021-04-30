@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+{% block title %}
+Add Switch Type
+{% endblock %}
+
+
+{% block content %}
+<h3>Add Type Of Switch </h3>
+
+
+<div class="container">
+    <form method="POST" action="{% url 'add_switch_type' %}">
+        {% csrf_token %}
+
+        <div class="form-group">
+          <label for="switch_type_name">Name Of The switch Type</label>
+          <input type="text" class="form-control" name= "switch_type_name" required>
+        </div>
+
+        <div class="form-group">
+          <label for="switch_part_number">Part Number</label>
+          <input type="text" class="form-control" name= "switch_part_number" required>
+        </div>
+
+        <div class="form-group">
+          <label for="switch_model_number">Model Number</label>
+          <input type="text" class="form-control"   name= "switch_model_number" required>
+        </div>
+
+        <div class="form-group">
+          <label for="switch_remark">Remarks</label>
+          <input type="text" class="form-control"   name= "switch_remark" required>
+        </div>
+
+    
+          <button type="submit" class="btn btn-primary"> Submit </button>
+
+      </form>
+
+
+{% endblock %}

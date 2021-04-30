@@ -1,0 +1,162 @@
+{% extends 'base.html' %}
+{% block title %}
+Add laptop 
+{% endblock %}
+
+
+{% block content %}
+<h3>Add laptop </h3>
+
+
+<div class="container">
+    <form method="POST" action="{% url 'add_laptop' %}">
+        {% csrf_token %}
+
+        <div class="form-group">
+          <label for="laptop_type_name">Select laptop Type</label>
+          <select name = "laptop_type_name" >
+          {% for laptop_type in laptop_tn %}
+          <option value = "{{ laptop_type.id }}"> {{ laptop_type.laptop_type_name }} </option>
+          {% endfor %}
+
+        </select> 
+        </div>
+
+            <div class="form-group">
+          <label >laptop Type Not Available?</label>
+<button > <a href="/add_laptop_type/"> Add laptop Type</a> </button>
+        {% comment %} <div class="form-group">
+          <label for="laptop_model">Model</label>
+          <input type="text" class="form-control"  name= "laptop_model"   >
+        </div> {% endcomment %}
+        
+        <div class="form-group">
+          <label for="laptop_name">Name</label>
+          <input type="text" class="form-control"  name= "laptop_name"   >
+        </div>
+
+        <div class="form-group">
+          <label for="laptop_serial_number">Serial Number</label>
+          <input type="text" class="form-control"  name= "laptop_serial_number"   >
+        </div>
+
+        <div class="form-group">
+          <label for="laptop_po_number">PO Number</label>
+          <input type="text" class="form-control"  name= "laptop_po_number"   >
+        </div>
+
+        <div class="form-group">
+          <label for="laptop_po_date">PO Date</label>
+          <input type="date" class="form-control"  name= "laptop_po_date"   >
+        </div>
+
+        <div class="form-group">
+          <label for="laptop_vendor">Vendor</label>
+          <input type="text" class="form-control"  name= "laptop_vendor"   >
+        </div>
+
+        <div class="form-group">
+          <label for="laptop_invoice">Invoice Number</label>
+          <input type="text" class="form-control"  name= "laptop_invoice"   >
+        </div>
+
+        <div class="form-group">
+          <label for="laptop_bond">Bonded</label>
+          <input type="text" class="form-control"  name= "laptop_bond"   >
+        </div>
+
+        <div class="form-group">
+          <label for="laptop_bond_number">Bond Number</label>
+          <input type="text" class="form-control"  name= "laptop_bond_number"   >
+        </div>
+
+        <div class="form-group">
+          <label for="laptop_type">Select laptop Type</label>
+          <input type="text" class="form-control"  name= "laptop_type"   >
+        </div>
+
+        <div class="form-group">
+          <label for="laptop_ship_date">Shipped Date</label>
+          <input type="date" class="form-control"  name= "laptop_ship_date"   >
+        </div>
+
+        <div class="form-group">
+          <label for="laptop_arrival_date">Arrival Date</label>
+          <input type="date" class="form-control"  name= "laptop_arrival_date"   >
+        </div>
+
+        <div class="form-group">
+          <label for="laptop_warranty">Warranty Months</label>
+          <input type="text" class="form-control"  name= "laptop_warranty"   >
+        </div>
+
+        <div class="form-group">
+          <label for="laptop_added_byuser">Added By User</label>
+          <input type="text" class="form-control"  name= "laptop_added_byuser"   >
+        </div>
+
+        <div class="form-group">
+          <label for="laptop_added_ondate">Added On Date</label>
+          <input type="date" class="form-control"  name= "laptop_added_ondate"   >
+        </div>
+
+        <div class="form-group">
+          <label for="laptop_ownership">Type Of Ownership</label>
+          <input type="text" class="form-control"  name= "laptop_ownership"   >
+        </div>
+
+        <div class="form-group">
+          <label for="laptop_ip_address">IP Address</label>
+          <input type="text" class="form-control"  name= "laptop_ip_address"   >
+        </div>
+
+        <div class="form-group">
+          <label for="laptop_hostname">Hostname</label>
+          <input type="text" class="form-control"  name= "laptop_hostname"   >
+        </div>
+
+        <div class="form-group">
+          <label for="laptop_mgmt_mac">MGMT Mac Address</label>
+          <input type="text" class="form-control"  name= "laptop_mgmt_mac"   >
+        </div>
+
+        <div class="form-group">
+          <label for="laptop_lan_mac">LAN Mac Address</label>
+          <input type="text" class="form-control"  name= "laptop_lan_mac"   >
+        </div>
+
+        <div class="form-group">
+          <label for="laptop_os">OS</label>
+          <input type="text" class="form-control"  name= "laptop_os"   >
+        </div>
+
+        <div class="form-group">
+          <label for="laptop_os_version">OS Version</label>
+          <input type="text" class="form-control"  name= "laptop_os_version"   >
+        </div>
+
+        <div class="form-group">
+          <label for="laptop_fversion">Firmware Version</label>
+          <input type="text" class="form-control"  name= "laptop_fversion"   >
+        </div>
+
+        <div class="form-group">
+          <label for="laptop_hardware_revision">Hardware Revision</label>
+          <input type="text" class="form-control"  name= "laptop_hardware_revision"   >
+        </div>
+
+        <div class="form-group">
+          <label for="laptop_setup_id">Setup ID</label>
+          <input type="text" class="form-control"  name= "laptop_setup_id"   >
+        </div>
+
+        <div class="form-group">
+          <label for="laptop_remark">Remarks</label>
+          <input type="text" class="form-control"  name= "laptop_remark"   >
+        </div>
+
+                  <button type="submit" class="btn btn-primary"> Submit </button>
+
+      </form>
+
+{% endblock %}

@@ -1,0 +1,162 @@
+{% extends 'base.html' %}
+{% block title %}
+Add desktop 
+{% endblock %}
+
+
+{% block content %}
+<h3>Add desktop </h3>
+
+
+<div class="container">
+    <form method="POST" action="{% url 'add_desktop' %}">
+        {% csrf_token %}
+
+        <div class="form-group">
+          <label for="desktop_type_name">Select desktop Type</label>
+          <select name = "desktop_type_name" >
+          {% for desktop_type in desktop_tn %}
+          <option value = "{{ desktop_type.id }}"> {{ desktop_type.desktop_type_name }} </option>
+          {% endfor %}
+
+        </select> 
+        </div>
+
+            <div class="form-group">
+          <label >desktop Type Not Available?</label>
+<button > <a href="/add_desktop_type/"> Add desktop Type</a> </button>
+        {% comment %} <div class="form-group">
+          <label for="desktop_model">Model</label>
+          <input type="text" class="form-control"  name= "desktop_model"   >
+        </div> {% endcomment %}
+        
+        <div class="form-group">
+          <label for="desktop_name">Name</label>
+          <input type="text" class="form-control"  name= "desktop_name"   >
+        </div>
+
+        <div class="form-group">
+          <label for="desktop_serial_number">Serial Number</label>
+          <input type="text" class="form-control"  name= "desktop_serial_number"   >
+        </div>
+
+        <div class="form-group">
+          <label for="desktop_po_number">PO Number</label>
+          <input type="text" class="form-control"  name= "desktop_po_number"   >
+        </div>
+
+        <div class="form-group">
+          <label for="desktop_po_date">PO Date</label>
+          <input type="date" class="form-control"  name= "desktop_po_date"   >
+        </div>
+
+        <div class="form-group">
+          <label for="desktop_vendor">Vendor</label>
+          <input type="text" class="form-control"  name= "desktop_vendor"   >
+        </div>
+
+        <div class="form-group">
+          <label for="desktop_invoice">Invoice Number</label>
+          <input type="text" class="form-control"  name= "desktop_invoice"   >
+        </div>
+
+        <div class="form-group">
+          <label for="desktop_bond">Bonded</label>
+          <input type="text" class="form-control"  name= "desktop_bond"   >
+        </div>
+
+        <div class="form-group">
+          <label for="desktop_bond_number">Bond Number</label>
+          <input type="text" class="form-control"  name= "desktop_bond_number"   >
+        </div>
+
+        <div class="form-group">
+          <label for="desktop_type">Select desktop Type</label>
+          <input type="text" class="form-control"  name= "desktop_type"   >
+        </div>
+
+        <div class="form-group">
+          <label for="desktop_ship_date">Shipped Date</label>
+          <input type="date" class="form-control"  name= "desktop_ship_date"   >
+        </div>
+
+        <div class="form-group">
+          <label for="desktop_arrival_date">Arrival Date</label>
+          <input type="date" class="form-control"  name= "desktop_arrival_date"   >
+        </div>
+
+        <div class="form-group">
+          <label for="desktop_warranty">Warranty Months</label>
+          <input type="text" class="form-control"  name= "desktop_warranty"   >
+        </div>
+
+        <div class="form-group">
+          <label for="desktop_added_byuser">Added By User</label>
+          <input type="text" class="form-control"  name= "desktop_added_byuser"   >
+        </div>
+
+        <div class="form-group">
+          <label for="desktop_added_ondate">Added On Date</label>
+          <input type="date" class="form-control"  name= "desktop_added_ondate"   >
+        </div>
+
+        <div class="form-group">
+          <label for="desktop_ownership">Type Of Ownership</label>
+          <input type="text" class="form-control"  name= "desktop_ownership"   >
+        </div>
+
+        <div class="form-group">
+          <label for="desktop_ip_address">IP Address</label>
+          <input type="text" class="form-control"  name= "desktop_ip_address"   >
+        </div>
+
+        <div class="form-group">
+          <label for="desktop_hostname">Hostname</label>
+          <input type="text" class="form-control"  name= "desktop_hostname"   >
+        </div>
+
+        <div class="form-group">
+          <label for="desktop_mgmt_mac">MGMT Mac Address</label>
+          <input type="text" class="form-control"  name= "desktop_mgmt_mac"   >
+        </div>
+
+        <div class="form-group">
+          <label for="desktop_lan_mac">LAN Mac Address</label>
+          <input type="text" class="form-control"  name= "desktop_lan_mac"   >
+        </div>
+
+        <div class="form-group">
+          <label for="desktop_os">OS</label>
+          <input type="text" class="form-control"  name= "desktop_os"   >
+        </div>
+
+        <div class="form-group">
+          <label for="desktop_os_version">OS Version</label>
+          <input type="text" class="form-control"  name= "desktop_os_version"   >
+        </div>
+
+        <div class="form-group">
+          <label for="desktop_fversion">Firmware Version</label>
+          <input type="text" class="form-control"  name= "desktop_fversion"   >
+        </div>
+
+        <div class="form-group">
+          <label for="desktop_hardware_revision">Hardware Revision</label>
+          <input type="text" class="form-control"  name= "desktop_hardware_revision"   >
+        </div>
+
+        <div class="form-group">
+          <label for="desktop_setup_id">Setup ID</label>
+          <input type="text" class="form-control"  name= "desktop_setup_id"   >
+        </div>
+
+        <div class="form-group">
+          <label for="desktop_remark">Remarks</label>
+          <input type="text" class="form-control"  name= "desktop_remark"   >
+        </div>
+
+                  <button type="submit" class="btn btn-primary"> Submit </button>
+
+      </form>
+
+{% endblock %}

@@ -1,6 +1,6 @@
 from django.shortcuts import render, HttpResponse
 # from ReservationTool.models import Device
-from .models import ServerType, Server
+from .models import *
 import csv
 # from .filters import SetupFilter
 # from .filters import DeviceFilter
@@ -711,7 +711,7 @@ def add_laptop(request):
             request,
             "add_laptop.html",
             {
-                'laptop_tn':LaptopType.objects.all(),
+                'laptop_tn': LaptopType.objects.all(),
                 'msg':'laptop Added!'
 
             }

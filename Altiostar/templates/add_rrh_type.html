@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+{% block title %}
+Add rrh Type
+{% endblock %}
+
+
+{% block content %}
+<h3>Add Type Of rrh </h3>
+
+
+<div class="container">
+    <form method="POST" action="{% url 'add_rrh_type' %}">
+        {% csrf_token %}
+
+        <div class="form-group">
+          <label for="rrh_type_name">Name Of The rrh Type</label>
+          <input type="text" class="form-control" name= "rrh_type_name" required>
+        </div>
+
+        <div class="form-group">
+          <label for="rrh_part_number">Part Number</label>
+          <input type="text" class="form-control" name= "rrh_part_number" required>
+        </div>
+
+        <div class="form-group">
+          <label for="rrh_model_number">Model Number</label>
+          <input type="text" class="form-control"   name= "rrh_model_number" required>
+        </div>
+
+        <div class="form-group">
+          <label for="rrh_band">RRH Band</label>
+          <input type="text" class="form-control"   name= "rrh_band" required>
+        </div>
+
+        <div class="form-group">
+          <label for="rrh_remark">RRH Remark</label>
+          <input type="text" class="form-control"   name= "rrh_remark" required>
+        </div>
+
+        
+        
+          <button type="submit" class="btn btn-primary"> Submit </button>
+
+      </form>
+
+
+{% endblock %}

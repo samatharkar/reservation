@@ -1,0 +1,68 @@
+{% extends 'base.html' %}
+{% block title %}
+Add laptop Type
+{% endblock %}
+
+
+{% block content %}
+<h3>Add Type Of laptop </h3>
+
+
+<div class="container">
+    <form method="POST" action="{% url 'add_laptop_type' %}">
+        {% csrf_token %}
+
+        <div class="form-group">
+          <label for="laptop_type_name">Name Of The laptop Type</label>
+          <input type="text" class="form-control" name= "laptop_type_name" required>
+        </div>
+
+        <div class="form-group">
+          <label for="laptop_make">Make</label>
+          <input type="text" class="form-control" name= "laptop_make" required>
+        </div>
+
+        <div class="form-group">
+          <label for="laptop_model">Model</label>
+          <input type="text" class="form-control"   name= "laptop_model" required>
+        </div>
+
+        <div class="form-group">
+          <label for="laptop_processor">Processor</label>
+          <input type="text" class="form-control"   name= "laptop_processor" required>
+        </div>
+
+        <div class="form-group">
+          <label for="laptop_ram">Laptop RAM</label>
+          <input type="text" class="form-control"   name= "laptop_ram" required>
+        </div>
+
+        <div class="form-group">
+          <label for="laptop_hdd_model">Laptop HDD Model</label>
+          <input  type="text"  class="form-control"   name= "laptop_hdd_model" required>
+        </div>
+
+        <div class="form-group">
+          <label for="laptop_display_size">Laptop Display Size</label>
+          <input type="text" class="form-control"   name= "laptop_display_size" required>
+        </div>
+
+        <div class="form-group">
+          <label for="laptop_hdd_size">HDD Size</label>
+          <input type="text" class="form-control"   name= "laptop_hdd_size" required>
+        </div>
+
+
+        <div class="form-group">
+          <label for="laptop_ram">RAM</label>
+          <input type="text" class="form-control"   name= "laptop_ram" required>
+        </div>
+
+
+        
+          <button type="submit" class="btn btn-primary"> Submit </button>
+
+      </form>
+
+
+{% endblock %}
