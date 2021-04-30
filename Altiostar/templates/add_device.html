@@ -11,6 +11,21 @@ Add Device
     <form method="POST" action="{% url 'add_device' %}">
         {% csrf_token %}
         
+                  <div class="form-group">
+            <label for="exampleFormControlInput1">Type of Device</label>
+            <select input type="text" class="form-control" id="exampleFormControlInput1" name= "device" placeholder="CU, DU" required>
+            <option>CU</option>
+            <option>DU</option>
+            <option>RRH</option>
+            <option>UE</option>
+            <option>STU</option>
+            <option>UE Laptop</option>
+            <option>EPC</option>
+            <option>5G Core</option>
+            <option>Programmable Attenuators</option>
+
+          </select>          
+          </div>
         <div class="form-group">
           <label for="exampleFormControlInput1">Hostname</label>
           <input type="text" class="form-control" id="exampleFormControlInput1" name= "hostname" placeholder="gitlab.com" required>
@@ -30,21 +45,7 @@ Add Device
             <input type="text" class="form-control" id="exampleFormControlInput1" name= "mac" placeholder="00:1B:44:11:3A:B7" required>
 
           </div>
-          <div class="form-group">
-            <label for="exampleFormControlInput1">Type of Device</label>
-            <select input type="text" class="form-control" id="exampleFormControlInput1" name= "device" placeholder="CU, DU" required>
-            <option>CU</option>
-            <option>DU</option>
-            <option>RRH</option>
-            <option>UE</option>
-            <option>STU</option>
-            <option>UE Laptop</option>
-            <option>EPC</option>
-            <option>5G Core</option>
-            <option>Programmable Attenuators</option>
 
-          </select>          
-          </div>
 
           <div class="form-group">
             <label for="exampleFormControlInput1">Make/Model</label>

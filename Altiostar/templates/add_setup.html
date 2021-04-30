@@ -73,7 +73,7 @@ Add Setup
 
  {% comment %} JS for adding add misc button start {% endcomment %}
 
-{% comment %} var rf_shield_box = "<li><label>RF Shield Box</label></li><li><input type='tel' pattern='[0-9]{10}' class='added_rf_shield_box' name='mobilephone' value='' maxlength='20' /></li>";
+var rf_shield_box = "<li><label>RF Shield Box</label></li><li><input type='tel' pattern='[0-9]{10}' class='added_rf_shield_box' name='mobilephone' value='' maxlength='20' /></li>";
 var rf_cable = "<li><label>RF Cable :</label></li><li><input type='tel' pattern='[0-9]{10}' class='added_workphone' name='workphone' value='' maxlength='20' /></li>";
 
     $('#id_contact_options').unbind('change').bind('change', function() {
@@ -90,7 +90,7 @@ var rf_cable = "<li><label>RF Cable :</label></li><li><input type='tel' pattern=
                  });
         break;
       };
-}); {% endcomment %}
+}); 
 
 
 {% comment %} JS for adding add misc button END {% endcomment %} 
