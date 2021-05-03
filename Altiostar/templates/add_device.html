@@ -10,8 +10,115 @@ Add Device
  <div class="container">
     <form method="POST" action="{% url 'add_device' %}">
         {% csrf_token %}
-        
-                  <div class="form-group">
+
+
+        <div class="form-group">
+          <label for="device_name">Name Of The Device</label>
+          <input type="text" class="form-control" name= "device_name" required>
+        </div>
+
+
+        <div class="form-group">
+          <label for="device_type">Select Device Type</label>
+
+        <select name = "device_type" >
+          {% for dev_type in d_type %}
+          <option value = "{{dev_type.id}}"> {{ dev_type.type_name }}</option>
+          {% endfor %}
+
+        </select>         
+        </div>
+
+        <div class="form-group">
+          <label for="device_consumable">Select Consumables</label>
+
+        <select name = "device_consumable" >
+          {% for consumables in con %}
+          <option value = "{{consumables.id}}"> {{ consumables.consumable_name }}</option>
+          {% endfor %}
+
+        </select>         
+        </div>
+
+        <div class="form-group">
+          <label for="device_srno">Serial Number</label>
+          <input type="text" class="form-control" name= "device_srno" required>
+        </div>
+
+        <div class="form-group">
+          <label for="device_po_number">Product Order Number (PO)</label>
+          <input type="text" class="form-control" name= "device_po_number" required>
+        </div>
+
+        <div class="form-group">
+          <label for="device_po_date">Product Order Date</label>
+          <input type="date" class="form-control" name= "device_po_date" required>
+        </div>
+
+        <div class="form-group">
+          <label for="device_vendor">Select Vendor</label>
+
+        <select name = "device_vendor" >
+          {% for ven in vendors %}
+          <option value = "{{ven.id}}"> {{ ven.vendor_name }}</option>
+          {% endfor %}
+
+        </select>         
+        </div>
+
+        <div class="form-group">
+          <label for="device_invoice_number">Invoice Number</label>
+          <input type="text" class="form-control" name= "device_invoice_number" required>
+        </div>
+
+        <div class="form-group">
+          <label for="device_bonded">Bonded</label>
+          <input type="text" class="form-control" name= "device_bonded" required>
+        </div>
+
+        <div class="form-group">
+          <label for="device_bond_number">Bond Number</label>
+          <input type="text" class="form-control" name= "device_bond_number" required>
+        </div>
+
+        <div class="form-group">
+          <label for="device_shipped_date">Shipping Date</label>
+          <input type="date" class="form-control" name= "device_shipped_date" required>
+        </div>
+
+        <div class="form-group">
+          <label for="device_arrival_date">Arrival Date</label>
+          <input type="date" class="form-control" name= "device_arrival_date" required>
+        </div>
+
+        <div class="form-group">
+          <label for="device_warranty_inmonths">Warranty (Months)</label>
+          <input type="text" class="form-control" name= "device_warranty_inmonths" required>
+        </div>
+
+
+        <div class="form-group">
+          <label for="device_added_byuser">Added By User</label>
+          <input type="text" class="form-control" name= "device_added_byuser" required>
+        </div>
+
+        <div class="form-group">
+          <label for="device_added_date">Device Added On Date</label>
+          <input type="date" class="form-control" name= "device_added_date" required>
+        </div>
+
+        <div class="form-group">
+          <label for="device_ownership">Owner Of The Device</label>
+          <input type="text" class="form-control" name= "device_ownership" required>
+        </div>
+
+        <div class="form-group">
+          <label for="device_remark">Remarks</label>
+          <input type="text" class="form-control" name= "device_remark" required>
+        </div>
+
+
+            {% comment %} <div class="form-group">
             <label for="exampleFormControlInput1">Type of Device</label>
             <select input type="text" class="form-control" id="exampleFormControlInput1" name= "device" placeholder="CU, DU" required>
             <option>CU</option>
@@ -99,7 +206,7 @@ Add Device
 </select>          
           </div>
  
-          </div>
+          </div> {% endcomment %}
         
           <button type="submit" class="btn btn-primary"> Submit </button>
 

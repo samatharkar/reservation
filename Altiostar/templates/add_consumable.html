@@ -1,0 +1,62 @@
+{% extends 'base.html' %}
+{% block title %}
+Add Consumables
+{% endblock %}
+
+
+{% block content %}
+<h3>Add Consumables </h3>
+
+
+<div class="container">
+    <form method="POST" action="{% url 'add_consumable' %}">
+        {% csrf_token %}
+
+        <div class="form-group">
+          <label for="consumable_name">Name Of The Consumables</label>
+          <input type="text" class="form-control" name= "consumable_name" required>
+        </div>
+
+        <div class="form-group">
+          <label for="consumable_db">DB</label>
+          <input type="text" class="form-control" name= "consumable_db" required>
+        </div>
+
+        <div class="form-group">
+          <label for="consumable_connector1">Connector 1 </label>
+          <input type="text" class="form-control"   name= "consumable_connector1" required>
+        </div>
+
+        <div class="form-group">
+          <label for="consumable_connector2">Connector 2 </label>
+          <input type="text" class="form-control"   name= "consumable_connector2" required>
+        </div>
+
+        <div class="form-group">
+          <label for="consumable_watt">Watt</label>
+          <input type="text" class="form-control"   name= "consumable_watt" required>
+        </div>
+
+        <div class="form-group">
+          <label for="consumable_length">Length</label>
+          <input type="text" class="form-control"   name= "consumable_length" required>
+        </div>
+
+        <div class="form-group">
+          <label for="consumable_quantity">Quantity</label>
+          <input type="text" class="form-control"   name= "consumable_qunantity" required>
+        </div>
+
+        <div class="form-group">
+          <label for="consumable_remark">Remark</label>
+          <input type="text" class="form-control"   name= "consumable_remark" required>
+        </div>
+
+        
+        
+          <button type="submit" class="btn btn-primary"> Submit </button>
+
+      </form>
+
+
+{% endblock %}

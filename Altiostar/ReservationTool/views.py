@@ -45,6 +45,8 @@ def add_setup(request):
 def add_device(request):
     if request.method == "POST":
         device_name = request.POST.get('device_name')
+        device_type = request.POST.get('device_type')
+        device_consumable = request.POST.get('device_consumable')
         device_srno = request.POST.get('device_srno')
         device_po_number = request.POST.get('device_po_number')
         device_po_date = request.POST.get('device_po_date')
@@ -57,11 +59,13 @@ def add_device(request):
         device_warranty_inmonths = request.POST.get('device_warranty_inmonths')
         device_added_byuser = request.POST.get('device_added_byuser')
         device_added_date = request.POST.get('device_added_date')
-        device_description = request.POST.get('device_description')
         device_ownership = request.POST.get('device_ownership')
+        device_remark = request.POST.get('device_remark')
         
         Device.objects.create(
             device_name=device_name , 
+            device_type = device_type ,
+            device_consumable = device_consumable,
             device_srno=device_srno , 
             device_po_number=device_po_number , 
             device_po_date=device_po_date , 
@@ -74,20 +78,34 @@ def add_device(request):
             device_warranty_inmonths=device_warranty_inmonths,
             device_added_byuser=device_added_byuser,
             device_added_date=device_added_date,
-            device_description=device_description,
-            device_ownership=device_ownership
+            device_ownership=device_ownership,
+            device_remark=device_remark
 
         )
         return render(
             request,
             "add_device.html",
+            {
+                'vendors':Vendor.objects.all(),
+                'd_type':DeviceType.objects.all(),
+                'con':Consumable.objects.all(),
 
-        )
+            }
+        )  
+        
     else:
         return render(
             request,
             "add_device.html",
 
+            {
+                'vendors':Vendor.objects.all(),
+                'd_type':DeviceType.objects.all(),
+                'con':Consumable.objects.all(),
+                'msg':'Device Added!'
+
+            }
+        
         )
 
 def add_device_type(request):
@@ -96,29 +114,25 @@ def add_device_type(request):
         type_make = request.POST.get("type_make")
         type_model = request.POST.get("type_model")
         type_part_no = request.POST.get("type_part_no")
-        
+        type_remark = request.POST.get("type_remark")
+
         DeviceType.objects.create(
             type_name = type_name,
             type_make = type_make, 
             type_model = type_model,
-            type_part_no = type_part_no
+            type_part_no = type_part_no,
+            type_remark = type_remark
         )
         return render(
             request,
             "add_device_type.html",
-            {
-                'devices':Device.objects.all(),
-                'msg':'Setup Added!'
 
-            }
         )        
     else:
          return render(
              request,
              "add_device_type.html",
-             {
-                 'devices':Device.objects.all()
-             }
+
            )
 
 
@@ -128,29 +142,25 @@ def add_vendor(request):
         vendor_email = request.POST.get("vendor_email")
         vendor_address = request.POST.get("vendor_address")
         vendor_number = request.POST.get("vendor_number")
+        vendor_remark = request.POST.get("vendor_remark")
         
         Vendor.objects.create(
             vendor_name = vendor_name,
             vendor_email = vendor_email, 
             vendor_address = vendor_address,
-            vendor_number = vendor_number
+            vendor_number = vendor_number,
+            vendor_remark = vendor_remark
         )
         return render(
             request,
             "add_vendor.html",
-            {
-                'devices':Device.objects.all(),
-                'msg':'Setup Added!'
 
-            }
         )        
     else:
          return render(
              request,
              "add_vendor.html",
-             {
-                 'devices':Device.objects.all()
-             }
+
            )
 
 def add_consumable(request):
@@ -162,6 +172,8 @@ def add_consumable(request):
         consumable_watt = request.POST.get("consumable_watt")
         consumable_length = request.POST.get("consumable_length")
         consumable_quantity = request.POST.get("consumable_quantity")
+        consumable_remark = request.POST.get("consumable_remark")
+        
 
         Consumable.objects.create(
             consumable_name = consumable_name,
@@ -170,24 +182,18 @@ def add_consumable(request):
             consumable_connector2 = consumable_connector2,
             consumable_watt = consumable_watt,
             consumable_length = consumable_length,
-            consumable_quantity = consumable_quantity
+            consumable_quantity = consumable_quantity,
+            consumable_remark = consumable_remark
         )
         return render(
             request,
             "add_consumables.html",
-            {
-                'devices':Device.objects.all(),
-                'msg':'Setup Added!'
-
-            }
         )        
     else:
          return render(
              request,
              "add_device_type.html",
-             {
-                 'devices':Device.objects.all()
-             }
+
            )
 # def add_device(request):
 #     if request.method == "POST":
