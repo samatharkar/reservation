@@ -58,20 +58,20 @@ class DeviceType(models.Model):
       db_table = "device_types"
 
 
-class Setup(models.Model):
-    setup_name = models.CharField(max_length=125 , null = True)
-    attenuator_quantity = models.IntegerField(default=0)
-    attenuator_db = models.CharField(max_length=125, default="10db")
-    rf_cable = models.IntegerField(default=0)
-    rf_shield_box = models.IntegerField(default=0)
-    device_type = models.ForeignKey(Device, on_delete=models.PROTECT )
+class CreateSetup(models.Model):
+    create_setup_name = models.CharField(max_length=125 )
+    create_setup_remark = models.CharField(max_length=125)
+    # attenuator_db = models.CharField(max_length=125, default="10db")
+    # rf_cable = models.IntegerField(default=0)
+    # rf_shield_box = models.IntegerField(default=0)
+    # device_type = models.ForeignKey(Device, on_delete=models.PROTECT )
     #setup_type = models.ForeignKey(SetupType, on_delete=models.PROTECT , null = True)
 
     def __str__(self):
-      return self.setup_name
+      return self.create_setup_name
 
     class Meta:
-      db_table = "setups"
+      db_table = "create_setups"
 
 class Consumable(models.Model):
     consumable_name = models.CharField(max_length=125)
