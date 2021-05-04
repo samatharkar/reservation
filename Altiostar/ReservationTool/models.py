@@ -22,21 +22,21 @@ from django.db import models
 
 
 class Device(models.Model):
-    device_name = models.CharField(max_length=125)
-    device_srno = models.CharField(max_length=125)
-    device_po_number = models.CharField(max_length=125)
-    device_po_date = models.CharField(max_length=125)
-    device_vendor = models.CharField(max_length=125)
-    device_invoice_number = models.CharField(max_length=125)
-    device_bonded = models.CharField(max_length=125)
-    device_bond_number = models.CharField(max_length=125)
+    device_name = models.CharField(max_length=125 , default="NA")
+    device_srno = models.CharField(max_length=125 , default="NA")
+    device_po_number = models.CharField(max_length=125 , default="NA")
+    device_po_date = models.CharField(max_length=125 )
+    device_vendor = models.CharField(max_length=125, default="NA")
+    device_invoice_number = models.CharField(max_length=125, default="NA")
+    device_bonded = models.CharField(max_length=125, default="NA")
+    device_bond_number = models.CharField(max_length=125 , default="NA")
     device_shipped_date = models.CharField(max_length=125)
     device_arrival_date = models.CharField(max_length=125)
-    device_warranty_inmonths = models.CharField(max_length=125)
-    device_added_byuser = models.CharField(max_length=125)
-    device_added_date = models.CharField(max_length=125)
-    device_ownership = models.CharField(max_length=125)
-    device_remark= models.CharField(max_length=125)
+    device_warranty_inmonths = models.CharField(max_length=125, default="NA")
+    device_added_byuser = models.CharField(max_length=125, default="NA")
+    device_added_date = models.CharField(max_length=125, default="NA")
+    device_ownership = models.CharField(max_length=125, default="NA")
+    device_remark= models.CharField(max_length=125, default="NA")
   
     def __str__(self):
       return self.device_name
@@ -45,11 +45,11 @@ class Device(models.Model):
       db_table = "devices"
 
 class DeviceType(models.Model):
-    type_name = models.CharField(max_length=125)
-    type_make  = models.CharField(max_length=125)
-    type_model = models.CharField(max_length=125)
-    type_part_no = models.CharField(max_length=125)
-    type_remark = models.CharField(max_length=125)
+    type_name = models.CharField(max_length=125, default="NA")
+    type_make  = models.CharField(max_length=125, default="NA")
+    type_model = models.CharField(max_length=125, default="NA")
+    type_part_no = models.CharField(max_length=125, default="NA")
+    type_remark = models.CharField(max_length=125, default="NA")
 
     def __str__(self):
       return self.type_name
@@ -59,8 +59,8 @@ class DeviceType(models.Model):
 
 
 class CreateSetup(models.Model):
-    create_setup_name = models.CharField(max_length=125 )
-    create_setup_remark = models.CharField(max_length=125)
+    create_setup_name = models.CharField(max_length=125, default="NA" )
+    create_setup_remark = models.CharField(max_length=125, default="NA")
     # attenuator_db = models.CharField(max_length=125, default="10db")
     # rf_cable = models.IntegerField(default=0)
     # rf_shield_box = models.IntegerField(default=0)
@@ -74,14 +74,14 @@ class CreateSetup(models.Model):
       db_table = "create_setups"
 
 class Consumable(models.Model):
-    consumable_name = models.CharField(max_length=125)
-    consumable_db  = models.CharField(max_length=125)
-    consumable_connector1 = models.CharField(max_length=125)
-    consumable_connector2 = models.CharField(max_length=125)
-    consumable_watt = models.CharField(max_length=125)
-    consumable_length = models.CharField(max_length=125)
-    consumable_quantity = models.CharField(max_length=125)
-    consumable_remark = models.CharField(max_length=125)
+    consumable_name = models.CharField(max_length=125, default="NA")
+    consumable_db  = models.CharField(max_length=125, default="NA")
+    consumable_connector1 = models.CharField(max_length=125, default="NA")
+    consumable_connector2 = models.CharField(max_length=125, default="NA")
+    consumable_watt = models.CharField(max_length=125, default="NA")
+    consumable_length = models.CharField(max_length=125, default="NA")
+    consumable_quantity = models.CharField(max_length=125, default="NA")
+    consumable_remark = models.CharField(max_length=125, default="NA")
 
 
     def __str__(self):
@@ -91,11 +91,11 @@ class Consumable(models.Model):
       db_table = "consumables"
 
 class Vendor(models.Model):
-    vendor_name = models.CharField(max_length=125)
-    vendor_email  = models.CharField(max_length=125)
-    vendor_address = models.CharField(max_length=125)
-    vendor_number = models.CharField(max_length=125)
-    vendor_remark = models.CharField(max_length=125)
+    vendor_name = models.CharField(max_length=125, default="NA")
+    vendor_email  = models.CharField(max_length=125, default="NA")
+    vendor_address = models.CharField(max_length=125, default="NA")
+    vendor_number = models.CharField(max_length=125, default="NA")
+    vendor_remark = models.CharField(max_length=125, default="NA")
 
     def __str__(self):
       return self.vendor_name
