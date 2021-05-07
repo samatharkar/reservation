@@ -13,7 +13,7 @@ Create Setup
         {% csrf_token %}
 
         <div class="form-group">
-          <label for="make_setup_name">Name of the Setup</label>
+          <label for="make_setup_name">Name of the Setup</label> <br>
 
         <select name = "make_setup_name" >
           {% for msn in setup_n %}
@@ -24,7 +24,7 @@ Create Setup
         </div>
 
         <div class="form-group">
-          <label for="make_setup_consumable">Add Consumables</label>
+          <label for="make_setup_consumable">Add Consumables</label> <br>
 
         <select name = "make_setup_consumable" >
           {% for msc in consumable_n %}
@@ -35,7 +35,7 @@ Create Setup
         </div>
 
         <div class="form-group">
-          <label for="make_setup_device">Add Devices</label>
+          <label for="make_setup_device">Add Devices</label> <br>
 
         <select name = "make_setup_device" >
           {% for msd in device_n %}
@@ -44,6 +44,10 @@ Create Setup
 
         </select>         
         </div>
+
+        
+
+        
 
 
               <button type="submit" class="btn btn-primary"> Submit </button>

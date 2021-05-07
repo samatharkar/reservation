@@ -90,6 +90,8 @@ def add_device(request):
             {
                 'vendors':Vendor.objects.all(),
                 'd_type':DeviceType.objects.all(),
+                'msg':'Device Added!'
+
           #      'con':Consumable.objects.all(),
 
             }
@@ -104,7 +106,6 @@ def add_device(request):
                 'vendors':Vendor.objects.all(),
                 'd_type':DeviceType.objects.all(),
            #     'con':Consumable.objects.all(),
-                'msg':'Device Added!'
 
             }
         
@@ -128,6 +129,10 @@ def add_device_type(request):
         return render(
             request,
             "add_device_type.html",
+            {
+            'msg':'Device Type Added!'
+
+            }
 
         )        
     else:
@@ -156,6 +161,11 @@ def add_vendor(request):
         return render(
             request,
             "add_vendor.html",
+            {
+             'msg':'Vendor Added!'
+
+            }
+            
 
         )        
     else:
@@ -190,6 +200,10 @@ def add_consumable(request):
         return render(
             request,
             "add_consumable.html",
+            {
+            'msg':'Consumable Added!'
+
+            }
         )        
     else:
          return render(
@@ -229,7 +243,7 @@ def make_setup(request):
                 'device_n':Device.objects.all(),
                 'setup_n':CreateSetup.objects.all(),
                 'consumable_n':Consumable.objects.all(),
-                'msg':'Setup Added!'
+             #   'msg':'Setup Added!'
 
             }
             
