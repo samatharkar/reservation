@@ -20,9 +20,21 @@ from django.db import models
 #     class Meta:
 #       db_table = "devices"
 
+class DeviceType(models.Model):
+    type_name = models.CharField(max_length=125, default="NA")
+    type_make  = models.CharField(max_length=125, default="NA")
+    type_model = models.CharField(max_length=125, default="NA")
+    type_part_no = models.CharField(max_length=125, default="NA")
+    type_remark = models.CharField(max_length=125, default="NA")
 
+    def __str__(self):
+      return self.type_name
+    
+    class Meta:
+      db_table = "device_types"
 class Device(models.Model):
     device_name = models.CharField(max_length=125 , default="NA")
+    device_type = models.CharField(max_length=125 , default="NA")
     device_srno = models.CharField(max_length=125 , default="NA")
     device_po_number = models.CharField(max_length=125 , default="NA")
     device_po_date = models.CharField(max_length=125 )
@@ -44,18 +56,7 @@ class Device(models.Model):
     class Meta:
       db_table = "devices"
 
-class DeviceType(models.Model):
-    type_name = models.CharField(max_length=125, default="NA")
-    type_make  = models.CharField(max_length=125, default="NA")
-    type_model = models.CharField(max_length=125, default="NA")
-    type_part_no = models.CharField(max_length=125, default="NA")
-    type_remark = models.CharField(max_length=125, default="NA")
 
-    def __str__(self):
-      return self.type_name
-    
-    class Meta:
-      db_table = "device_types"
 
 
 class CreateSetup(models.Model):
@@ -90,12 +91,27 @@ class Consumable(models.Model):
     class Meta:
       db_table = "consumables"
 
+class MakeSetup(models.Model):
+    # make_setup_name = models.ForeignKey ( CreateSetup , on_delete=models.PROTECT )
+    # make_setup_device = models.ForeignKey ( Device , on_delete=models.PROTECT )
+    # make_setup_consumable = models.ForeignKey ( Consumable , on_delete=models.PROTECT )
+    make_setup_name = models.CharField(max_length=125, default="NA")
+    make_setup_device = models.CharField(max_length=125, default="NA")
+    make_setup_consumable = models.CharField(max_length=125, default="NA")
+
+
+    def __str__(self):
+      return self.make_setup_name
+
+    class Meta:
+      db_table = "make_setup"
+
 class Vendor(models.Model):
-    vendor_name = models.CharField(max_length=125, default="NA")
-    vendor_email  = models.CharField(max_length=125, default="NA")
-    vendor_address = models.CharField(max_length=125, default="NA")
-    vendor_number = models.CharField(max_length=125, default="NA")
-    vendor_remark = models.CharField(max_length=125, default="NA")
+    vendor_name = models.CharField(max_length=125)
+    vendor_email  = models.CharField(max_length=125)
+    vendor_address = models.CharField(max_length=125)
+    vendor_number = models.CharField(max_length=125)
+    vendor_remark = models.CharField(max_length=125)
 
     def __str__(self):
       return self.vendor_name

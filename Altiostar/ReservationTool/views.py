@@ -65,7 +65,7 @@ def add_device(request):
         device_remark = request.POST.get('device_remark')
         
         Device.objects.create(
-            device_name=device_name , 
+            device_name = device_name , 
             device_type = device_type ,
          #   device_consumable = device_consumable,
             device_srno=device_srno , 
@@ -197,6 +197,44 @@ def add_consumable(request):
              "add_consumable.html",
 
            )
+
+def make_setup(request):
+    if request.method == "POST":
+        make_setup_name = request.POST.get("make_setup_name")
+        make_setup_device = request.POST.get("make_setup_device")
+        make_setup_consumable = request.POST.get("make_setup_consumable")
+
+        MakeSetup.objects.create(
+            make_setup_name = make_setup_name,
+            make_setup_device = make_setup_device,
+            make_setup_consumable = make_setup_consumable
+
+        )
+        return render(
+            request,
+            "make_setup.html",
+            {
+                'device_n':Device.objects.all(),
+                'setup_n':CreateSetup.objects.all(),
+                'consumable_n':Consumable.objects.all(),
+                'msg':'Setup Added!'
+
+            }
+        )        
+    else:
+         return render(
+             request,
+             "make_setup.html",
+             {
+                'device_n':Device.objects.all(),
+                'setup_n':CreateSetup.objects.all(),
+                'consumable_n':Consumable.objects.all(),
+                'msg':'Setup Added!'
+
+            }
+            
+           )
+
 # def add_device(request):
 #     if request.method == "POST":
 #         hostname = request.POST.get('hostname')

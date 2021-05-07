@@ -10,5 +10,6 @@ admin.site.register(CreateSetup)
 admin.site.register(Vendor)
 admin.site.register(Consumable)
 admin.site.register(DeviceType)
+admin.site.register(MakeSetup)
 
 # admin.site.register(Test)

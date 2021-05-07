@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+{% block title %}
+Create Setup
+{% endblock %}
+
+
+{% block content %}
+<h3>Add Devices To Setup </h3>
+
+
+<div class="container">
+    <form method="POST" action="{% url 'make_setup' %}">
+        {% csrf_token %}
+
+        <div class="form-group">
+          <label for="make_setup_name">Name of the Setup</label>
+
+        <select name = "make_setup_name" >
+          {% for msn in setup_n %}
+          <option value = "{{msn.id}}"> {{ msn.create_setup_name }}</option>
+          {% endfor %}
+
+        </select>         
+        </div>
+
+        <div class="form-group">
+          <label for="make_setup_consumable">Add Consumables</label>
+
+        <select name = "make_setup_consumable" >
+          {% for msc in consumable_n %}
+          <option value = "{{msc.id}}"> {{ msc.consumable_name }}</option>
+          {% endfor %}
+
+        </select>         
+        </div>
+
+        <div class="form-group">
+          <label for="make_setup_device">Add Devices</label>
+
+        <select name = "make_setup_device" >
+          {% for msd in device_n %}
+          <option value = "{{msd.id}}"> {{ msd.device_name }}</option>
+          {% endfor %}
+
+        </select>         
+        </div>
+
+
+              <button type="submit" class="btn btn-primary"> Submit </button>
+      </form>
+
+      {% if msg %}
+      <h1>{{msg}}</h1>
+      {% endif %}
+{% endblock %}
