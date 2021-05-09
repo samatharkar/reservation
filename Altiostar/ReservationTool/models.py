@@ -21,6 +21,7 @@ from django.db import models
 #       db_table = "devices"
 
 class DeviceType(models.Model):
+    type_id = models.IntegerField( primary_key= True)
     type_name = models.CharField(max_length=125, default="NA")
     type_make  = models.CharField(max_length=125, default="NA")
     type_model = models.CharField(max_length=125, default="NA")
@@ -33,6 +34,7 @@ class DeviceType(models.Model):
     class Meta:
       db_table = "device_types"
 class Device(models.Model):
+    device_id = models.IntegerField( primary_key= True)
     device_name = models.CharField(max_length=125 , default="NA")
     device_type = models.CharField(max_length=125 , default="NA")
     device_srno = models.CharField(max_length=125 , default="NA")
@@ -60,6 +62,7 @@ class Device(models.Model):
 
 
 class CreateSetup(models.Model):
+    create_setup_id = models.IntegerField( primary_key= True)
     create_setup_name = models.CharField(max_length=125, default="NA" )
     create_setup_remark = models.CharField(max_length=125, default="NA")
     # attenuator_db = models.CharField(max_length=125, default="10db")
@@ -75,6 +78,7 @@ class CreateSetup(models.Model):
       db_table = "create_setups"
 
 class Consumable(models.Model):
+    consumable_id = models.IntegerField( primary_key= True)
     consumable_name = models.CharField(max_length=125, default="NA")
     consumable_db  = models.CharField(max_length=125, default="NA")
     consumable_connector1 = models.CharField(max_length=125, default="NA")
@@ -95,6 +99,7 @@ class MakeSetup(models.Model):
     # make_setup_name = models.ForeignKey ( CreateSetup , on_delete=models.PROTECT )
     # make_setup_device = models.ForeignKey ( Device , on_delete=models.PROTECT )
     # make_setup_consumable = models.ForeignKey ( Consumable , on_delete=models.PROTECT )
+    make_setup_id = models.IntegerField( primary_key= True)
     make_setup_name = models.CharField(max_length=125, default="NA")
     make_setup_device = models.CharField(max_length=125, default="NA")
     make_setup_consumable = models.CharField(max_length=125, default="NA")
@@ -107,6 +112,7 @@ class MakeSetup(models.Model):
       db_table = "make_setup"
 
 class Vendor(models.Model):
+    vendor_id = models.IntegerField( primary_key= True)
     vendor_name = models.CharField(max_length=125)
     vendor_email  = models.CharField(max_length=125)
     vendor_address = models.CharField(max_length=125)

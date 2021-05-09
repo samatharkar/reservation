@@ -229,7 +229,7 @@ def make_setup(request):
             "make_setup.html",
             {
                 'device_n':Device.objects.all(),
-                'setup_n':CreateSetup.objects.all(),
+                #'setup_n':CreateSetup.objects.all(),
                 'consumable_n':Consumable.objects.all(),
                 'msg':'Setup Added!'
 
@@ -241,7 +241,7 @@ def make_setup(request):
              "make_setup.html",
              {
                 'device_n':Device.objects.all(),
-                'setup_n':CreateSetup.objects.all(),
+               # 'setup_n':CreateSetup.objects.all(),
                 'consumable_n':Consumable.objects.all(),
              #   'msg':'Setup Added!'
 
