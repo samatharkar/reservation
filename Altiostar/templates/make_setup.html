@@ -13,6 +13,11 @@ Create Setup
         {% csrf_token %}
 
         <div class="form-group">
+          <label for="make_setup_name">Name Of The Setup</label>
+          <input type="text" class="form-control" name= "make_setup_name" required>
+        </div>
+
+        {% comment %} <div class="form-group">
           <label for="make_setup_name">Name of the Setup</label> <br>
 
         <select name = "make_setup_name" >
@@ -21,7 +26,7 @@ Create Setup
           {% endfor %}
 
         </select>         
-        </div>
+        </div> {% endcomment %}
 
         <div class="form-group">
           <label for="make_setup_consumable">Add Consumables</label> <br>
