@@ -5,9 +5,10 @@ Add Device
 
 
 {% block content %}
-<h3>Add Device </h3>
+<h3> Altiostar</h3>
 
  <div class="container">
+<<<<<<< HEAD
     <form method="POST" action="{% url 'add_device' %}">
         {% csrf_token %}
 
@@ -225,4 +226,24 @@ Add Device
       {% if msg %}
       <h1>{{msg}}</h1>
       {% endif %}
+=======
+   
+<label for="exampleFormControlInput1">Select Type of Device Which You Want To Add</label><br>
+<select onchange="this.options[this.selectedIndex].value && (window.location = this.options[this.selectedIndex].value);">
+    <option value="">Select...</option>
+    <option value="/add_server/">Server</option>
+    <option value="">RRH</option>
+    <option value="">Laptop</option>
+    <option value="">CU</option>
+    <option value="">DU</option>
+    <option value=""></option>
+    <option value="">A</option>
+    <option value="">A</option>
+    <option value="">A</option>
+    <option value="">A</option>
+    <option value="">A</option>
+    <option value="">A</option>
+</select>
+
+>>>>>>> main
 {% endblock %}

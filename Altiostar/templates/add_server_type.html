@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+{% block title %}
+Add Server Type
+{% endblock %}
+
+
+{% block content %}
+<h3>Add Type Of Server </h3>
+
+
+<div class="container">
+    <form method="POST" action="{% url 'add_server_type' %}">
+        {% csrf_token %}
+
+        <div class="form-group">
+          <label for="server_type_name">Name Of The Server Type</label>
+          <input type="text" class="form-control" name= "server_type_name" required>
+        </div>
+
+        <div class="form-group">
+          <label for="server_make">Make</label>
+          <input type="text" class="form-control" name= "server_make" required>
+        </div>
+
+        <div class="form-group">
+          <label for="server_model">Model</label>
+          <input type="text" class="form-control"   name= "server_model" required>
+        </div>
+
+        <div class="form-group">
+          <label for="server_processor">Processor</label>
+          <input type="text" class="form-control"   name= "server_processor" required>
+        </div>
+
+        <div class="form-group">
+          <label for="server_socket">Number of Sockets</label>
+          <input type="number" min="1" max="50" class="form-control"   name= "server_socket" required>
+        </div>
+
+        <div class="form-group">
+          <label for="server_core">Number of Cores</label>
+          <input  type="number" min="1" max="50" class="form-control"   name= "server_core" required>
+        </div>
+
+        <div class="form-group">
+          <label for="server_hdd_model">HDD Model</label>
+          <input type="text" class="form-control"   name= "server_hdd_model" required>
+        </div>
+
+        <div class="form-group">
+          <label for="server_hdd_size">HDD Size</label>
+          <input type="text" class="form-control"   name= "server_hdd_size" required>
+        </div>
+
+        <div class="form-group">
+          <label for="server_hdd_number">Number of HDDs</label>
+          <input type="number" min="1" max="50" class="form-control"   name= "server_hdd_number" required>
+        </div>
+
+        <div class="form-group">
+          <label for="server_ram">RAM</label>
+          <input type="text" class="form-control"   name= "server_ram" required>
+        </div>
+
+
+        
+          <button type="submit" class="btn btn-primary"> Submit </button>
+
+      </form>
+
+
+{% endblock %}
