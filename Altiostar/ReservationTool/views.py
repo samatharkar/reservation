@@ -306,7 +306,7 @@ def view_device(request):
 
 def view_setup(request):
     context = {}
-    setup_entries = Setup.objects.all()
+    setup_entries = CreateSetup.objects.all()
     context['setup_entries'] = setup_entries
     return render(request, 'view_setup.html', context)
 
@@ -324,7 +324,7 @@ def export(request):
     return response
 
 def search_setup(request):
-    setup_list = Setup.objects.all()
+    setup_list = CreateSetup.objects.all()
     setup_filter = SetupFilter(request.GET, queryset=setup_list)
     return render(request, 'search_setup.html', {'filter': setup_filter })
 
