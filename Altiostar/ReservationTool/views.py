@@ -332,3 +332,7 @@ def search_device(request):
      device_list = Device.objects.all()
      device_filter = DeviceFilter(request.GET, queryset=device_list)
      return render(request, 'search_device.html', {'filter': device_filter })
+
+def login(request):
+    pass
+    return render(request, 'login.html')
