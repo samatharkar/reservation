@@ -13,15 +13,15 @@ def home(request):
 
 def add_setup(request):
     if request.method == "POST":
-        create_setup_name = request.POST.get("create_setup_name")
-        create_setup_remark = request.POST.get("create_setup_remark")
+        name = request.POST.get("name")
+        remark = request.POST.get("remark")
         # device_id = request.POST.get("device_type")
         # attenuator_quantity = request.POST.get("attenuator_quantity")
         # attenuator_db = request.POST.get("attenuator_db")
         # device_type = Device.objects.get(id=device_id)
         CreateSetup.objects.create(
-            create_setup_name = create_setup_name,
-            create_setup_remark = create_setup_remark
+            name = name,
+            remark = remark
             # attenuator_quantity = attenuator_quantity, 
             # attenuator_db = attenuator_db,
             # device_type = device_type
@@ -46,42 +46,42 @@ def add_setup(request):
 
 def add_device(request):
     if request.method == "POST":
-        device_name = request.POST.get('device_name')
-        device_type = request.POST.get('device_type')
-        #device_consumable = request.POST.get('device_consumable')
-        device_srno = request.POST.get('device_srno')
-        device_po_number = request.POST.get('device_po_number')
-        device_po_date = request.POST.get('device_po_date')
-        device_vendor = request.POST.get('device_vendor')
-        device_invoice_number = request.POST.get('device_invoice_number')
-        device_bonded = request.POST.get('device_bonded')
-        device_bond_number = request.POST.get('device_bond_number')
-        device_shipped_date = request.POST.get('device_shipped_date')
-        device_arrival_date = request.POST.get('device_arrival_date')
-        device_warranty_inmonths = request.POST.get('device_warranty_inmonths')
-        device_added_byuser = request.POST.get('device_added_byuser')
-        device_added_date = request.POST.get('device_added_date')
-        device_ownership = request.POST.get('device_ownership')
-        device_remark = request.POST.get('device_remark')
+        name = request.POST.get('name')
+        type = request.POST.get('type')
+        #consumable = request.POST.get('device_consumable')
+        srno = request.POST.get('srno')
+        po_number = request.POST.get('po_number')
+        po_date = request.POST.get('po_date')
+        vendor = request.POST.get('vendor')
+        invoice_number = request.POST.get('invoice_number')
+        bonded = request.POST.get('bonded')
+        bond_number = request.POST.get('bond_number')
+        shipped_date = request.POST.get('shipped_date')
+        arrival_date = request.POST.get('arrival_date')
+        warranty_inmonths = request.POST.get('warranty_inmonths')
+        added_byuser = request.POST.get('added_byuser')
+        added_date = request.POST.get('added_date')
+        ownership = request.POST.get('ownership')
+        remark = request.POST.get('remark')
         
         Device.objects.create(
-            device_name = device_name , 
-            device_type = device_type ,
+            name = name , 
+            type = type ,
          #   device_consumable = device_consumable,
-            device_srno=device_srno , 
-            device_po_number=device_po_number , 
-            device_po_date=device_po_date , 
-            device_vendor=device_vendor , 
-            device_invoice_number=device_invoice_number,
-            device_bonded=device_bonded,
-            device_bond_number=device_bond_number,
-            device_shipped_date=device_shipped_date,
-            device_arrival_date=device_arrival_date,
-            device_warranty_inmonths=device_warranty_inmonths,
-            device_added_byuser=device_added_byuser,
-            device_added_date=device_added_date,
-            device_ownership=device_ownership,
-            device_remark=device_remark
+            srno=srno , 
+            po_number=po_number , 
+            po_date=po_date , 
+            vendor=vendor , 
+            invoice_number=invoice_number,
+            bonded=bonded,
+            bond_number=bond_number,
+            shipped_date=shipped_date,
+            arrival_date=arrival_date,
+            warranty_inmonths=warranty_inmonths,
+            added_byuser=added_byuser,
+            added_date=added_date,
+            ownership=ownership,
+            remark=remark
 
         )
         return render(
@@ -113,18 +113,18 @@ def add_device(request):
 
 def add_device_type(request):
     if request.method == "POST":
-        type_name = request.POST.get("type_name")
-        type_make = request.POST.get("type_make")
-        type_model = request.POST.get("type_model")
-        type_part_no = request.POST.get("type_part_no")
-        type_remark = request.POST.get("type_remark")
+        name = request.POST.get("name")
+        make = request.POST.get("make")
+        model = request.POST.get("model")
+        part_no = request.POST.get("part_no")
+        remark = request.POST.get("remark")
 
         DeviceType.objects.create(
-            type_name = type_name,
-            type_make = type_make, 
-            type_model = type_model,
-            type_part_no = type_part_no,
-            type_remark = type_remark
+            name = name,
+            make = make, 
+            model = model,
+            part_no = part_no,
+            remark = remark
         )
         return render(
             request,
@@ -145,18 +145,18 @@ def add_device_type(request):
 
 def add_vendor(request):
     if request.method == "POST":
-        vendor_name = request.POST.get("vendor_name")
-        vendor_email = request.POST.get("vendor_email")
-        vendor_address = request.POST.get("vendor_address")
-        vendor_number = request.POST.get("vendor_number")
-        vendor_remark = request.POST.get("vendor_remark")
+        name = request.POST.get("name")
+        email = request.POST.get("email")
+        address = request.POST.get("address")
+        number = request.POST.get("number")
+        remark = request.POST.get("remark")
         
         Vendor.objects.create(
-            vendor_name = vendor_name,
-            vendor_email = vendor_email, 
-            vendor_address = vendor_address,
-            vendor_number = vendor_number,
-            vendor_remark = vendor_remark
+            name = name,
+            email = email, 
+            address = address,
+            number = number,
+            remark = remark
         )
         return render(
             request,
@@ -177,25 +177,25 @@ def add_vendor(request):
 
 def add_consumable(request):
     if request.method == "POST":
-        consumable_name = request.POST.get("consumable_name")
-        consumable_db = request.POST.get("consumable_db")
-        consumable_connector1 = request.POST.get("consumable_connector1")
-        consumable_connector2 = request.POST.get("consumable_connector2")
-        consumable_watt = request.POST.get("consumable_watt")
-        consumable_length = request.POST.get("consumable_length")
-        consumable_quantity = request.POST.get("consumable_quantity")
-        consumable_remark = request.POST.get("consumable_remark")
+        name = request.POST.get("consumable_name")
+        db = request.POST.get("consumable_db")
+        connector1 = request.POST.get("consumable_connector1")
+        connector2 = request.POST.get("consumable_connector2")
+        watt = request.POST.get("consumable_watt")
+        length = request.POST.get("consumable_length")
+        quantity = request.POST.get("quantity")
+        remark = request.POST.get("remark")
         
 
         Consumable.objects.create(
-            consumable_name = consumable_name,
-            consumable_db = consumable_db, 
-            consumable_connector1 = consumable_connector1,
-            consumable_connector2 = consumable_connector2,
-            consumable_watt = consumable_watt,
-            consumable_length = consumable_length,
-            consumable_quantity = consumable_quantity,
-            consumable_remark = consumable_remark
+            name = name,
+            db = db, 
+            connector1 = connector1,
+            connector2 = connector2,
+            watt = watt,
+            length = length,
+            quantity = quantity,
+            remark = remark
         )
         return render(
             request,
@@ -214,14 +214,14 @@ def add_consumable(request):
 
 def make_setup(request):
     if request.method == "POST":
-        make_setup_name = request.POST.get("make_setup_name")
-        make_setup_device = request.POST.get("make_setup_device")
-        make_setup_consumable = request.POST.get("make_setup_consumable")
+        name = request.POST.get("name")
+        device = request.POST.get("device")
+        consumable = request.POST.get("consumable")
 
         MakeSetup.objects.create(
-            make_setup_name = make_setup_name,
-            make_setup_device = make_setup_device,
-            make_setup_consumable = make_setup_consumable
+            name = name,
+            device = device,
+            consumable = consumable
 
         )
         return render(
