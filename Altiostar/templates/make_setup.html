@@ -13,8 +13,8 @@ Create Setup
         {% csrf_token %}
 
         <div class="form-group">
-          <label for="make_setup_name">Name Of The Setup</label>
-          <input type="text" class="form-control" name= "make_setup_name" required>
+          <label for="name">Name Of The Setup</label>
+          <input type="text" class="form-control" name= "name" required>
         </div>
 
         {% comment %} <div class="form-group">
@@ -29,11 +29,11 @@ Create Setup
         </div> {% endcomment %}
 
         <div class="form-group">
-          <label for="make_setup_consumable">Add Consumables</label> <br>
+          <label for="consumable">Add Consumables</label> <br>
 
-        <select name = "make_setup_consumable" >
+        <select name = "consumable" >
           {% for msc in consumable_n %}
-          <option  value = "{{msc.id}}"> {{ msc.consumable_name }}</option>
+          <option  value = "{{msc.id}}"> {{ msc.name }}</option>
           {% endfor %}
 
         </select>         
@@ -45,13 +45,13 @@ Create Setup
           </div>
 
         <div class="form-group">
-          <label for="make_setup_device">Add Devices</label> <br>
+          <label for="device">Add Devices</label> <br>
 
-        <select name = "make_setup_device" >
+        <select name = "device" >
 
         
           {% for msd in device_n %}
-          <option value = "{{msd.id}}"> {{ msd.device_name }}</option>
+          <option value = "{{msd.id}}"> {{ msd.name }}</option>
           {% endfor %}
         </select>         
         </div>

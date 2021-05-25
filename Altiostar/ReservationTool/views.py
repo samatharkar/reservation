@@ -177,12 +177,12 @@ def add_vendor(request):
 
 def add_consumable(request):
     if request.method == "POST":
-        name = request.POST.get("consumable_name")
-        db = request.POST.get("consumable_db")
-        connector1 = request.POST.get("consumable_connector1")
-        connector2 = request.POST.get("consumable_connector2")
-        watt = request.POST.get("consumable_watt")
-        length = request.POST.get("consumable_length")
+        name = request.POST.get("name")
+        db = request.POST.get("db")
+        connector1 = request.POST.get("connector1")
+        connector2 = request.POST.get("connector2")
+        watt = request.POST.get("watt")
+        length = request.POST.get("length")
         quantity = request.POST.get("quantity")
         remark = request.POST.get("remark")
         

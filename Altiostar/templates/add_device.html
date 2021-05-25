@@ -13,17 +13,17 @@ Add Device
 
 
         <div class="form-group">
-          <label for="device_name">Name Of The Device</label>
-          <input type="text" class="form-control" name= "device_name" required>
+          <label for="name">Name Of The Device</label>
+          <input type="text" class="form-control" name= "name" required>
         </div>
 
 
         <div class="form-group">
-          <label for="device_type">Select Device Type</label>
+          <label for="type">Select Device Type</label>
 
-        <select name = "device_type" >
+        <select name = "type" >
           {% for dev_type in d_type %}
-          <option value = "{{dev_type.id}}"> {{ dev_type.type_name }}</option>
+          <option value = "{{dev_type.id}}"> {{ dev_type.name }}</option>
           {% endfor %}
 
         </select>         
@@ -46,26 +46,26 @@ Add Device
         </div> {% endcomment %}
 
         <div class="form-group">
-          <label for="device_srno">Serial Number</label>
-          <input type="text" class="form-control" name= "device_srno" required>
+          <label for="srno">Serial Number</label>
+          <input type="text" class="form-control" name= "srno" required>
         </div>
 
         <div class="form-group">
-          <label for="device_po_number">Product Order Number (PO)</label>
-          <input type="text" class="form-control" name= "device_po_number" required>
+          <label for="po_number">Product Order Number (PO)</label>
+          <input type="text" class="form-control" name= "po_number" required>
         </div>
 
         <div class="form-group">
-          <label for="device_po_date">Product Order Date</label>
-          <input type="date" class="form-control" name= "device_po_date" required>
+          <label for="po_date">Product Order Date</label>
+          <input type="date" class="form-control" name= "po_date" required>
         </div>
 
         <div class="form-group">
-          <label for="device_vendor">Select Vendor</label>
+          <label for="vendor">Select Vendor</label>
 
-        <select name = "device_vendor" >
+        <select name = "vendor" >
           {% for ven in vendors %}
-          <option value = "{{ven.id}}"> {{ ven.vendor_name }}</option>
+          <option value = "{{ven.id}}"> {{ ven.name }}</option>
           {% endfor %}
 
         </select>         
@@ -77,54 +77,54 @@ Add Device
           </div>
 
         <div class="form-group">
-          <label for="device_invoice_number">Invoice Number</label>
-          <input type="text" class="form-control" name= "device_invoice_number" required>
+          <label for="invoice_number">Invoice Number</label>
+          <input type="text" class="form-control" name= "invoice_number" required>
         </div>
 
         <div class="form-group">
-          <label for="device_bonded">Bonded</label>
-          <input type="text" class="form-control" name= "device_bonded" required>
+          <label for="bonded">Bonded</label>
+          <input type="text" class="form-control" name= "bonded" required>
         </div>
 
         <div class="form-group">
-          <label for="device_bond_number">Bond Number</label>
-          <input type="text" class="form-control" name= "device_bond_number" required>
+          <label for="bond_number">Bond Number</label>
+          <input type="text" class="form-control" name= "bond_number" required>
         </div>
 
         <div class="form-group">
-          <label for="device_shipped_date">Shipping Date</label>
-          <input type="date" class="form-control" name= "device_shipped_date" required>
+          <label for="shipped_date">Shipping Date</label>
+          <input type="date" class="form-control" name= "shipped_date" required>
         </div>
 
         <div class="form-group">
-          <label for="device_arrival_date">Arrival Date</label>
-          <input type="date" class="form-control" name= "device_arrival_date" required>
+          <label for="arrival_date">Arrival Date</label>
+          <input type="date" class="form-control" name= "arrival_date" required>
         </div>
 
         <div class="form-group">
-          <label for="device_warranty_inmonths">Warranty (Months)</label>
-          <input type="text" class="form-control" name= "device_warranty_inmonths" required>
+          <label for="warranty_inmonths">Warranty (Months)</label>
+          <input type="text" class="form-control" name= "warranty_inmonths" required>
         </div>
 
 
         <div class="form-group">
-          <label for="device_added_byuser">Added By User</label>
-          <input type="text" class="form-control" name= "device_added_byuser" required>
+          <label for="added_byuser">Added By User</label>
+          <input type="text" class="form-control" name= "added_byuser" required>
         </div>
 
         <div class="form-group">
-          <label for="device_added_date">Device Added On Date</label>
-          <input type="date" class="form-control" name= "device_added_date" required>
+          <label for="added_date">Device Added On Date</label>
+          <input type="date" class="form-control" name= "added_date" required>
         </div>
 
         <div class="form-group">
-          <label for="device_ownership">Owner Of The Device</label>
-          <input type="text" class="form-control" name= "device_ownership" required>
+          <label for="ownership">Owner Of The Device</label>
+          <input type="text" class="form-control" name= "ownership" required>
         </div>
 
         <div class="form-group">
-          <label for="device_remark">Remarks</label>
-          <input type="text" class="form-control" name= "device_remark" >
+          <label for="remark">Remarks</label>
+          <input type="text" class="form-control" name= "remark" >
         </div>
 
 
