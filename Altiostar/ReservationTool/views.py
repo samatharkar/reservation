@@ -47,12 +47,14 @@ def add_setup(request):
 def add_device(request):
     if request.method == "POST":
         name = request.POST.get('name')
-        type = request.POST.get('type')
+        type_id = request.POST.get('type')
+        type = DeviceType.objects.get(id=type_id)
         #consumable = request.POST.get('device_consumable')
         srno = request.POST.get('srno')
         po_number = request.POST.get('po_number')
         po_date = request.POST.get('po_date')
-        vendor = request.POST.get('vendor')
+        vendor_id = request.POST.get('vendor')
+        vendor = Vendor.objects.get(id=vendor_id)
         invoice_number = request.POST.get('invoice_number')
         bonded = request.POST.get('bonded')
         bond_number = request.POST.get('bond_number')
@@ -215,13 +217,18 @@ def add_consumable(request):
 def make_setup(request):
     if request.method == "POST":
         name = request.POST.get("name")
-        device = request.POST.get("device")
-        consumable = request.POST.get("consumable")
+        device_id = request.POST.get("device")
+        device = Device.objects.get(id=device_id)
+        consumable_id = request.POST.get("consumable")
+        consumable = Consumable.objects.get(id=consumable_id)
+        type_id = request.POST.get("type")
+        type = DeviceType.objects.get(id=type_id)
 
         MakeSetup.objects.create(
             name = name,
             device = device,
-            consumable = consumable
+            consumable = consumable,
+            type = type
 
         )
         return render(
@@ -243,6 +250,7 @@ def make_setup(request):
                 'device_n':Device.objects.all(),
                # 'setup_n':CreateSetup.objects.all(),
                 'consumable_n':Consumable.objects.all(),
+                'type_n':DeviceType.objects.all(),
              #   'msg':'Setup Added!'
 
             }

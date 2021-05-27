@@ -94,8 +94,9 @@ class MakeSetup(models.Model):
     # make_setup_consumable = models.ForeignKey ( Consumable , on_delete=models.PROTECT )
     id = models.IntegerField( primary_key= True)
     name = models.CharField(max_length=125, default="NA")
-    device = models.CharField(max_length=125, default="NA")
-    consumable = models.CharField(max_length=125, default="NA")
+    device = models.ForeignKey(Device, on_delete=models.PROTECT , related_name="make_setup")
+    type = models.ForeignKey(DeviceType, on_delete=models.PROTECT , related_name="make_setup")
+    consumable = models.ForeignKey(Consumable, on_delete=models.PROTECT , related_name="make_setup")
 
 
     def __str__(self):
