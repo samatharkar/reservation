@@ -15,19 +15,7 @@ Create Setup
         <div class="form-group">
           <label for="name">Name Of The Setup</label>
           <input type="text" class="form-control" name= "name" required>
-        </div>
 
-
-        <div class="form-group">
-          <label for="device">Add Devices</label> <br>
-
-        <select name = "device" >
-
-        
-          {% for msd in device_n %}
-          <option value = "{{msd.id}}"> {{ msd.name }}</option>
-          {% endfor %}
-        </select>         
         </div>
 
 
@@ -42,11 +30,28 @@ Create Setup
           {% endfor %}
         </select>         
         </div>
+
+        <div class="form-group">
+          <label for="device">Add Devices</label> <br>
+
+        <select name = "device" >
+
         
+          {% for msd in device_n %}
+          <option value = "{{msd.id}}"> {{ msd.name }}</option>
+          {% endfor %}
+        </select>         
+        </div>
+
         <div class="form-group">
           <label >Device Not Available?</label><br>
           <button > <a href="/add_device/"> Add Device</a> </button>
           </div>
+
+
+        
+        
+        
         
         
         <div class="form-group">
@@ -62,7 +67,7 @@ Create Setup
 
         <div class="form-group">
           <label >Consumable Not Available?</label><br>
-          <button > <a href="/add_consumable/"> Add New Consumable</a> </button>
+          <button > <a href="/add_consumable/"> Add Consumable</a> </button>
           </div>
 
         
