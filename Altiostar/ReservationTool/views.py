@@ -15,22 +15,16 @@ def add_setup(request):
     if request.method == "POST":
         name = request.POST.get("name")
         remark = request.POST.get("remark")
-        # device_id = request.POST.get("device_type")
-        # attenuator_quantity = request.POST.get("attenuator_quantity")
-        # attenuator_db = request.POST.get("attenuator_db")
-        # device_type = Device.objects.get(id=device_id)
+
         CreateSetup.objects.create(
             name = name,
             remark = remark
-            # attenuator_quantity = attenuator_quantity, 
-            # attenuator_db = attenuator_db,
-            # device_type = device_type
+
         )
         return render(
             request,
             "add_setup.html",
             {
-               # 'devices':Device.objects.all(),
                 'msg':'Setup Added!'
 
             }
@@ -39,9 +33,7 @@ def add_setup(request):
          return render(
              request,
              "add_setup.html"
-            # , {
-            #      'devices':Device .objects.all()
-            #  }
+
            )
 
 def add_device(request):
@@ -49,7 +41,6 @@ def add_device(request):
         name = request.POST.get('name')
         type_id = request.POST.get('type')
         type = DeviceType.objects.get(id=type_id)
-        #consumable = request.POST.get('device_consumable')
         srno = request.POST.get('srno')
         po_number = request.POST.get('po_number')
         po_date = request.POST.get('po_date')
@@ -69,7 +60,6 @@ def add_device(request):
         Device.objects.create(
             name = name , 
             type = type ,
-         #   device_consumable = device_consumable,
             srno=srno , 
             po_number=po_number , 
             po_date=po_date , 
@@ -92,10 +82,7 @@ def add_device(request):
             {
                 'vendors':Vendor.objects.all(),
                 'd_type':DeviceType.objects.all(),
-                'msg':'Device Added!'
-
-          #      'con':Consumable.objects.all(),
-
+                'msg':'Vendor Added!'
             }
         )  
         
@@ -107,7 +94,6 @@ def add_device(request):
             {
                 'vendors':Vendor.objects.all(),
                 'd_type':DeviceType.objects.all(),
-           #     'con':Consumable.objects.all(),
 
             }
         
@@ -141,6 +127,34 @@ def add_device_type(request):
          return render(
              request,
              "add_device_type.html",
+
+           )
+
+def add_team(request):
+    if request.method == "POST":
+        name = request.POST.get("name")
+        manager = request.POST.get("manager")
+        remark = request.POST.get("remark")
+        
+        Team.objects.create(
+            name = name,
+            manager = manager, 
+            remark = remark
+        )
+        return render(
+            request,
+            "add_team.html",
+            {
+             'msg':'Team Added!'
+
+            }
+            
+
+        )        
+    else:
+         return render(
+             request,
+             "add_team.html",
 
            )
 
@@ -214,6 +228,32 @@ def add_consumable(request):
 
            )
 
+def add_setup_type(request):
+    if request.method == "POST":
+        setup_type = request.POST.get("setup_type")
+        remark = request.POST.get("remark")
+        
+        SetupType.objects.create(
+            setup_type = setup_type,
+            remark = remark
+        )
+        return render(
+            request,
+            "add_setup_type.html",
+            {
+             'msg':'Setup Type Added!'
+
+            }
+            
+
+        )        
+    else:
+         return render(
+             request,
+             "add_setup_type.html",
+
+           )
+
 def make_setup(request):
     if request.method == "POST":
         name = request.POST.get("name")
@@ -223,12 +263,18 @@ def make_setup(request):
         consumable = Consumable.objects.get(id=consumable_id)
         type_id = request.POST.get("type")
         type = DeviceType.objects.get(id=type_id)
+        setup_type_id = request.POST.get("setup_type")
+        setup_type = SetupType.objects.get(id = setup_type_id)
+        booked_by_id = request.POST.get("booked_by")
+        booked_by = Team.objects.get(id = booked_by_id)
 
         MakeSetup.objects.create(
             name = name,
             device = device,
             consumable = consumable,
-            type = type
+            type = type,
+            booked_by = booked_by,
+            setup_type = setup_type
 
         )
         return render(
@@ -236,7 +282,9 @@ def make_setup(request):
             "make_setup.html",
             {
                 'device_n':Device.objects.all(),
-                #'setup_n':CreateSetup.objects.all(),
+                'booked_team':Team.objects.all(),
+                'booked_team':Team.objects.all(),
+                'setup_type_n':SetupType.objects.all(),
                 'consumable_n':Consumable.objects.all(),
                 'msg':'Setup Added!'
 
@@ -248,37 +296,12 @@ def make_setup(request):
              "make_setup.html",
              {
                 'device_n':Device.objects.all(),
-               # 'setup_n':CreateSetup.objects.all(),
                 'consumable_n':Consumable.objects.all(),
                 'type_n':DeviceType.objects.all(),
-             #   'msg':'Setup Added!'
 
             }
             
            )
-
-# def add_device(request):
-#     if request.method == "POST":
-#         hostname = request.POST.get('hostname')
-#         ip = request.POST.get('ip')
-#         serial_number = request.POST.get('serial_number')
-#         mac = request.POST.get('mac')
-#         device_type = request.POST.get('device')
-#         make = request.POST.get('make')
-#         Device.objects.create(
-#             hostname=hostname , ip=ip , serial_number=serial_number , mac=mac , device_type=device_type , make=make
-#         )
-#     else:
-#         return render(
-#             request,
-#             "add_device.html",
-#             {}
-#         )
-
-     
-#         device = Device(hostname=hostname , ip=ip , serial_number=serial_number , mac=mac , device_type=device_type , make=make) 
-#         device.save()
-#     return render(request, "add_device.html", {})
 
 def view_device(request):
     context = {}
@@ -286,30 +309,6 @@ def view_device(request):
     context['entries'] = entries
     return render(request, 'view_device.html', context)
 
-# def add_setup(request):
-
-#         if request.method == "POST":
-#             setup_name = request.POST.get("setup_name")
-#             device_id = request.POST.get("device")
-#             device = Device.objects.get(id=device_id)
-#             Setup.objects.create(
-#                 setup_name=setup_name,
-#                 device = device
-#             )
-#         else:
-#             return render(
-#                 request,
-#                 "add_setup.html",
-#                 {
-#                     'device':Device.objects.all()
-#                 }
-#             )
-            #setup_name = request.POST.get('setup_name')
-            # device_type = 
-            #new_setup = request.POST.get(Device.objects.values('device_type'))
-            #setup_name = Setup(setup_name=setup_name , new_setup=new_setup) 
-            #setup_name.save()
-        #return render(request, "add_setup.html",{}) 
 
 
 def view_setup(request):

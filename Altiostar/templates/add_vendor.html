@@ -42,6 +42,9 @@ Add Vendor
           <button type="submit" class="btn btn-primary"> Submit </button>
 
       </form>
+            {% if msg %}
+      <h1>{{msg}}</h1>
+      {% endif %}
 
 
 {% endblock %}

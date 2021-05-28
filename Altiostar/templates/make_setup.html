@@ -18,6 +18,17 @@ Create Setup
 
         </div>
 
+        <div class="form-group">
+          <label for="setup_type">Type of Setup</label> <br>
+
+        <select name = "setup_type" >
+
+        
+          {% for s_tn in setup_type_n %}
+          <option value = "{{s_tn.id}}"> {{ s_tn.setup_type }}</option>
+          {% endfor %}
+        </select>         
+        </div>
 
         <div class="form-group">
           <label for="type">Select the device type you want to add</label> <br>
@@ -52,6 +63,18 @@ Create Setup
           <button > <a href="#"> Add 1 More Device</a> </button>
           </div>
         
+        <div class="form-group">
+          <label for="booked_by">Assigned To Team</label> <br>
+
+        <select name = "booked_by" >
+          {% for b_team in booked_team %}
+          <option  value = "{{b_team.id}}"> {{ b_team.name }}</option>
+          {% endfor %}
+
+        </select>         
+        </div>
+
+
         <div class="form-group">
           <label for="consumable">Add Consumables</label> <br>
 
