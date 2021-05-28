@@ -332,7 +332,7 @@ def export(request):
     return response
 
 def search_setup(request):
-    setup_list = CreateSetup.objects.all()
+    setup_list = MakeSetup.objects.all()
     setup_filter = SetupFilter(request.GET, queryset=setup_list)
     return render(request, 'search_setup.html', {'filter': setup_filter })
 
