@@ -1,6 +1,9 @@
 from django.shortcuts import render, HttpResponse
+from django.http import Http404, JsonResponse
+from django.contrib import messages
 from ReservationTool.models import Device
 from .models import *
+from .forms import *
 import csv
 from .filters import SetupFilter
 from .filters import DeviceFilter
@@ -8,33 +11,140 @@ from .filters import DeviceFilter
 
 # Create your views here.
 def home(request):
-	return render(request, "home.html", {})
+	return render(request, "home.html")
 
 
-def add_setup(request):
+def login(request):
+    pass
+    return render(request, 'login.html')
+
+
+def add_device_type(request):
+    if request.method == "POST":
+        device_type_form = AddDeviceTypeForm(request.POST)
+        if device_type_form.is_valid():
+            device_type_form.save()
+            messages.success(request,f'Device Type Added!')
+        # name = request.POST.get("name")
+        # make = request.POST.get("make")
+        # model = request.POST.get("model")
+        # part_no = request.POST.get("part_no")
+        # remark = request.POST.get("remark")
+
+        # DeviceType.objects.create(
+        #     name = name,
+        #     make = make, 
+        #     model = model,
+        #     part_no = part_no,
+        #     remark = remark
+        # )       
+    else:
+        device_type_form = AddDeviceTypeForm()
+    return render(request, "add_device_type.html", {
+            'device_type_form': device_type_form,
+        }
+    )
+
+
+def add_vendor(request):
     if request.method == "POST":
         name = request.POST.get("name")
+        email = request.POST.get("email")
+        address = request.POST.get("address")
+        number = request.POST.get("number")
         remark = request.POST.get("remark")
-
-        CreateSetup.objects.create(
+        
+        Vendor.objects.create(
             name = name,
+            email = email, 
+            address = address,
+            number = number,
             remark = remark
-
         )
         return render(
             request,
-            "add_setup.html",
+            "add_vendor.html",
             {
-                'msg':'Setup Added!'
+             'msg':'Vendor Added!'
+
+            }
+            
+
+        )        
+    else:
+         return render(
+             request,
+             "add_vendor.html",
+
+           )
+
+
+def add_consumable(request):
+    if request.method == "POST":
+        name = request.POST.get("name")
+        db = request.POST.get("db")
+        connector1 = request.POST.get("connector1")
+        connector2 = request.POST.get("connector2")
+        watt = request.POST.get("watt")
+        length = request.POST.get("length")
+        quantity = request.POST.get("quantity")
+        remark = request.POST.get("remark")
+        
+
+        Consumable.objects.create(
+            name = name,
+            db = db, 
+            connector1 = connector1,
+            connector2 = connector2,
+            watt = watt,
+            length = length,
+            quantity = quantity,
+            remark = remark
+        )
+        return render(
+            request,
+            "add_consumable.html",
+            {
+            'msg':'Consumable Added!'
 
             }
         )        
     else:
          return render(
              request,
-             "add_setup.html"
+             "add_consumable.html",
 
            )
+
+
+def add_team(request):
+    if request.method == "POST":
+        name = request.POST.get("name")
+        manager = request.POST.get("manager")
+        remark = request.POST.get("remark")
+        
+        Team.objects.create(
+            name = name,
+            manager = manager, 
+            remark = remark
+        )
+        return render(
+            request,
+            "add_team.html",
+            {
+             'msg':'Team Added!'
+
+            }
+            
+
+        )        
+    else:
+         return render(
+             request,
+             "add_team.html",
+
+           )
+
 
 def add_device(request):
     if request.method == "POST":
@@ -99,134 +209,19 @@ def add_device(request):
         
         )
 
-def add_device_type(request):
-    if request.method == "POST":
-        name = request.POST.get("name")
-        make = request.POST.get("make")
-        model = request.POST.get("model")
-        part_no = request.POST.get("part_no")
-        remark = request.POST.get("remark")
 
-        DeviceType.objects.create(
-            name = name,
-            make = make, 
-            model = model,
-            part_no = part_no,
-            remark = remark
-        )
-        return render(
-            request,
-            "add_device_type.html",
-            {
-            'msg':'Device Type Added!'
-
-            }
-
-        )        
-    else:
-         return render(
-             request,
-             "add_device_type.html",
-
-           )
-
-def add_team(request):
-    if request.method == "POST":
-        name = request.POST.get("name")
-        manager = request.POST.get("manager")
-        remark = request.POST.get("remark")
-        
-        Team.objects.create(
-            name = name,
-            manager = manager, 
-            remark = remark
-        )
-        return render(
-            request,
-            "add_team.html",
-            {
-             'msg':'Team Added!'
-
-            }
-            
-
-        )        
-    else:
-         return render(
-             request,
-             "add_team.html",
-
-           )
+def view_device(request):
+    context = {}
+    entries = Device.objects.all()
+    context['entries'] = entries
+    return render(request, 'view_device.html', context)
 
 
-def add_vendor(request):
-    if request.method == "POST":
-        name = request.POST.get("name")
-        email = request.POST.get("email")
-        address = request.POST.get("address")
-        number = request.POST.get("number")
-        remark = request.POST.get("remark")
-        
-        Vendor.objects.create(
-            name = name,
-            email = email, 
-            address = address,
-            number = number,
-            remark = remark
-        )
-        return render(
-            request,
-            "add_vendor.html",
-            {
-             'msg':'Vendor Added!'
+def search_device(request):
+     device_list = Device.objects.all()
+     device_filter = DeviceFilter(request.GET, queryset=device_list)
+     return render(request, 'search_device.html', {'filter': device_filter })
 
-            }
-            
-
-        )        
-    else:
-         return render(
-             request,
-             "add_vendor.html",
-
-           )
-
-def add_consumable(request):
-    if request.method == "POST":
-        name = request.POST.get("name")
-        db = request.POST.get("db")
-        connector1 = request.POST.get("connector1")
-        connector2 = request.POST.get("connector2")
-        watt = request.POST.get("watt")
-        length = request.POST.get("length")
-        quantity = request.POST.get("quantity")
-        remark = request.POST.get("remark")
-        
-
-        Consumable.objects.create(
-            name = name,
-            db = db, 
-            connector1 = connector1,
-            connector2 = connector2,
-            watt = watt,
-            length = length,
-            quantity = quantity,
-            remark = remark
-        )
-        return render(
-            request,
-            "add_consumable.html",
-            {
-            'msg':'Consumable Added!'
-
-            }
-        )        
-    else:
-         return render(
-             request,
-             "add_consumable.html",
-
-           )
 
 def add_setup_type(request):
     if request.method == "POST":
@@ -253,6 +248,33 @@ def add_setup_type(request):
              "add_setup_type.html",
 
            )
+
+
+def add_setup(request):
+    if request.method == "POST":
+        name = request.POST.get("name")
+        remark = request.POST.get("remark")
+
+        CreateSetup.objects.create(
+            name = name,
+            remark = remark
+
+        )
+        return render(
+            request,
+            "add_setup.html",
+            {
+                'msg':'Setup Added!'
+
+            }
+        )        
+    else:
+         return render(
+             request,
+             "add_setup.html"
+
+           )
+
 
 def make_setup(request):
     if request.method == "POST":
@@ -303,19 +325,20 @@ def make_setup(request):
             
            )
 
-def view_device(request):
-    context = {}
-    entries = Device.objects.all()
-    context['entries'] = entries
-    return render(request, 'view_device.html', context)
-
-
 
 def view_setup(request):
     context = {}
     setup_entries = CreateSetup.objects.all()
     context['setup_entries'] = setup_entries
     return render(request, 'view_setup.html', context)
+
+
+
+def search_setup(request):
+    setup_list = MakeSetup.objects.all()
+    setup_filter = SetupFilter(request.GET, queryset=setup_list)
+    return render(request, 'search_setup.html', {'filter': setup_filter })
+
 
 def export(request):
     response = HttpResponse(content_type='text/csv')
@@ -329,17 +352,3 @@ def export(request):
         writer.writerow(fields)
 
     return response
-
-def search_setup(request):
-    setup_list = MakeSetup.objects.all()
-    setup_filter = SetupFilter(request.GET, queryset=setup_list)
-    return render(request, 'search_setup.html', {'filter': setup_filter })
-
-def search_device(request):
-     device_list = Device.objects.all()
-     device_filter = DeviceFilter(request.GET, queryset=device_list)
-     return render(request, 'search_device.html', {'filter': device_filter })
-
-def login(request):
-    pass
-    return render(request, 'login.html')
