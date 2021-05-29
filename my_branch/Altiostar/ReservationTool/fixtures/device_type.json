@@ -1,0 +1,10 @@
+[
+    {
+      "model": "ReservationTool.Device",
+      "pk": 1,
+      "fields": {
+        "device_type": "CU"
+        
+      }
+    }
+  ]

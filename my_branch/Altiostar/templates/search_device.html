@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+  {% block content %} 
+  <form method="get" style="display: flex; flex-direction: column;">
+      {% comment %} <div class="well"> {% endcomment %}
+      <h4 style="margin-top: 0">Search Device in Database</h4>
+      
+    {{filter.form}}
+    
+    <button type="submit" style="margin-top: 8px;">Search</button>
+  </form>
+
+  <ul>  
+  {% for Device in filter.qs %}
+   <li> {{ Device.device_type }} | {{ Device.mac}} |  {{Device.ip}} |  {{Device.serial_number}} | {{Device.make}} | {{Device.hostname}} </li> <br>
+  {% endfor %}
+  </ul>
+
+
+  {% comment %} <div class="container">
+    <div class="row p-5">
+            <a href="/search_export/" class="btn btn-outline-primary" role="button">Download the CSV file</a>
+    </div>
+</div> {% endcomment %}
+
+  {% endblock %}
