@@ -66,6 +66,9 @@
 <body>
   <!-- Side navigation -->
   <div class="sidenav">
+  {% if user.is_authenticated%}
+    Hi! {{request.user}}
+  {% endif %}
     <a href="/">Home</a>
     <button class="dropdown-btn">Device 
     <i class="fa fa-chevron-right"></i>
@@ -102,6 +105,7 @@
     <button class="dropdown-btn">Team 
     <i class="fa fa-chevron-right"></i>
   </button>
+
   <div class="dropdown-container">
 
     <a href="/add_team">Add Team</a>
@@ -115,7 +119,16 @@
 
     <a href="/add_consumable">Add Consumable</a>
     </div>
+          <a href="/login">Login</a>
 
+
+     
+  {% if user.is_authenticated %}
+
+  <a href="/logout">Logout</a>
+
+
+  {% endif %}
 
   </div>
 

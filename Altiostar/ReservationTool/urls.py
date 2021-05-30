@@ -17,6 +17,7 @@ urlpatterns = [
     path("view_setup/", views.view_setup, name='view_setup'),
     path("search_setup/", views.search_setup, name='search_setup'),
     path("search_device/", views.search_device, name='search_device'),
-    path("login/", views.login, name='login'),
+    path("login/", views.userlogin, name='login'),
+    path("logout/", views.userlogout, name='logout'),
     path("export/", views.export, name='export'),
 ]

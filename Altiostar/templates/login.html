@@ -12,20 +12,20 @@ Login
     <form method="POST" action="{% url 'login' %}">
         {% csrf_token %}
  <div class="form-group">
-    <label for="exampleInputEmail1">Email address</label>
-    <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email">
-    <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+    <label for="loginusername">Username</label>
+    <input type="text" class="form-control" id="loginusername" name = "loginusername" placeholder="Enter username">
   </div>
   <div class="form-group">
-    <label for="exampleInputPassword1">Password</label>
-    <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
+    <label for="loginpassword">Password</label>
+    <input type="password" class="form-control" id="loginpassword" name = "loginpassword" placeholder="Password">
   </div>
-  <div class="form-group form-check">
-    <input type="checkbox" class="form-check-input" id="exampleCheck1">
-    <label class="form-check-label" for="exampleCheck1">Remember me!</label>
-  </div>
+  
   <button type="submit" class="btn btn-primary">Submit</button>
+   {% for message in messages %}
+    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+    {% endfor %}
 </form>
+  <a href="/logout">Logout</a>
 
 </div>
 {% endblock %}

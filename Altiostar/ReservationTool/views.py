@@ -1,8 +1,11 @@
-from django.shortcuts import render, HttpResponse
+from django.shortcuts import redirect, render, HttpResponse
 from ReservationTool.models import Device
+from django.contrib.auth import authenticate, login, logout
 from .models import *
 import csv
 from .filters import SetupFilter
+from django.contrib import messages
+
 from .filters import DeviceFilter
 
 
@@ -340,6 +343,24 @@ def search_device(request):
      device_filter = DeviceFilter(request.GET, queryset=device_list)
      return render(request, 'search_device.html', {'filter': device_filter })
 
-def login(request):
-    pass
+def userlogin(request):
+    if request.method == 'POST':
+        loginusername = request.POST["loginusername"]
+        loginpassword = request.POST["loginpassword"]
+        user = authenticate(username=loginusername, password=loginpassword)
+        if user is not None:
+
+            login(request, user)
+            messages.success(request, "Logged in")
+            return redirect('login')
+        else:
+            messages.error(request, "Wrong Creds")
+            return redirect('login')
+
+
     return render(request, 'login.html')
+
+def userlogout(request):
+    logout(request)
+    messages.success(request,"Logged out")
+    return redirect('login')
