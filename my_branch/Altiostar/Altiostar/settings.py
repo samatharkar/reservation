@@ -190,3 +190,4 @@ STATICFILES_DIRS = [
 #     "django.contrib.auth.backends.ModelBackend",
 # )
 
+CRISPY_FAIL_SILENTLY = not DEBUG

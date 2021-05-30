@@ -1,103 +1,23 @@
 {% extends 'base.html' %}
 {% block title %}
-Create Setup
+  Create Setup
 {% endblock %}
 
-
+{% load crispy_forms_tags %}
 {% block content %}
-<h3>Add Devices To Setup </h3>
+  <h3>Add Devices To Setup </h3>
 
-
-<div class="container">
-    <form method="POST" action="{% url 'make_setup' %}">
+  <div class="container">
+    <form method="POST">
+      <div class="form-group">
         {% csrf_token %}
-
-        <div class="form-group">
-          <label for="name">Name Of The Setup</label>
-          <input type="text" class="form-control" name= "name" required>
-
-        </div>
-
-        <div class="form-group">
-          <label for="setup_type">Type of Setup</label> <br>
-
-        <select name = "setup_type" >
-
-        
-          {% for s_tn in setup_type_n %}
-          <option value = "{{s_tn.id}}"> {{ s_tn.setup_type }}</option>
-          {% endfor %}
-        </select>         
-        </div>
-
-        <div class="form-group">
-          <label for="type">Select the device type you want to add</label> <br>
-
-        <select name = "type" >
-
-        
-          {% for msdt in type_n %}
-          <option value = "{{msdt.id}}"> {{ msdt.name }}</option>
-          {% endfor %}
-        </select>         
-        </div>
-
-        <div class="form-group">
-          <label for="device">Add Devices</label> <br>
-
-        <select name = "device" >
-
-        
-          {% for msd in device_n %}
-          <option value = "{{msd.id}}"> {{ msd.name }}</option>
-          {% endfor %}
-        </select>         
-        </div>
-
-        {% comment %} <div class="form-group">
-          <label >Device Not Available?</label><br>
-          <button > <a href="/add_device/"> Add Device</a> </button>
-          </div> {% endcomment %}
-
-        <div class="form-group">
-          <button > <a href="#"> Add 1 More Device</a> </button>
-          </div>
-        
-        <div class="form-group">
-          <label for="booked_by">Assigned To Team</label> <br>
-
-        <select name = "booked_by" >
-          {% for b_team in booked_team %}
-          <option  value = "{{b_team.id}}"> {{ b_team.name }}</option>
-          {% endfor %}
-
-        </select>         
-        </div>
-
-
-        <div class="form-group">
-          <label for="consumable">Add Consumables</label> <br>
-
-        <select name = "consumable" >
-          {% for msc in consumable_n %}
-          <option  value = "{{msc.id}}"> {{ msc.name }}</option>
-          {% endfor %}
-
-        </select>         
-        </div>
-
-        {% comment %} <div class="form-group">
-          <label >Consumable Not Available?</label><br>
-          <button > <a href="/add_consumable/"> Add Consumable</a> </button>
-          </div> {% endcomment %}
-
-        
-
-
-              <button type="submit" class="btn btn-primary"> Submit </button>
-      </form>
-
-      {% if msg %}
-      <h1>{{msg}}</h1>
-      {% endif %}
+        {{ setup_form|crispy }}
+      </div>
+      <div class="row mt-2">
+        <button type="submit" class="btn btn-dark">
+          Submit
+        </button>
+      </div>
+    </form>
+  </div>
 {% endblock %}

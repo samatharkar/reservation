@@ -35,7 +35,13 @@ class AddDeviceForm(forms.ModelForm):
 
 	class Meta:
 		model = Device
-		fields = '__all__'
+		exclude = ['setup']
+		widgets = {
+            'po_date': forms.DateInput(attrs={'type': 'date'}),
+            'shipped_date': forms.DateInput(attrs={'type': 'date'}),
+            'arrival_date': forms.DateInput(attrs={'type': 'date'}),
+            'added_date': forms.DateInput(attrs={'type': 'date'}),
+        }
 
 
 class AddSetupTypeForm(forms.ModelForm):
@@ -45,15 +51,8 @@ class AddSetupTypeForm(forms.ModelForm):
 		fields = '__all__'
 
 
-class CreateSetupForm(forms.ModelForm):
-
-	class Meta:
-		model = CreateSetup
-		fields = '__all__'
-
-
 class MakeSetupForm(forms.ModelForm):
 
 	class Meta:
-		model = MakeSetup
+		model = Setup
 		fields = '__all__'

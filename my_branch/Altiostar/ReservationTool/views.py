@@ -38,7 +38,7 @@ def add_vendor(request):
         vendor_form = AddVendorForm(request.POST)
         if vendor_form.is_valid():
             vendor_form.save()
-            messages.success(request,f'Device Type Added!')
+            messages.success(request,f'Vendor Added!')
     else:
         vendor_form = AddVendorForm()
     return render(request, "add_vendor.html", {
@@ -52,7 +52,7 @@ def add_consumable(request):
         consumable_form = AddConsumableForm(request.POST)
         if consumable_form.is_valid():
             consumable_form.save()
-            messages.success(request,f'Device Type Added!')
+            messages.success(request,f'Consumable Added!')
     else:
         consumable_form = AddConsumableForm()
     return render(request, "add_consumable.html", {
@@ -66,7 +66,7 @@ def add_team(request):
         team_form = AddTeamForm(request.POST)
         if team_form.is_valid():
             team_form.save()
-            messages.success(request,f'Device Type Added!')
+            messages.success(request,f'Team Added!')
     else:
         team_form = AddTeamForm()
     return render(request, "add_team.html", {
@@ -80,62 +80,11 @@ def add_device(request):
         device_form = AddDeviceForm(request.POST)
         if device_form.is_valid():
             device_form.save()
-            messages.success(request,f'Device Type Added!')
+            messages.success(request,f'Device Added!')
     else:
         device_form = AddDeviceForm()
-    #     name = request.POST.get('name')
-    #     type_id = request.POST.get('type')
-    #     type = DeviceType.objects.get(id=type_id)
-    #     srno = request.POST.get('srno')
-    #     po_number = request.POST.get('po_number')
-    #     po_date = request.POST.get('po_date')
-    #     vendor_id = request.POST.get('vendor')
-    #     vendor = Vendor.objects.get(id=vendor_id)
-    #     invoice_number = request.POST.get('invoice_number')
-    #     bonded = request.POST.get('bonded')
-    #     bond_number = request.POST.get('bond_number')
-    #     shipped_date = request.POST.get('shipped_date')
-    #     arrival_date = request.POST.get('arrival_date')
-    #     warranty_inmonths = request.POST.get('warranty_inmonths')
-    #     added_byuser = request.POST.get('added_byuser')
-    #     added_date = request.POST.get('added_date')
-    #     ownership = request.POST.get('ownership')
-    #     remark = request.POST.get('remark')
-        
-    #     Device.objects.create(
-    #         name = name , 
-    #         type = type ,
-    #         srno=srno , 
-    #         po_number=po_number , 
-    #         po_date=po_date , 
-    #         vendor=vendor , 
-    #         invoice_number=invoice_number,
-    #         bonded=bonded,
-    #         bond_number=bond_number,
-    #         shipped_date=shipped_date,
-    #         arrival_date=arrival_date,
-    #         warranty_inmonths=warranty_inmonths,
-    #         added_byuser=added_byuser,
-    #         added_date=added_date,
-    #         ownership=ownership,
-    #         remark=remark
-
-    #     )
-    #     return render(
-    #         request,
-    #         "add_device.html",
-    #         {
-    #             'vendors':Vendor.objects.all(),
-    #             'd_type':DeviceType.objects.all(),
-    #             'msg':'Vendor Added!'
-    #         }
-    #     )  
-        
-    # else:
     return render(request, "add_device.html",{
             'device_form': device_form,
-            'vendors':Vendor.objects.all(),
-            'd_type':DeviceType.objects.all(),
         }
     )
 
@@ -158,7 +107,7 @@ def add_setup_type(request):
         setup_type_form = AddSetupTypeForm(request.POST)
         if setup_type_form.is_valid():
             setup_type_form.save()
-            messages.success(request,f'Device Type Added!')
+            messages.success(request,f'Setup Type Added!')
     else:
         setup_type_form = AddSetupTypeForm()
     return render(request, "add_setup_type.html", {
@@ -167,92 +116,30 @@ def add_setup_type(request):
     )
 
 
-def add_setup(request):
-    if request.method == "POST":
-        name = request.POST.get("name")
-        remark = request.POST.get("remark")
-
-        CreateSetup.objects.create(
-            name = name,
-            remark = remark
-
-        )
-        return render(
-            request,
-            "add_setup.html",
-            {
-                'msg':'Setup Added!'
-
-            }
-        )        
-    else:
-         return render(
-             request,
-             "add_setup.html"
-
-           )
-
-
 def make_setup(request):
     if request.method == "POST":
-        name = request.POST.get("name")
-        device_id = request.POST.get("device")
-        device = Device.objects.get(id=device_id)
-        consumable_id = request.POST.get("consumable")
-        consumable = Consumable.objects.get(id=consumable_id)
-        type_id = request.POST.get("type")
-        type = DeviceType.objects.get(id=type_id)
-        setup_type_id = request.POST.get("setup_type")
-        setup_type = SetupType.objects.get(id = setup_type_id)
-        booked_by_id = request.POST.get("booked_by")
-        booked_by = Team.objects.get(id = booked_by_id)
-
-        MakeSetup.objects.create(
-            name = name,
-            device = device,
-            consumable = consumable,
-            type = type,
-            booked_by = booked_by,
-            setup_type = setup_type
-
-        )
-        return render(
-            request,
-            "make_setup.html",
-            {
-                'device_n':Device.objects.all(),
-                'booked_team':Team.objects.all(),
-                'booked_team':Team.objects.all(),
-                'setup_type_n':SetupType.objects.all(),
-                'consumable_n':Consumable.objects.all(),
-                'msg':'Setup Added!'
-
-            }
-        )        
+        setup_form = MakeSetupForm(request.POST)
+        if setup_form.is_valid():
+            setup_form.save()
+            messages.success(request,f'Setup Formed!')
     else:
-         return render(
-             request,
-             "make_setup.html",
-             {
-                'device_n':Device.objects.all(),
-                'consumable_n':Consumable.objects.all(),
-                'type_n':DeviceType.objects.all(),
-
-            }
-            
-           )
+        setup_form = MakeSetupForm()
+    return render(request, "make_setup.html", {
+            'setup_form': setup_form,
+        }
+    )
 
 
 def view_setup(request):
     context = {}
-    setup_entries = CreateSetup.objects.all()
+    setup_entries = Setup.objects.all()
     context['setup_entries'] = setup_entries
     return render(request, 'view_setup.html', context)
 
 
 
 def search_setup(request):
-    setup_list = MakeSetup.objects.all()
+    setup_list = Setup.objects.all()
     setup_filter = SetupFilter(request.GET, queryset=setup_list)
     return render(request, 'search_setup.html', {'filter': setup_filter })
 

@@ -14,7 +14,6 @@ urlpatterns = [
     path("view_device/", views.view_device, name='view_device'),
     path("search_device/", views.search_device, name='search_device'),
     path("add_setup_type/", views.add_setup_type, name='add_setup_type'),
-    path("add_setup/", views.add_setup, name='add_setup'),
     path("make_setup/", views.make_setup, name='make_setup'),
     path("view_setup/", views.view_setup, name='view_setup'),
     path("search_setup/", views.search_setup, name='search_setup'),

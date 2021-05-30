@@ -26,7 +26,7 @@ class Vendor(models.Model):
         return self.name
     
     class Meta:
-        db_table = "vendor"
+        db_table = "vendors"
 
 
 class Consumable(models.Model):
@@ -53,39 +53,10 @@ class Team(models.Model):
     remark = models.CharField(max_length=125, default="NA")
 
     def __str__(self):
-        return self.team
-
-    class Meta:
-        db_table = "team"
-
-
-class Device(models.Model):
-    name = models.CharField(max_length=125 , default="NA")
-    type = models.ForeignKey( DeviceType ,  on_delete=models.PROTECT, related_name='devices' )
-    srno = models.CharField(max_length=125 , default="NA")
-    po_number = models.CharField(max_length=125 , default="NA")
-    po_date = models.DateField()
-    vendor = models.ForeignKey( Vendor, on_delete=models.PROTECT, related_name='devices')
-    invoice_number = models.CharField(max_length=125, default="NA")
-    bonded = models.BooleanField(default=False) #If bonded is ticked as yes, It should ask for the bond number 
-    bond_number = models.CharField(max_length=125 , default="NA")
-    shipped_date = models.DateField()
-    arrival_date = models.DateField()
-    warranty_inmonths = models.IntegerField(choices=list(zip(range(1, 37), range(1, 37))))
-    added_byuser = models.CharField(max_length=125, default="NA")
-    added_date = models.DateField()
-    type1 = 't1'
-    type2 = 't2'
-    type3 = 't3'
-    CHOICES = [(type1, 'Type 1'),(type2, 'Type 2'),(type3, 'Type 3')]
-    ownership = models.CharField(max_length=2, choices=CHOICES, default=type1,)
-    remark = models.CharField(max_length=125, default="NA")
-  
-    def __str__(self):
         return self.name
-    
+
     class Meta:
-        db_table = "devices"
+        db_table = "teams"
 
 
 class SetupType(models.Model):
@@ -96,25 +67,13 @@ class SetupType(models.Model):
         return self.setup_type
 
     class Meta:
-        db_table = "setup_type"
+        db_table = "setup_types"
 
 
-class CreateSetup(models.Model):
-    name = models.CharField(max_length=125, default="NA" )
-    remark = models.CharField(max_length=125, default="NA")
-
-    def __str__(self):
-        return self.name
-
-    class Meta:
-        db_table = "create_setups"
-
-
-class MakeSetup(models.Model):
+class Setup(models.Model):
     name = models.CharField(max_length=125, default="NA")
     setup_type = models.ForeignKey(SetupType, on_delete=models.PROTECT , related_name="make_setup")
-    device = models.ForeignKey(Device, on_delete=models.PROTECT , related_name="make_setup")
-    type = models.ForeignKey(DeviceType, on_delete=models.PROTECT , related_name="make_setup")
+    device_type = models.ForeignKey(DeviceType, on_delete=models.PROTECT , related_name="make_setup")
     consumable = models.ForeignKey(Consumable, on_delete=models.PROTECT , related_name="make_setup")
     bookable = models.BooleanField(default=False) #If booked is ticked as yes, It should ask for the team name for which it will be booked
     booked_by = models.ForeignKey(Team, on_delete=models.PROTECT, related_name="make_setup")
@@ -125,4 +84,39 @@ class MakeSetup(models.Model):
         return self.name
 
     class Meta:
-        db_table = "make_setup"
+        db_table = "setups"
+
+
+class Device(models.Model):
+    TYPE1 = 't1'
+    TYPE2 = 't2'
+    TYPE3 = 't3'
+    CHOICES = [
+        (TYPE1, 'Type 1'),
+        (TYPE2, 'Type 2'),
+        (TYPE3, 'Type 3')
+    ]
+
+    name = models.CharField(max_length=125 , default="NA")
+    type = models.ForeignKey( DeviceType ,  on_delete=models.PROTECT, related_name='devices' )
+    srno = models.CharField(max_length=125 , default="NA")
+    po_number = models.CharField(max_length=125 , default="NA")
+    po_date = models.DateField()
+    vendor = models.ForeignKey( Vendor, on_delete=models.PROTECT, related_name='devices')
+    invoice_number = models.CharField(max_length=125, default="NA")
+    bonded = models.BooleanField(default=False) #If bonded is ticked as yes, It should ask for the bond number 
+    bond_number = models.CharField(max_length=125 , default="NA")
+    setup = models.ForeignKey(Setup, on_delete=models.PROTECT , null=True, blank=True, related_name="devices")
+    shipped_date = models.DateField()
+    arrival_date = models.DateField()
+    warranty_inmonths = models.IntegerField(choices=list(zip(range(1, 37), range(1, 37))))
+    added_byuser = models.CharField(max_length=125, default="NA")
+    added_date = models.DateField()
+    ownership = models.CharField(max_length=2, choices=CHOICES, default=TYPE1,)
+    remark = models.CharField(max_length=125, default="NA")
+  
+    def __str__(self):
+        return self.name
+    
+    class Meta:
+        db_table = "devices"

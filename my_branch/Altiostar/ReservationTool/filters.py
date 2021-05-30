@@ -5,7 +5,7 @@ class SetupFilter(django_filters.FilterSet):
     setup = django_filters.CharFilter(lookup_expr='icontains') 
 
     class Meta:
-        model = MakeSetup
+        model = Setup
         fields = ['name' ]
 
 class DeviceFilter(django_filters.FilterSet):
