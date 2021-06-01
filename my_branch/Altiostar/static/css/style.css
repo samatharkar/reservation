@@ -1,3 +1,12 @@
+/*Messages of submission*/
+#messages{
+  position: fixed;
+  top: 0;
+  z-index: 10000;
+  opacity: 0.95;
+  overflow-y: scroll;
+}
+
 /* Fixed sidenav, full height */
 .sidenav {
   height: 100%;

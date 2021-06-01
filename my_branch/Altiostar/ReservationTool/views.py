@@ -1,7 +1,6 @@
 from django.shortcuts import render, HttpResponse
 from django.http import Http404, JsonResponse
 from django.contrib import messages
-from ReservationTool.models import Device
 from .models import *
 from .forms import *
 import csv
@@ -121,13 +120,27 @@ def make_setup(request):
         setup_form = MakeSetupForm(request.POST)
         if setup_form.is_valid():
             setup_form.save()
+            device_type = setup_form.cleaned_data.get('device_type')
+            devices = device_type.devices.all()
+            print(devices)
             messages.success(request,f'Setup Formed!')
     else:
         setup_form = MakeSetupForm()
     return render(request, "make_setup.html", {
-            'setup_form': setup_form,
+            'form': setup_form,
         }
     )
+
+def add_devices_to_setup(request):
+    if request.is_ajax():
+        id = request.GET.get('device_type')
+        device_type = DeviceType.objects.get(id=id)
+        device_list = device_type.devices.all()
+        return render(request, "device_list_modal.html", { 
+                'device_list': device_list, 
+            }
+        )
+    return Http404()
 
 
 def view_setup(request):
