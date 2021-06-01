@@ -286,7 +286,6 @@ def make_setup(request):
             {
                 'device_n':Device.objects.all(),
                 'booked_team':Team.objects.all(),
-                'booked_team':Team.objects.all(),
                 'setup_type_n':SetupType.objects.all(),
                 'consumable_n':Consumable.objects.all(),
                 'msg':'Setup Added!'
@@ -300,6 +299,8 @@ def make_setup(request):
              {
                 'device_n':Device.objects.all(),
                 'consumable_n':Consumable.objects.all(),
+                'booked_team':Team.objects.all(),
+                'setup_type_n':SetupType.objects.all(),
                 'type_n':DeviceType.objects.all(),
 
             }
