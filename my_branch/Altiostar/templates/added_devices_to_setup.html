@@ -1,0 +1,3 @@
+{% for device in added_device_list %}
+	<input type="hidden" name="device_id_list[]" value="{{ device.id }}">
+{% endfor %}

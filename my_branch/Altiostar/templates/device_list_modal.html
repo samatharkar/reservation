@@ -1,35 +1,22 @@
-<div class="modal-body">
-	{% if device_list|length > 0 %}
-		<div class="form-check">
-			{% for device in device_list %}
-				<div class="row mb-1 ml-2">
-					<input class="form-check-input" type="checkbox" value="" id="{{ device.name }}">
-					<label class="form-check-label" for="{{ device.name }}">
-						{{ device.name }}
-					</label>
-				</div>
-			{% endfor %}
-		</div>
-	{% else %}
-		<p>No device available. Please select another Device Type.</p>
-	{% endif %}
-</div>
-<div class="modal-footer">
-  	<button type="button" class="btn btn-dark" data-dismiss="modal">
-  		Add
- 	</button>
- 	<button type="button" class="btn btn-dark" data-dismiss="modal">
-  		Cancel
-  	</button>
-</div>    
-<!-- <div class="row">
-	<div class="col-sm font-weight-bold">
-		Are you sure you want to delete your account?<br>
-		(All your data will be lost permanently)
-	</div>
-  	<div class="col-sm-1">
-      	<button type="button" class="close" data-dismiss="modal">
-      		&times;
-      	</button>
+{% if device_list|length > 0 %}
+	<label for="device-select">Devices:</label>
+	<select id="device-select" class="form-control" multiple>
+	  {% for device in device_list %}
+	    <option value="{{ device.id }}">{{ device.name }}</option>
+	  {% endfor %}
+	</select>
+	<small id="device-add-error" class="form-text text-danger"></small>
+{% else %}
+	<p class="text-danger no-device-found">No device found. Please select another Device Type.</p>
+{% endif %}
+
+<!-- <div class="form-check">
+  {% for device in device_list %}
+    <div class="row mb-1 ml-2">
+      <input class="form-check-input" type="checkbox" value="" id="{{ device.name }}">
+      <label class="form-check-label" for="{{ device.name }}">
+        {{ device.name }}
+      </label>
     </div>
+  {% endfor %}
 </div> -->

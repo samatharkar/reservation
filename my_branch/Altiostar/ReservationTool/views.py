@@ -1,6 +1,7 @@
 from django.shortcuts import render, HttpResponse
 from django.http import Http404, JsonResponse
 from django.contrib import messages
+from django.db.models import Q
 from .models import *
 from .forms import *
 import csv
@@ -118,26 +119,48 @@ def add_setup_type(request):
 def make_setup(request):
     if request.method == "POST":
         setup_form = MakeSetupForm(request.POST)
+        device_id_list = request.POST.getlist('device_id_list[]')
         if setup_form.is_valid():
-            setup_form.save()
-            device_type = setup_form.cleaned_data.get('device_type')
-            devices = device_type.devices.all()
-            print(devices)
+            setup = setup_form.save()
+            device_list = Device.objects.filter(
+                        id__in=device_id_list
+                    )
+            for device in device_list:
+                setup.devices.add(device)
             messages.success(request,f'Setup Formed!')
     else:
         setup_form = MakeSetupForm()
+    device_type_list = DeviceType.objects.all()
     return render(request, "make_setup.html", {
             'form': setup_form,
+            'device_type_list': device_type_list,
         }
     )
 
-def add_devices_to_setup(request):
+def search_devices_for_setup(request):
     if request.is_ajax():
-        id = request.GET.get('device_type')
-        device_type = DeviceType.objects.get(id=id)
-        device_list = device_type.devices.all()
+        id_list = request.GET.getlist('device_type_id_list[]')
+        device_type_list = DeviceType.objects.filter(
+                            id__in=id_list
+                        )
+        device_list = Device.objects.none()
+        for device_type in device_type_list:
+            device_list |= device_type.devices.all().filter(setup__isnull=True)
         return render(request, "device_list_modal.html", { 
                 'device_list': device_list, 
+            }
+        )
+    return Http404()
+
+
+def add_devices_to_setup(request):
+    if request.is_ajax():
+        id_list = request.GET.getlist('device_id_list[]')
+        added_device_list = Device.objects.filter(
+                            id__in=id_list
+                        )
+        return render(request, "added_devices_to_setup.html", { 
+                'added_device_list': added_device_list, 
             }
         )
     return Http404()

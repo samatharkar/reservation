@@ -3,19 +3,17 @@
   Add Vendor
 {% endblock %}
 
-{% load crispy_forms_tags %}
+{% load widget_tweaks %}
 {% block content %}
   <h3>Add Vendor </h3>
 
   <div class="container">
-    <form method="POST">
-      <div class="form-group">
-        {% csrf_token %}
-        {{ vendor_form|crispy }}
-      </div>
+    <form method="post" novalidate>
+      {% csrf_token %}
+      {% include 'form_template.html' with form=vendor_form %}
       <div class="row mt-2">
-        <button type="submit" class="btn btn-dark">
-          Submit
+        <button type="submit" class="btn btn-dark w-25">
+          Add
         </button>
       </div>
     </form>

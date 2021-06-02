@@ -3,19 +3,17 @@
   Add Team
 {% endblock %}
 
-{% load crispy_forms_tags %}
+{% load widget_tweaks %}
 {% block content %}
   <h3>Add Team </h3>
 
   <div class="container">
-    <form method="POST">
-      <div class="form-group">
-        {% csrf_token %}
-        {{ team_form|crispy }}
-      </div>
+    <form method="POST" novalidate>
+      {% csrf_token %}
+      {% include 'form_template.html' with form=team_form %}
       <div class="row mt-2">
-        <button type="submit" class="btn btn-dark">
-          Submit
+        <button type="submit" class="btn btn-dark w-25">
+          Add
         </button>
       </div>
     </form>
