@@ -8,6 +8,7 @@ class DeviceAdmin(ImportExportModelAdmin):
 
 
 class SetupAdmin(admin.ModelAdmin):
+	list_display = ('name', 'added_devices')
 
 	def added_devices(self, setup):
 		return ", ".join([
