@@ -1,0 +1,39 @@
+<div class="container dashboard">
+  {% csrf_token %}
+  
+  <div class="row border-bottom justify-content-center m-2 dashboard-heading">
+    <h3>{{Title}} Dashboard</h3>
+  </div>
+
+  <div class="row border-bottom m-3 dashboard-searchbar">
+    <div class="input-group">
+      <input type="search" id="dashboard-searchbar-input" class="form-control" autocomplete="off" placeholder="Search {{object}} here. Type and click the search icon." data-ajax-url="{{search_url}}">
+      <div class="input-group-append">
+        <button type="button" id="dashboard-searchbar-btn" class="btn input-group-text">
+          <span class="fa fa-search"></span>
+        </button>
+      </div>
+    </div>
+  </div>
+  
+  <div class="container-fluid my-2 dashboard-body" data-ajax-url="{{view_url}}">
+    {% include 'dashboard_body_template.html' with object=object list=list %}
+  </div>
+
+  <div class="row border-top my-2 mx-3 dashboard-operation-status" data-object-name="{{object}}">
+    <b>Status:&nbsp;</b>
+    <text>0 {{object}} selected<text>
+  </div>
+
+  <div class="row border-top justify-content-around m-2 dashboard-buttons">
+    <button type="button" class="col-sm btn btn-dark mt-2 mx-1 dashboard-add-btn" data-ajax-url="{{add_url}}">
+      Add
+    </button>
+    <button type="button" class="col-sm btn btn-dark mt-2 mx-1 dashboard-modify-btn" data-ajax-url="{{modify_url}}">
+      Modify
+    </button>
+    <button type="button" class="col-sm btn btn-dark mt-2 mx-1 dashboard-delete-btn" data-ajax-url="{{delete_url}}">
+      Delete
+    </button>
+  </div>
+</div>

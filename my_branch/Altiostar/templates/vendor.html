@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% block title %}
+  Vendor Dashboard
+{% endblock %}
+
+{% load widget_tweaks %}
+{% block content %}  
+  
+  {% url 'add_vendor' as add %}
+  {% url 'view_vendor' as view %}
+  {% url 'search_vendor' as search %}
+  {% url 'modify_vendor' as modify %}
+  {% url 'delete_vendor' as delete %}
+  
+  {% include 'dashboard_template.html' with Title='Vendor' object=name_plural list=vendor_list add_url=add view_url=view search_url=search modify_url=modify delete_url=delete%}
+  <!-- <div class="container">
+    <form method="post" novalidate>
+      {% csrf_token %}
+      {% include 'form_template.html' with form=vendor_form %}
+      <div class="row mt-2">
+        <button type="submit" class="btn btn-dark w-25">
+          Add
+        </button>
+      </div>
+    </form>
+  </div> -->
+{% endblock %}
