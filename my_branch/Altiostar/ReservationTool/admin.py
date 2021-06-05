@@ -7,15 +7,12 @@ class DeviceAdmin(ImportExportModelAdmin):
      pass
 
 
+class DeviceInline(admin.TabularInline):
+	model = Device
+
+
 class SetupAdmin(admin.ModelAdmin):
-	list_display = ('name', 'added_devices')
-
-	def added_devices(self, setup):
-		return ", ".join([
-			device.name for device in setup.devices.all()
-		])
-
-	added_devices.short_description = "Added Devices"
+	inlines = [DeviceInline]
 
 
 admin.site.register(Device, DeviceAdmin)

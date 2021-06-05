@@ -26,12 +26,40 @@
   </div>
 
   <div class="row border-top justify-content-around m-2 dashboard-buttons">
-    <button type="button" class="col-sm btn btn-dark mt-2 mx-1 dashboard-add-btn" data-ajax-url="{{add_url}}">
+    <button type="button" class="col-sm btn btn-dark mt-2 mx-1 dashboard-add-btn" data-toggle="modal" data-target="#addObjectModal">
       Add
     </button>
+    <div class="modal fade" id="addObjectModal">
+      <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+          <form method="post" class="dashboard-modal-form" data-ajax-url="{{add_url}}">
+            <div class="modal-header">
+              <h5 class="modal-title" id="addObjectModalLabel">Add {{Title}}s</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+                {% csrf_token %}
+                {% include 'form_template.html' with form=object_form %}
+            </div>
+            <div class="modal-footer justify-content-center">
+              <button type="submit" class="btn btn-dark w-25">
+                Submit
+              </button>
+              <button type="reset" class="btn btn-danger w-25">
+                Reset
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
     <button type="button" class="col-sm btn btn-dark mt-2 mx-1 dashboard-modify-btn" data-ajax-url="{{modify_url}}">
       Modify
     </button>
+    
     <button type="button" class="col-sm btn btn-dark mt-2 mx-1 dashboard-delete-btn" data-ajax-url="{{delete_url}}">
       Delete
     </button>

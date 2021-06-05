@@ -34,10 +34,11 @@ def view_messages(request):
     if request.is_ajax():
         message_type = request.GET.get('message_type')
         message = request.GET.get('message')
-        if message_type == 'success':
-            messages.success(request, message)
-        elif message_type == 'danger':
-            messages.danger(request, message)
+        if message_type and message:
+            if message_type == 'success':
+                messages.success(request, message)
+            elif message_type == 'danger':
+                messages.danger(request, message)
         return render(request, 'messages.html')
     return Http404()
 
@@ -45,6 +46,8 @@ def view_messages(request):
 def add_device_type(request):
     if request.method == "POST":
         device_type_form = AddDeviceTypeForm(request.POST)
+        print(request.POST)
+        print(device_type_form)
         if device_type_form.is_valid():
             device_type_form.save()
             messages.success(request, f'Device Type Added!')
@@ -58,25 +61,29 @@ def add_device_type(request):
 
 def vendor(request):
     vendor_list = Vendor.objects.all()
+    vendor_form = AddVendorForm()
     return render(request, 'vendor.html', {
             'name_plural': NAMES['Vendor'],
             'vendor_list': vendor_list,
+            'vendor_form': vendor_form,
         }
     )
 
 
 def add_vendor(request):
-    if request.method == "POST":
-        vendor_form = AddVendorForm(request.POST)
-        if vendor_form.is_valid():
-            vendor_form.save()
-            messages.success(request,f'Vendor Added!')
-    else:
-        vendor_form = AddVendorForm()
-    return render(request, 'add_vendor.html', {
-            'vendor_form': vendor_form,
-        }
-    )
+    if request.is_ajax():
+        if request.method == "POST":
+            added = False
+            vendor_form = AddVendorForm(request.POST)
+            if vendor_form.is_valid():
+                vendor_form.save()
+                added = True
+            print(added)
+        return JsonResponse({
+                'added': added
+            }
+        )
+    return Http404()
 
 
 def view_vendor(request):
@@ -233,7 +240,7 @@ def search_devices_for_setup(request):
                         )
         device_list = Device.objects.none()
         for device_type in device_type_list:
-            device_list |= device_type.devices.all().filter(setup__isnull=True)
+            device_list |= device_type.devices.filter(setup__isnull=True)
         return render(request, 'device_list_modal.html', { 
                 'device_list': device_list, 
             }

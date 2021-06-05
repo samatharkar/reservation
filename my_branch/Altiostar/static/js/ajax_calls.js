@@ -84,15 +84,32 @@ $(function(){
 	  	}
   	});
 
-  	// // Handle click of Add button on a Dashboard
-  	// $('.dashbaord-add-btn').click(function(){
-  	// 	$.get($(this).data('ajaxUrl'),
-  	// 	function(data){
-  			
-  	// 	},
-  	// 	'html'
-  	// 	);
-  	// });
+  	// Handle submit of the Modal form in a Dashboard
+  	$('.dashboard-modal-form').submit(function(event){
+  		var msg;
+  		event.preventDefault();
+  		var formData = $(this).serializeArray();
+  		$.post($(this).data('ajaxUrl'), formData,
+  		function(data){
+  			// Handle success Status
+  			var name = $('.dashboard-operation-status').data('objectName');
+  			name = name.slice(0, -1);
+  			if(data.added){
+	  			msg = 'Successfully added a new ' + name + '.';
+	  			$('.dashboard-operation-status text').removeClass('text-danger').addClass('text-success');
+	  			$('#addObjectModal').modal('hide');
+	  			// Refresh items in the Dashboard
+		  		viewAllItems();
+  			}
+  			else{
+  				msg = 'Unable to add the ' + name + '. Please try again.';
+  				$('.dashboard-operation-status text').removeClass('text-success').addClass('text-danger');
+  			}
+  			$('.dashboard-operation-status text').text(msg);
+  		},
+  		'json'
+  		);
+  	});
 
   	// Handle click of Search button on a Dashboard
   	$('#dashboard-searchbar-btn').click(function(){
@@ -111,10 +128,32 @@ $(function(){
   		else{
   			// Handle not searchable Status
   			var msg = 'Please type something to search.';
-  			$('.dashboard-operation-status text').addClass('text-danger');
+  			$('.dashboard-operation-status text').removeClass('text-success').addClass('text-danger');
   			$('.dashboard-operation-status text').text(msg);
   		}
   	});
+
+  	// Handle click of Modify button on a Dashboard
+  	// $('.dashboard-modify-btn').click(function(){
+  	// 	if(selected_checboxes != 1){
+  	// 		$.post($(this).data('ajaxUrl'), {
+  	// 			'id': id
+  	// 		}
+  	// 		function(data){
+
+  	// 		},
+  	// 		'html'
+  	// 		);
+  	// 	}
+  	// 	else{
+  	// 		// Handle not permitted Status
+  	// 		var name = $('.dashboard-operation-status').data('objectName');
+	  // 		name = name.slice(0, -1);
+	  // 		var msg = 'Please select only 1 ' + name + '.';
+	  // 		$('.dashboard-operation-status text').removeClass('text-success').addClass('text-danger');
+	  // 		$('.dashboard-operation-status text').text(msg);
+  	// 	}
+  	// });
 
   	// Handle click of Delete button on a Dashboard
   	$('.dashboard-delete-btn').click(function(){
@@ -138,7 +177,6 @@ $(function(){
 	  			if(total == 1 && data.deleted_count ==  '1')
 			      name = name.slice(0, -1);
 			  	var msg;
-			  	console.log(data.deleted_count + ' | ' + data.not_deleted_count);
 			  	if(data.deleted_count == '0'){
 			  		msg = 'No selected ' + name + ' deleted. ';
 			  		$('.dashboard-operation-status text').removeClass('text-success').addClass('text-danger');
@@ -161,8 +199,10 @@ $(function(){
 	  	}
 	  	else{
 	  		// Handle not permitted Status
-	  		var msg = 'Please select at least 1 device.';
-	  		$('.dashboard-operation-status text').addClass('text-danger');
+	  		var name = $('.dashboard-operation-status').data('objectName');
+	  		name = name.slice(0, -1);
+	  		var msg = 'Please select at least 1 ' + name + '.';
+	  		$('.dashboard-operation-status text').removeClass('text-success').addClass('text-danger');
 	  		$('.dashboard-operation-status text').text(msg);
 	  	}
   	});
