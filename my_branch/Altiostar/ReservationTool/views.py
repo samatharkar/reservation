@@ -104,8 +104,14 @@ def load_vendor_form(request):
 def add_or_modify_vendor(request):
     if request.is_ajax():
         if request.method == "POST":
+            mode = request.POST.get('mode')
             completed = False
-            vendor_form = VendorForm(request.POST)
+            if mode == 'add':
+                vendor_form = VendorForm(request.POST)
+            elif mode == 'modify':
+                id = request.POST.get('id')
+                current_vendor = Vendor.objects.get(id=id)
+                vendor_form = VendorForm(request.POST, instance=current_vendor)
             if vendor_form.is_valid():
                 vendor_form.save()
                 completed = True
@@ -132,7 +138,7 @@ def search_vendor(request):
     if request.is_ajax():
         search_text = request.GET.get('search_text')
         vendor_list = Vendor.objects.filter(
-                            Q(name__istartswith = search_text)
+                            Q(name__icontains = search_text)
                         )
         field_names = Vendor._meta.fields[1:]
         if len(vendor_list):

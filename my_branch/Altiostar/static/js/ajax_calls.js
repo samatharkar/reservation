@@ -12,12 +12,16 @@ function addMessages(url, message_type, message){
 }
 
 // Handle submit of the Modal form in a Dashboard
-function submitForm(){
+function submitForm(id=null){
   	$('.dashboard-modal-form').submit(function(event){
   		event.preventDefault();
   		var mode = $(this).data('mode');
-  		var formData = $(this).serializeArray();
+  		var formData = $(this).serializeArray().concat(
+  			{ name: 'mode', value: mode },
+  			{ name: 'id', value: id }
+  		);
   		var msg;
+  		console.log(formData);
   		$.post($(this).data('ajaxUrl'), formData,
   		function(data){
   			// Handle success Status
@@ -43,7 +47,6 @@ function submitForm(){
   		},
   		'json'
   		);
-  		// $(this)[0].reset();
   	});
 }
 
@@ -137,14 +140,15 @@ $(function(){
   	$('.dashboard-modify-btn').click(function(){
   		var selected_checboxes = $('input:checkbox:checked');
   		if(selected_checboxes.length == 1){
+  			var id = selected_checboxes.val();
   			$.get($(this).data('ajaxUrl'), {
   				'mode': $(this).data('mode'),
-  				'id': selected_checboxes.val()
+  				'id': id
   			},
   			function(data){
   				$('#addOrModifyObjectModal').find('.modal-content').html(data);
   				$('#addOrModifyObjectModal').modal('show');
-  				submitForm();
+  				submitForm(id);
   			},
   			'html'
   			);
@@ -199,8 +203,8 @@ $(function(){
   		if(id_list.length){
   			// POST list of checked items for deletion
 	  		$.post($(this).data('ajaxUrl'), {
+	  			'csrfmiddlewaretoken' : $('input[name=csrfmiddlewaretoken]').val(),
 	  			'id_list[]': id_list,
-	  			'csrfmiddlewaretoken' : $('input[name=csrfmiddlewaretoken]').val()
 	  		},
 	  		function(data){
 	  			// Handle success Status
