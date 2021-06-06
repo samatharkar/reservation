@@ -11,6 +11,42 @@ function addMessages(url, message_type, message){
 	);
 }
 
+// Handle submit of the Modal form in a Dashboard
+function submitForm(){
+  	$('.dashboard-modal-form').submit(function(event){
+  		event.preventDefault();
+  		var mode = $(this).data('mode');
+  		var formData = $(this).serializeArray();
+  		var msg;
+  		$.post($(this).data('ajaxUrl'), formData,
+  		function(data){
+  			// Handle success Status
+  			var name = $('.dashboard-operation-status').data('objectName');
+  			name = name.slice(0, -1);
+  			if(data.completed){
+  				if(mode == 'add'){
+  					msg = 'Successfully added a new ' + name + '.';
+  				}
+	  			else{
+	  				msg = 'Successfully modified the selected ' + name + '.';
+	  			}
+	  			$('.dashboard-operation-status text').removeClass('text-danger').addClass('text-success');
+	  			$('#addOrModifyObjectModal').modal('hide');
+	  			// Refresh items in the Dashboard
+		  		viewAllItems();
+  			}
+  			else{
+  				msg = 'Unable to ' + mode + ' the ' + name + '. Please try again.';
+  				$('.dashboard-operation-status text').removeClass('text-success').addClass('text-danger');
+  			}
+  			$('.dashboard-operation-status text').text(msg);
+  		},
+  		'json'
+  		);
+  		// $(this)[0].reset();
+  	});
+}
+
 // View all items in the Dashboard
 function viewAllItems(){
 	$.get($('.dashboard-body').data('ajaxUrl'),
@@ -84,32 +120,48 @@ $(function(){
 	  	}
   	});
 
-  	// Handle submit of the Modal form in a Dashboard
-  	$('.dashboard-modal-form').submit(function(event){
-  		var msg;
-  		event.preventDefault();
-  		var formData = $(this).serializeArray();
-  		$.post($(this).data('ajaxUrl'), formData,
-  		function(data){
-  			// Handle success Status
-  			var name = $('.dashboard-operation-status').data('objectName');
-  			name = name.slice(0, -1);
-  			if(data.added){
-	  			msg = 'Successfully added a new ' + name + '.';
-	  			$('.dashboard-operation-status text').removeClass('text-danger').addClass('text-success');
-	  			$('#addObjectModal').modal('hide');
-	  			// Refresh items in the Dashboard
-		  		viewAllItems();
-  			}
-  			else{
-  				msg = 'Unable to add the ' + name + '. Please try again.';
-  				$('.dashboard-operation-status text').removeClass('text-success').addClass('text-danger');
-  			}
-  			$('.dashboard-operation-status text').text(msg);
+  	// Handle click of Add button on a Dashboard
+  	$('.dashboard-add-btn').click(function(){
+  		$.get($(this).data('ajaxUrl'), {
+  			'mode': $(this).data('mode')
   		},
-  		'json'
+  		function(data){
+  			$('#addOrModifyObjectModal').find('.modal-content').html(data);
+  			submitForm();
+  		},
+  		'html'
   		);
-  		$(this)[0].reset();
+  	});
+
+  	// Handle click of Modify button on a Dashboard
+  	$('.dashboard-modify-btn').click(function(){
+  		var selected_checboxes = $('input:checkbox:checked');
+  		if(selected_checboxes.length == 1){
+  			$.get($(this).data('ajaxUrl'), {
+  				'mode': $(this).data('mode'),
+  				'id': selected_checboxes.val()
+  			},
+  			function(data){
+  				$('#addOrModifyObjectModal').find('.modal-content').html(data);
+  				$('#addOrModifyObjectModal').modal('show');
+  				submitForm();
+  			},
+  			'html'
+  			);
+
+  		}
+  		else{
+  			// Handle not permitted Status
+  			var name = $('.dashboard-operation-status').data('objectName');
+	  		name = name.slice(0, -1);
+	  		var msg;
+	  		if(selected_checboxes.length)
+		  		msg = 'Please select only 1 ' + name + '.';
+		  	else
+		  		msg = 'Please select any ' + name + '.';
+	  		$('.dashboard-operation-status text').removeClass('text-success').addClass('text-danger');
+	  		$('.dashboard-operation-status text').text(msg);
+  		}
   	});
 
   	// Handle click of Search button on a Dashboard
@@ -133,35 +185,6 @@ $(function(){
   		},
   		'html'
   		);
-  	});
-
-  	// Handle click of Modify button on a Dashboard
-  	$('.dashboard-modify-btn').click(function(){
-  		var selected_checboxes = $('input:checkbox:checked');
-  		if(selected_checboxes.length == 1){
-  			// $('#modifyObjectModal').modal('show');
-  			// $.post($(this).data('ajaxUrl'), {
-  			// 	'id': selected_checboxes.val()
-  			// },
-  			// function(data){
-
-  			// },
-  			// 'html'
-  			// );
-  		}
-  		else{
-  			// Handle not permitted Status
-
-  			var name = $('.dashboard-operation-status').data('objectName');
-	  		name = name.slice(0, -1);
-	  		var msg;
-	  		if(selected_checboxes.length)
-		  		msg = 'Please select only 1 ' + name + '.';
-		  	else
-		  		msg = 'Please select any ' + name + '.';
-	  		$('.dashboard-operation-status text').removeClass('text-success').addClass('text-danger');
-	  		$('.dashboard-operation-status text').text(msg);
-  		}
   	});
 
   	// Handle click of Delete button on a Dashboard

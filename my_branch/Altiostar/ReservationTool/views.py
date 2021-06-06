@@ -1,5 +1,6 @@
 from django.shortcuts import render, HttpResponse
 from django.http import Http404, JsonResponse
+from django.urls import reverse
 from django.contrib import messages
 from django.db.models import Q
 from .models import *
@@ -17,6 +18,16 @@ NAMES = {
     'SetupType': 'setup types',
     'Setup': 'setups',
     'Device': 'devices',
+}
+
+TITLES = {
+    'DeviceType': 'Device Type',
+    'Vendor': 'Vendor',
+    'Consumable': 'Consumable',
+    'Team': 'Team',
+    'SetupType': 'Setup Type',
+    'Setup': 'Setup',
+    'Device': 'Device',
 }
 
 
@@ -54,34 +65,52 @@ def add_device_type(request):
     else:
         device_type_form = DeviceTypeForm()
     return render(request, 'add_device_type.html', {
-            'device_type_form': device_type_form,
-        }
-    )
+                'device_type_form': device_type_form,
+            }
+        )
 
 
 def vendor(request):
     vendor_list = Vendor.objects.all()
-    vendor_form = VendorForm()
     field_names = Vendor._meta.fields[1:]
     return render(request, 'vendor.html', {
-            'name_plural': NAMES['Vendor'],
-            'vendor_list': vendor_list,
-            'vendor_form': vendor_form,
-            'field_names': field_names,
-        }
-    )
+                'title': TITLES['Vendor'],
+                'name_plural': NAMES['Vendor'],
+                'vendor_list': vendor_list,
+                'field_names': field_names,
+            }
+        )
 
 
-def add_vendor(request):
+def load_vendor_form(request):
+    if request.is_ajax():
+        mode = request.GET.get('mode')
+        if mode == 'add':
+            vendor_form = VendorForm()
+        elif mode == 'modify':
+            id = request.GET.get('id')
+            current_vendor = Vendor.objects.get(id=id)
+            vendor_form = VendorForm(instance=current_vendor)
+        return render(request, 'dashboard_modal_content_template.html', {
+                    'add_or_modify_url': reverse('add_or_modify_vendor'),
+                    'title': TITLES['Vendor'],
+                    'mode': mode,
+                    'add_or_modify_form': vendor_form,
+                }
+            )
+    return Http404()
+
+
+def add_or_modify_vendor(request):
     if request.is_ajax():
         if request.method == "POST":
-            added = False
+            completed = False
             vendor_form = VendorForm(request.POST)
             if vendor_form.is_valid():
                 vendor_form.save()
-                added = True
+                completed = True
         return JsonResponse({
-                'added': added
+                'completed': completed
             }
         )
     return Http404()
@@ -117,21 +146,6 @@ def search_vendor(request):
     return Http404()
 
 
-def modify_vendor(request):
-    if request.is_ajax():
-        if request.method == "POST":
-            vendor_form = VendorForm(request.POST)
-            if vendor_form.is_valid():
-                vendor_form.save()
-                return HttpResponse('');
-            else:
-                return render(request, 'form_template.html', {
-                        'form': vendor_form
-                    }
-                )
-    return Http404()
-
-
 def delete_vendor(request):
     if request.is_ajax():
         id_list = request.POST.getlist('id_list[]')
@@ -143,10 +157,10 @@ def delete_vendor(request):
         not_deleted_count = len(id_list) - deleted_count
         vendor_list.delete()
         return JsonResponse({
-                'deleted_count': deleted_count,
-                'not_deleted_count': not_deleted_count
-            }
-        )
+                    'deleted_count': deleted_count,
+                    'not_deleted_count': not_deleted_count
+                }
+            )
     return Http404()
 
 
@@ -159,9 +173,9 @@ def add_consumable(request):
     else:
         consumable_form = ConsumableForm()
     return render(request, 'add_consumable.html', {
-            'consumable_form': consumable_form,
-        }
-    )
+                'consumable_form': consumable_form,
+            }
+        )
 
 
 def add_team(request):
@@ -173,9 +187,9 @@ def add_team(request):
     else:
         team_form = TeamForm()
     return render(request, 'add_team.html', {
-            'team_form': team_form,
-        }
-    )
+                'team_form': team_form,
+            }
+        )
 
 
 def add_device(request):
@@ -187,9 +201,9 @@ def add_device(request):
     else:
         device_form = DeviceForm()
     return render(request, 'add_device.html',{
-            'device_form': device_form,
-        }
-    )
+                'device_form': device_form,
+            }
+        )
 
 
 def view_device(request):
@@ -214,9 +228,9 @@ def add_setup_type(request):
     else:
         setup_type_form = SetupTypeForm()
     return render(request, 'add_setup_type.html', {
-            'setup_type_form': setup_type_form,
-        }
-    )
+                'setup_type_form': setup_type_form,
+            }
+        )
 
 
 def make_setup(request):
@@ -235,10 +249,10 @@ def make_setup(request):
         setup_form = MakeSetupForm()
     device_type_list = DeviceType.objects.all()
     return render(request, 'make_setup.html', {
-            'form': setup_form,
-            'device_type_list': device_type_list,
-        }
-    )
+                'form': setup_form,
+                'device_type_list': device_type_list,
+            }
+        )
 
 def search_devices_for_setup(request):
     if request.is_ajax():
@@ -250,9 +264,9 @@ def search_devices_for_setup(request):
         for device_type in device_type_list:
             device_list |= device_type.devices.filter(setup__isnull=True)
         return render(request, 'device_list_modal.html', { 
-                'device_list': device_list, 
-            }
-        )
+                    'device_list': device_list, 
+                }
+            )
     return Http404()
 
 
@@ -263,9 +277,9 @@ def add_devices_to_setup(request):
                             id__in=id_list
                         )
         return render(request, 'added_devices_to_setup.html', { 
-                'added_device_list': added_device_list, 
-            }
-        )
+                    'added_device_list': added_device_list, 
+                }
+            )
     return Http404()
 
 

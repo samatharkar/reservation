@@ -6,12 +6,12 @@
 {% load widget_tweaks %}
 {% block content %}  
   
-  {% url 'add_vendor' as add %}
+  {% url 'load_vendor_form' as loadForm %}
+  {% url 'add_or_modify_vendor' as addOrModify %}
   {% url 'view_vendor' as view %}
   {% url 'search_vendor' as search %}
-  {% url 'modify_vendor' as modify %}
   {% url 'delete_vendor' as delete %}
   
-  {% include 'dashboard_template.html' with title='Vendor' object=name_plural list=vendor_list field_names=field_names add_form=vendor_form add_url=add view_url=view search_url=search modify_url=modify delete_url=delete %}
+  {% include 'dashboard_template.html' with title=title object=name_plural list=vendor_list field_names=field_names load_form_url=loadForm add_or_modify_url=addOrModify view_url=view search_url=search delete_url=delete %}
   
 {% endblock %}
