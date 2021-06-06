@@ -3,25 +3,67 @@ from ReservationTool.models import *
 from import_export.admin import ImportExportModelAdmin
 
 
-class DeviceAdmin(ImportExportModelAdmin):
-     pass
-
-
 class DeviceInline(admin.TabularInline):
 	model = Device
 
+	def get_extra(self, request, obj=None, **kwargs):
+		if obj:
+			if obj.devices.exists():
+				extra = 0
+			else:
+				extra = 1
+		else:
+			extra = 1
+		return extra
 
+
+class SetupInline(admin.TabularInline):
+	model = Setup
+
+	def get_extra(self, request, obj=None, **kwargs):
+		if obj:
+			if obj.setups.exists():
+				extra = 0
+			else:
+				extra = 1
+		else:
+			extra = 1
+		return extra
+
+
+@admin.register(DeviceType)
+class DeviceTypeAdmin(admin.ModelAdmin):
+	inlines = [DeviceInline]
+
+
+@admin.register(Vendor)
+class VendorAdmin(admin.ModelAdmin):
+	inlines = [DeviceInline]
+
+
+@admin.register(Setup)
 class SetupAdmin(admin.ModelAdmin):
 	inlines = [DeviceInline]
 
 
-admin.site.register(Device, DeviceAdmin)
-admin.site.register(DeviceType)
-admin.site.register(Vendor)
-admin.site.register(Consumable)
-admin.site.register(SetupType)
-admin.site.register(Setup, SetupAdmin)
-admin.site.register(Team)
+@admin.register(SetupType)
+class SetupTypeAdmin(admin.ModelAdmin):
+	inlines = [SetupInline]
+
+
+@admin.register(Consumable)
+class ConsumableAdmin(admin.ModelAdmin):
+	inlines = [SetupInline]
+
+
+@admin.register(Team)
+class TeamAdmin(admin.ModelAdmin):
+	inlines = [SetupInline]
+
+
+@admin.register(Device)
+class DeviceAdmin(admin.ModelAdmin):
+	pass
 
 
 # admin.site.register(Test)

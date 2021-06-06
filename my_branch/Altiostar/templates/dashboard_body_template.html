@@ -1,23 +1,42 @@
-<div class="row border-bottom justify-content-between my-2 mx-3">
-  <div class="form-check">
-    <input type="checkbox" id="dashboard-item-select-all" class="form-check-input">
-    <label class="form-check-label ml-3">
-      Select All
-    </label>
-  </div>
-  
-  <div class="font-italic">
-    Total {{object}} found: {{list|length}}
-  </div>
+{% load tags %}
+
+<div class="row border-bottom font-italic m-2">
+  Total {{ object }} found: {{ list|length }}
 </div>
 
-{% for i in list %}
-  <div class="row form-check my-1 mx-3">
-    <input type="checkbox" name="dashboard-item" class="form-check-input" value="{{ i.id }}">
-    <label class="form-check-label ml-3">
-      <a href="#" class="dashboard-item">
-        {{ i.name }}
-      </a>
-    </label>
-  </div>
-{% endfor %}
+<div class="table-responsive-sm">
+  <table class="table table-bordered table-hover">
+    <caption hidden>List of {{ object }}</caption>
+    <thead class="thead-dark">
+      <tr>
+        <th scope="col" class="th-0">
+          <div class="form-check">
+            <input type="checkbox" id="dashboard-item-select-all" class="form-check-input">
+            <label class="form-check-label ml-3">
+              Select All
+            </label>
+          </div>
+        </th>
+        {% for field in field_names %}
+          <th scope="col" class="th-{{ field.name }}">{{ field.name }}</th>
+        {% endfor %}
+      </tr>
+    </thead>
+    <tbody>
+      {% for i in list %}
+        {% with row=forloop.counter %}
+          <tr>
+            <td class="td-row-{{ row }} td-col-0">
+              <div class="form-check">
+                <input type="checkbox" name="dashboard-item-checkbox" class="form-check-input" value="{{ i.id }}">
+              </div>
+            </td>
+            {% for field in field_names %}
+              <td class="td-row-{{ row }} td-col-{{ forloop.counter }}">{{ i|get_field_value:field.name }}</td>
+            {% endfor %}
+          </tr>
+        {% endwith %}
+      {% endfor %}
+    </tbody>
+  </table>
+</div>

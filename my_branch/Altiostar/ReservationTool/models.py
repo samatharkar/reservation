@@ -72,10 +72,10 @@ class SetupType(models.Model):
 
 class Setup(models.Model):
     name = models.CharField(max_length=125, default="NA")
-    setup_type = models.ForeignKey(SetupType, on_delete=models.PROTECT , related_name="make_setup")
-    consumable = models.ForeignKey(Consumable, on_delete=models.PROTECT , related_name="make_setup")
+    setup_type = models.ForeignKey(SetupType, on_delete=models.PROTECT , related_name="setups")
+    consumable = models.ForeignKey(Consumable, on_delete=models.PROTECT , related_name="setups")
     bookable = models.BooleanField(default=False) #If booked is ticked as yes, It should ask for the team name for which it will be booked
-    booked_by = models.ForeignKey(Team, on_delete=models.PROTECT, related_name="make_setup")
+    booked_by = models.ForeignKey(Team, on_delete=models.PROTECT, related_name="setups")
     remark = models.CharField(max_length=125, default="NA")
 
 

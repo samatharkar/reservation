@@ -1,24 +1,22 @@
 from django import forms
 from .models import *
-from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Layout, HTML, Submit
 
 
-class AddDeviceTypeForm(forms.ModelForm):
+class DeviceTypeForm(forms.ModelForm):
 
 	class Meta:
 		model = DeviceType
 		fields = '__all__'
 
 
-class AddVendorForm(forms.ModelForm):
+class VendorForm(forms.ModelForm):
 
 	class Meta:
 		model = Vendor
 		fields = '__all__'
 
 
-class AddConsumableForm(forms.ModelForm):
+class ConsumableForm(forms.ModelForm):
 
 	class Meta:
 		model = Consumable
@@ -26,14 +24,14 @@ class AddConsumableForm(forms.ModelForm):
 
 
 
-class AddTeamForm(forms.ModelForm):
+class TeamForm(forms.ModelForm):
 
 	class Meta:
 		model = Team
 		fields = '__all__'
 
 
-class AddDeviceForm(forms.ModelForm):
+class DeviceForm(forms.ModelForm):
 
 	class Meta:
 		model = Device
@@ -46,7 +44,7 @@ class AddDeviceForm(forms.ModelForm):
         }
 
 
-class AddSetupTypeForm(forms.ModelForm):
+class SetupTypeForm(forms.ModelForm):
 
 	class Meta:
 		model = SetupType

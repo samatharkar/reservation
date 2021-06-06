@@ -1,3 +1,8 @@
+:root {
+  --division: 220px;
+  --dashboard-height: 320px;
+}
+
 /* Styling of messages on top*/
 #messages{
   position: fixed;
@@ -10,7 +15,7 @@
 /* Fixed sidenav, full height */
 .sidenav {
   height: 100%;
-  width: 220px;
+  width: var(--division);
   position: fixed;
   z-index: 1;
   top: 0;
@@ -42,9 +47,10 @@
 
 /* Main content */
 .main {
-  margin-left: 200px; /* Same as the width of the sidenav */
+  margin-left: var(--division);  /*Same as the width of the sidenav */
   font-size: 20px; /* Increased text to enable scrolling */
   padding: 0px 10px;
+  overflow: hidden;
 }
 
 /* Add an active class to the active dropdown button */
@@ -84,20 +90,9 @@
 
 /* Height and overflow of the dashboard-body */
 .dashboard-body {
-  height: 300px;
+  height: var(--dashboard-height);
   overflow-y: scroll;
   overflow-x: hidden;
-}
-
-.dashboard-item {
-  text-decoration: none;
-  color: black;
-}
-
-.dashboard-item:hover {
-  text-decoration: none;
-  font-weight: bold;
-  color: rgb(2,119,181);
 }
 
 /* Styling of the dashboard-status */

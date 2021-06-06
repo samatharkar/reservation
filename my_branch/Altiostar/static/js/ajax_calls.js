@@ -109,57 +109,66 @@ $(function(){
   		},
   		'json'
   		);
+  		$(this)[0].reset();
   	});
 
   	// Handle click of Search button on a Dashboard
   	$('#dashboard-searchbar-btn').click(function(){
   		var search_text = $('#dashboard-searchbar-input').val();
-  		if(search_text.length){
-  			$.get($('#dashboard-searchbar-input').data('ajaxUrl'), {
-  				'search_text': search_text
-  			},
-  			function(data){
-  				$('.dashboard-body').html(data);
-  				inputCheckBoxes();
-  			},
-  			'html'
-  			);
-  		}
-  		else{
-  			// Handle not searchable Status
-  			var msg = 'Please type something to search.';
-  			$('.dashboard-operation-status text').removeClass('text-success').addClass('text-danger');
-  			$('.dashboard-operation-status text').text(msg);
-  		}
+  		$.get($('#dashboard-searchbar-input').data('ajaxUrl'), {
+  			'search_text': search_text
+  		},
+  		function(data){
+  			if(data){
+	  			$('.dashboard-body').html(data);
+	  			inputCheckBoxes();
+  			}
+  			else{
+  				// Handle no results found Status
+  				var name = $('.dashboard-operation-status').data('objectName');
+  				var msg = 'No ' + name + ' found. Try searching something else.';
+  				$('.dashboard-operation-status text').removeClass('text-success').addClass('text-danger');
+  				$('.dashboard-operation-status text').text(msg);
+  			}
+  		},
+  		'html'
+  		);
   	});
 
   	// Handle click of Modify button on a Dashboard
-  	// $('.dashboard-modify-btn').click(function(){
-  	// 	if(selected_checboxes != 1){
-  	// 		$.post($(this).data('ajaxUrl'), {
-  	// 			'id': id
-  	// 		}
-  	// 		function(data){
+  	$('.dashboard-modify-btn').click(function(){
+  		var selected_checboxes = $('input:checkbox:checked');
+  		if(selected_checboxes.length == 1){
+  			// $('#modifyObjectModal').modal('show');
+  			// $.post($(this).data('ajaxUrl'), {
+  			// 	'id': selected_checboxes.val()
+  			// },
+  			// function(data){
 
-  	// 		},
-  	// 		'html'
-  	// 		);
-  	// 	}
-  	// 	else{
-  	// 		// Handle not permitted Status
-  	// 		var name = $('.dashboard-operation-status').data('objectName');
-	  // 		name = name.slice(0, -1);
-	  // 		var msg = 'Please select only 1 ' + name + '.';
-	  // 		$('.dashboard-operation-status text').removeClass('text-success').addClass('text-danger');
-	  // 		$('.dashboard-operation-status text').text(msg);
-  	// 	}
-  	// });
+  			// },
+  			// 'html'
+  			// );
+  		}
+  		else{
+  			// Handle not permitted Status
+
+  			var name = $('.dashboard-operation-status').data('objectName');
+	  		name = name.slice(0, -1);
+	  		var msg;
+	  		if(selected_checboxes.length)
+		  		msg = 'Please select only 1 ' + name + '.';
+		  	else
+		  		msg = 'Please select any ' + name + '.';
+	  		$('.dashboard-operation-status text').removeClass('text-success').addClass('text-danger');
+	  		$('.dashboard-operation-status text').text(msg);
+  		}
+  	});
 
   	// Handle click of Delete button on a Dashboard
   	$('.dashboard-delete-btn').click(function(){
   		var id_list = [];
   		// Add the value attribute of all the checked items in an Array
-  		$('input[name="dashboard-item"]').each(function(){
+  		$('input[name="dashboard-item-checkbox"]').each(function(){
   			if($(this).prop('checked')){
   				id_list.push($(this).val());
   			}

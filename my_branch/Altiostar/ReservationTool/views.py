@@ -45,14 +45,14 @@ def view_messages(request):
 
 def add_device_type(request):
     if request.method == "POST":
-        device_type_form = AddDeviceTypeForm(request.POST)
+        device_type_form = DeviceTypeForm(request.POST)
         print(request.POST)
         print(device_type_form)
         if device_type_form.is_valid():
             device_type_form.save()
             messages.success(request, f'Device Type Added!')
     else:
-        device_type_form = AddDeviceTypeForm()
+        device_type_form = DeviceTypeForm()
     return render(request, 'add_device_type.html', {
             'device_type_form': device_type_form,
         }
@@ -61,11 +61,13 @@ def add_device_type(request):
 
 def vendor(request):
     vendor_list = Vendor.objects.all()
-    vendor_form = AddVendorForm()
+    vendor_form = VendorForm()
+    field_names = Vendor._meta.fields[1:]
     return render(request, 'vendor.html', {
             'name_plural': NAMES['Vendor'],
             'vendor_list': vendor_list,
             'vendor_form': vendor_form,
+            'field_names': field_names,
         }
     )
 
@@ -74,11 +76,10 @@ def add_vendor(request):
     if request.is_ajax():
         if request.method == "POST":
             added = False
-            vendor_form = AddVendorForm(request.POST)
+            vendor_form = VendorForm(request.POST)
             if vendor_form.is_valid():
                 vendor_form.save()
                 added = True
-            print(added)
         return JsonResponse({
                 'added': added
             }
@@ -89,9 +90,11 @@ def add_vendor(request):
 def view_vendor(request):
     if request.is_ajax():
         vendor_list = Vendor.objects.all()
+        field_names = Vendor._meta.fields[1:]
         return render(request, 'dashboard_body_template.html', {
                 'object': NAMES['Vendor'],
-                'list': vendor_list
+                'list': vendor_list,
+                'field_names': field_names,
             })
     return Http404()
 
@@ -102,26 +105,31 @@ def search_vendor(request):
         vendor_list = Vendor.objects.filter(
                             Q(name__istartswith = search_text)
                         )
-        print(vendor_list)
-        return render(request, 'dashboard_body_template.html', {
-                'object': NAMES['Vendor'],
-                'list': vendor_list
-            })
+        field_names = Vendor._meta.fields[1:]
+        if len(vendor_list):
+            return render(request, 'dashboard_body_template.html', {
+                    'object': NAMES['Vendor'],
+                    'list': vendor_list,
+                    'field_names': field_names,
+                })
+        else:
+            return HttpResponse('')
     return Http404()
 
 
 def modify_vendor(request):
-    if request.method == "POST":
-        vendor_form = AddVendorForm(request.POST)
-        if vendor_form.is_valid():
-            vendor_form.save()
-            messages.success(request,f'Vendor Added!')
-    else:
-        vendor_form = AddVendorForm()
-    return render(request, 'add_vendor.html', {
-            'vendor_form': vendor_form,
-        }
-    )
+    if request.is_ajax():
+        if request.method == "POST":
+            vendor_form = VendorForm(request.POST)
+            if vendor_form.is_valid():
+                vendor_form.save()
+                return HttpResponse('');
+            else:
+                return render(request, 'form_template.html', {
+                        'form': vendor_form
+                    }
+                )
+    return Http404()
 
 
 def delete_vendor(request):
@@ -144,12 +152,12 @@ def delete_vendor(request):
 
 def add_consumable(request):
     if request.method == "POST":
-        consumable_form = AddConsumableForm(request.POST)
+        consumable_form = ConsumableForm(request.POST)
         if consumable_form.is_valid():
             consumable_form.save()
             messages.success(request,f'Consumable Added!')
     else:
-        consumable_form = AddConsumableForm()
+        consumable_form = ConsumableForm()
     return render(request, 'add_consumable.html', {
             'consumable_form': consumable_form,
         }
@@ -158,12 +166,12 @@ def add_consumable(request):
 
 def add_team(request):
     if request.method == "POST":
-        team_form = AddTeamForm(request.POST)
+        team_form = TeamForm(request.POST)
         if team_form.is_valid():
             team_form.save()
             messages.success(request,f'Team Added!')
     else:
-        team_form = AddTeamForm()
+        team_form = TeamForm()
     return render(request, 'add_team.html', {
             'team_form': team_form,
         }
@@ -172,12 +180,12 @@ def add_team(request):
 
 def add_device(request):
     if request.method == "POST":
-        device_form = AddDeviceForm(request.POST)
+        device_form = DeviceForm(request.POST)
         if device_form.is_valid():
             device_form.save()
             messages.success(request,f'Device Added!')
     else:
-        device_form = AddDeviceForm()
+        device_form = DeviceForm()
     return render(request, 'add_device.html',{
             'device_form': device_form,
         }
@@ -199,12 +207,12 @@ def search_device(request):
 
 def add_setup_type(request):
     if request.method == "POST":
-        setup_type_form = AddSetupTypeForm(request.POST)
+        setup_type_form = SetupTypeForm(request.POST)
         if setup_type_form.is_valid():
             setup_type_form.save()
             messages.success(request,f'Setup Type Added!')
     else:
-        setup_type_form = AddSetupTypeForm()
+        setup_type_form = SetupTypeForm()
     return render(request, 'add_setup_type.html', {
             'setup_type_form': setup_type_form,
         }

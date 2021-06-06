@@ -12,6 +12,6 @@
   {% url 'modify_vendor' as modify %}
   {% url 'delete_vendor' as delete %}
   
-  {% include 'dashboard_template.html' with Title='Vendor' object=name_plural list=vendor_list object_form=vendor_form add_url=add view_url=view search_url=search modify_url=modify delete_url=delete %}
+  {% include 'dashboard_template.html' with title='Vendor' object=name_plural list=vendor_list field_names=field_names add_form=vendor_form add_url=add view_url=view search_url=search modify_url=modify delete_url=delete %}
   
 {% endblock %}
