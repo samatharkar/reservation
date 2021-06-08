@@ -1,0 +1,9 @@
+<label for="device-select">Devices:</label>
+<select id="device-select" class="form-control mt-1" multiple>
+	{% for device in device_list %}
+		<option value="{{ device.id }}">{{ device.name }}</option>
+  	{% endfor %}
+</select>
+<button type="button" id="add-selected-devices-btn" class="btn btn-sm btn-dark mt-2 w-25" data-ajax-url="{% url 'add_devices_to_setup' %}">
+	Add
+</button>

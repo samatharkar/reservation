@@ -72,13 +72,6 @@
   padding-right: 8px;
 }
 
-#device-modal-messages-div {
-  position: absolute;
-  top: 0;
-  z-index: 1;
-  opacity: 0.95;
-}
-
 /* Styling of the dashboard */
 .dashboard {
   background-color: rgb(245, 245, 245);
@@ -91,11 +84,18 @@
 /* Height and overflow of the dashboard-body */
 .dashboard-body {
   height: var(--dashboard-height);
-  overflow-y: scroll;
-  overflow-x: hidden;
+  overflow: scroll;
 }
 
 /* Styling of the dashboard-status */
 .dashboard-operation-status {
   font-size: smaller;
+}
+
+.th-0 {
+  width: 130px;
+}
+
+.device-to-setup-status, .selected-devices-status {
+  font-size: medium;
 }

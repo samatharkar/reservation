@@ -10,7 +10,8 @@ from .filters import SetupFilter
 from .filters import DeviceFilter
 
 
-NAMES = {
+# Dictionary of models and their names
+PLURAL_NAMES = {
     'DeviceType': 'device types',
     'Vendor': 'vendors',
     'Consumable': 'consumables',
@@ -20,6 +21,7 @@ NAMES = {
     'Device': 'devices',
 }
 
+# Dictionary of models and their titles
 TITLES = {
     'DeviceType': 'Device Type',
     'Vendor': 'Vendor',
@@ -30,17 +32,38 @@ TITLES = {
     'Device': 'Device',
 }
 
+# Dictionary of models and their class instances
+MODELS = {
+    'DeviceType': DeviceType,
+    'Vendor': Vendor,
+    'Consumable': Consumable,
+    'Team': Team,
+    'SetupType': SetupType,
+    'Setup': Setup,
+    'Device': Device,
+}
 
-# Create your views here.
+# Dictionary of models and their model form function instances
+FORMS = {
+    'DeviceType': DeviceTypeForm,
+    'Vendor': VendorForm,
+    'Consumable': ConsumableForm,
+    'Team': TeamForm,
+    'SetupType': SetupTypeForm,
+    'Setup': MakeSetupForm,
+    'Device': DeviceForm,
+}
+
+# Home
 def home(request):
 	return render(request, 'home.html')
 
-
+# Login
 def login(request):
     pass
     return render(request, 'login.html')
 
-
+# Rendering the messages on top of the page
 def view_messages(request):
     if request.is_ajax():
         message_type = request.GET.get('message_type')
@@ -53,190 +76,156 @@ def view_messages(request):
         return render(request, 'messages.html')
     return Http404()
 
-
-def add_device_type(request):
-    if request.method == "POST":
-        device_type_form = DeviceTypeForm(request.POST)
-        print(request.POST)
-        print(device_type_form)
-        if device_type_form.is_valid():
-            device_type_form.save()
-            messages.success(request, f'Device Type Added!')
-    else:
-        device_type_form = DeviceTypeForm()
-    return render(request, 'add_device_type.html', {
-                'device_type_form': device_type_form,
-            }
-        )
-
-
-def vendor(request):
-    vendor_list = Vendor.objects.all()
-    field_names = Vendor._meta.fields[1:]
-    return render(request, 'vendor.html', {
-                'title': TITLES['Vendor'],
-                'name_plural': NAMES['Vendor'],
-                'vendor_list': vendor_list,
+# Dashboard of any model
+def dashboard(request, name):
+    object_list = MODELS[name].objects.all()
+    field_names = MODELS[name]._meta.fields[1:]
+    context = {
+                'title': TITLES[name],
+                'object': PLURAL_NAMES[name],
+                'list': object_list,
                 'field_names': field_names,
+                'load_form_url': reverse('load_object_form', args=[name]),
+                'add_or_modify_url': reverse('add_or_modify_object', args=[name]),
+                'view_url': reverse('view_objects', args=[name]),
+                'search_url': reverse('search_objects', args=[name]),
+                'delete_url': reverse('delete_objects', args=[name]),
             }
-        )
+    return render(request, 'dashboard_template.html', context)
 
-
-def load_vendor_form(request):
+# Load the form dynamically of any model
+def load_object_form(request, name):
     if request.is_ajax():
         mode = request.GET.get('mode')
         if mode == 'add':
-            vendor_form = VendorForm()
+            object_form = FORMS[name]()
         elif mode == 'modify':
             id = request.GET.get('id')
-            current_vendor = Vendor.objects.get(id=id)
-            vendor_form = VendorForm(instance=current_vendor)
-        return render(request, 'dashboard_modal_content_template.html', {
-                    'add_or_modify_url': reverse('add_or_modify_vendor'),
-                    'title': TITLES['Vendor'],
+            current_object = MODELS[name].objects.get(id=id)
+            object_form = FORMS[name](instance=current_object)
+        context = {
+                    'add_or_modify_url': reverse('add_or_modify_object', args=[name]),
+                    'title': TITLES[name],
                     'mode': mode,
-                    'add_or_modify_form': vendor_form,
+                    'add_or_modify_form': object_form,
                 }
-            )
+        # If the request is from Setup dashboard, handle the adding devices feature
+        if name == 'Setup':
+            device_type_list = DeviceType.objects.all()
+            context['device_type_list'] = device_type_list
+        return render(request, 'dashboard_modal_content_template.html', context)
     return Http404()
 
-
-def add_or_modify_vendor(request):
+# Add/Modify objects of any model
+def add_or_modify_object(request, name):
     if request.is_ajax():
         if request.method == "POST":
             mode = request.POST.get('mode')
             completed = False
             if mode == 'add':
-                vendor_form = VendorForm(request.POST)
+                object_form = FORMS[name](request.POST)
             elif mode == 'modify':
                 id = request.POST.get('id')
-                current_vendor = Vendor.objects.get(id=id)
-                vendor_form = VendorForm(request.POST, instance=current_vendor)
-            if vendor_form.is_valid():
-                vendor_form.save()
+                current_object = MODELS[name].objects.get(id=id)
+                object_form = FORMS[name](request.POST, instance=current_object)
+            if object_form.is_valid():
+                if name == 'Setup':
+                    setup = object_form.save()
+                    device_id_list = request.POST.getlist('device_id_list[]')
+                    device_list = Device.objects.filter(
+                                id__in=device_id_list
+                            )
+                    print(device_list)
+                    for device in device_list:
+                        setup.devices.add(device)
+                else:
+                    object_form.save()
                 completed = True
-        return JsonResponse({
+            response = {
                 'completed': completed
             }
-        )
+            return JsonResponse(response)
     return Http404()
 
-
-def view_vendor(request):
+# View objects of any model
+def view_objects(request, name):
     if request.is_ajax():
-        vendor_list = Vendor.objects.all()
-        field_names = Vendor._meta.fields[1:]
-        return render(request, 'dashboard_body_template.html', {
-                'object': NAMES['Vendor'],
-                'list': vendor_list,
+        object_list = MODELS[name].objects.all()
+        field_names = MODELS[name]._meta.fields[1:]
+        context = {
+                'object': PLURAL_NAMES[name],
+                'list': object_list,
                 'field_names': field_names,
-            })
+            }
+        return render(request, 'dashboard_body_template.html', context)
     return Http404()
 
-
-def search_vendor(request):
+# Search objects of any model
+def search_objects(request, name):
     if request.is_ajax():
         search_text = request.GET.get('search_text')
-        vendor_list = Vendor.objects.filter(
+        object_list = MODELS[name].objects.filter(
                             Q(name__icontains = search_text)
                         )
-        field_names = Vendor._meta.fields[1:]
-        if len(vendor_list):
-            return render(request, 'dashboard_body_template.html', {
-                    'object': NAMES['Vendor'],
-                    'list': vendor_list,
+        field_names = MODELS[name]._meta.fields[1:]
+        context = {
+                    'object': PLURAL_NAMES[name],
+                    'list': object_list,
                     'field_names': field_names,
-                })
+                }
+        if len(object_list):
+            return render(request, 'dashboard_body_template.html', context)
         else:
             return HttpResponse('')
     return Http404()
 
-
-def delete_vendor(request):
+# Delete objects of any model
+def delete_objects(request, name):
     if request.is_ajax():
+        fk = None
         id_list = request.POST.getlist('id_list[]')
-        vendor_list = Vendor.objects.filter(
-                            id__in=id_list,
-                            devices__isnull=True,
-                        )
-        deleted_count = len(vendor_list)
+        object_list = MODELS[name].objects.first()
+        try:
+            # Check if the object passed has a foreignkey with Device model
+            print('checking for relation with Device model')
+            object_list.devices.exists()
+        except:
+            try:
+                # Check if the object passed has a foreignkey with Setup model
+                print('checking for relation with Setup model')
+                object_list.setups.exists()
+            except:
+                # Exception occured meaning an object not related to both Device & Setup 
+                # model found, hence the object is of Device Model
+                print('Relation found with none')
+                object_list = MODELS[name].objects.filter(
+                                id__in=id_list,
+                            )
+            else:
+                # Safely executed meaning an object related to Setup model found
+                print('Relation found with Setup model')
+                object_list = MODELS[name].objects.filter(
+                                id__in=id_list,
+                                setups__isnull=True,
+                            )
+            
+        else:
+            # Safely executed meaning an object related to Device model found
+            print('Relation found with Device model')
+            object_list = MODELS[name].objects.filter(
+                                id__in=id_list,
+                                devices__isnull=True,
+                            )
+            
+        deleted_count = len(object_list)
         not_deleted_count = len(id_list) - deleted_count
-        vendor_list.delete()
-        return JsonResponse({
+        object_list.delete()
+        response = {
                     'deleted_count': deleted_count,
                     'not_deleted_count': not_deleted_count
                 }
-            )
+        return JsonResponse(response)
     return Http404()
-
-
-def add_consumable(request):
-    if request.method == "POST":
-        consumable_form = ConsumableForm(request.POST)
-        if consumable_form.is_valid():
-            consumable_form.save()
-            messages.success(request,f'Consumable Added!')
-    else:
-        consumable_form = ConsumableForm()
-    return render(request, 'add_consumable.html', {
-                'consumable_form': consumable_form,
-            }
-        )
-
-
-def add_team(request):
-    if request.method == "POST":
-        team_form = TeamForm(request.POST)
-        if team_form.is_valid():
-            team_form.save()
-            messages.success(request,f'Team Added!')
-    else:
-        team_form = TeamForm()
-    return render(request, 'add_team.html', {
-                'team_form': team_form,
-            }
-        )
-
-
-def add_device(request):
-    if request.method == "POST":
-        device_form = DeviceForm(request.POST)
-        if device_form.is_valid():
-            device_form.save()
-            messages.success(request,f'Device Added!')
-    else:
-        device_form = DeviceForm()
-    return render(request, 'add_device.html',{
-                'device_form': device_form,
-            }
-        )
-
-
-def view_device(request):
-    context = {}
-    entries = Device.objects.all()
-    context['entries'] = entries
-    return render(request, 'view_device.html', context)
-
-
-def search_device(request):
-     device_list = Device.objects.all()
-     device_filter = DeviceFilter(request.GET, queryset=device_list)
-     return render(request, 'search_device.html', {'filter': device_filter })
-
-
-def add_setup_type(request):
-    if request.method == "POST":
-        setup_type_form = SetupTypeForm(request.POST)
-        if setup_type_form.is_valid():
-            setup_type_form.save()
-            messages.success(request,f'Setup Type Added!')
-    else:
-        setup_type_form = SetupTypeForm()
-    return render(request, 'add_setup_type.html', {
-                'setup_type_form': setup_type_form,
-            }
-        )
 
 
 def make_setup(request):
@@ -260,6 +249,7 @@ def make_setup(request):
             }
         )
 
+# Render device(s) based on the device type(s) searched in the modal of a dashboard
 def search_devices_for_setup(request):
     if request.is_ajax():
         id_list = request.GET.getlist('device_type_id_list[]')
@@ -269,39 +259,28 @@ def search_devices_for_setup(request):
         device_list = Device.objects.none()
         for device_type in device_type_list:
             device_list |= device_type.devices.filter(setup__isnull=True)
-        return render(request, 'device_list_modal.html', { 
-                    'device_list': device_list, 
-                }
-            )
+        if len(device_list):
+            context = { 
+                        'device_list': device_list, 
+                    }
+            return render(request, 'device_list_on_search.html', context)
+        else:
+            return HttpResponse('')
     return Http404()
 
-
+# Attach the added devices with the Setup form as hidden inputs
 def add_devices_to_setup(request):
     if request.is_ajax():
         id_list = request.GET.getlist('device_id_list[]')
         added_device_list = Device.objects.filter(
                             id__in=id_list
                         )
-        return render(request, 'added_devices_to_setup.html', { 
+        context = { 
                     'added_device_list': added_device_list, 
                 }
-            )
+        return render(request, 'device_added_list.html', context)
     return Http404()
-
-
-def view_setup(request):
-    context = {}
-    setup_entries = Setup.objects.all()
-    context['setup_entries'] = setup_entries
-    return render(request, 'view_setup.html', context)
-
-
-
-def search_setup(request):
-    setup_list = Setup.objects.all()
-    setup_filter = SetupFilter(request.GET, queryset=setup_list)
-    return render(request, 'search_setup.html', {'filter': setup_filter })
-
+    
 
 def export(request):
     response = HttpResponse(content_type='text/csv')

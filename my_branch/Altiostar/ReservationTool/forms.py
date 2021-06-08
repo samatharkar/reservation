@@ -1,41 +1,41 @@
 from django import forms
 from .models import *
 
-
+# Model form for DeviceType model with all fields
 class DeviceTypeForm(forms.ModelForm):
 
 	class Meta:
 		model = DeviceType
 		fields = '__all__'
 
-
+# Model form for Vendor model with all fields
 class VendorForm(forms.ModelForm):
 
 	class Meta:
 		model = Vendor
 		fields = '__all__'
 
-
+# Model form for Consumable model with all fields
 class ConsumableForm(forms.ModelForm):
 
 	class Meta:
 		model = Consumable
 		fields = '__all__'
 
-
-
+# Model form for Team model with all fields
 class TeamForm(forms.ModelForm):
 
 	class Meta:
 		model = Team
 		fields = '__all__'
 
-
+# Model form for Device model with all fields exlcuding setup
 class DeviceForm(forms.ModelForm):
 
 	class Meta:
 		model = Device
 		exclude = ['setup']
+		# Convert all date fields into input type=date for the templates
 		widgets = {
             'po_date': forms.DateInput(attrs={'type': 'date'}),
             'shipped_date': forms.DateInput(attrs={'type': 'date'}),
@@ -43,14 +43,14 @@ class DeviceForm(forms.ModelForm):
             'added_date': forms.DateInput(attrs={'type': 'date'}),
         }
 
-
+# Model form for SetupType model with all fields
 class SetupTypeForm(forms.ModelForm):
 
 	class Meta:
 		model = SetupType
 		fields = '__all__'
 
-
+# Model form for Setup model with all fields
 class MakeSetupForm(forms.ModelForm):
 
 	class Meta:

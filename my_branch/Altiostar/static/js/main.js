@@ -70,6 +70,7 @@ $(function(){
   // Handle sliding of main message
   $('.alert').fadeTo(5000, 1).slideUp(800);
 
+  // On document load, perform all checkbox functions
   inputCheckBoxes();
 
 });

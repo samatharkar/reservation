@@ -1,10 +1,10 @@
-<form method="post" class="dashboard-modal-form" data-ajax-url="{{add_or_modify_url}}" data-mode="{{mode}}">
+<form method="post" class="dashboard-modal-form" data-ajax-url="{{add_or_modify_url}}" data-mode="{{mode}}" data-title="{{title}}">
   <div class="modal-header">
     <h5 class="modal-title" id="modifyObjectModalLabel">
       {% if mode == 'add' %}
         Add {{title}}
       {% elif mode == 'modify' %}
-        Modify {{title}}s
+        Modify {{title}}
       {% endif %}
     </h5>
     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -12,7 +12,41 @@
     </button>
   </div>
   <div class="modal-body">
-    {% include 'form_template.html' with form=add_or_modify_form %}
+    {% if title == 'Setup' %}
+      <div class="row px-2">
+        <div class="col-sm-5 border-right mr-1 dashboard-modal-body-first-col">
+          {% include 'form_template.html' with form=add_or_modify_form %}
+        </div>
+        <div class="col-sm ml-1 dashboard-modal-body-second-col">
+          <div class="border-bottom my-2 device-to-setup-status">
+            <b>Status:&nbsp;</b>
+            <text><text>
+          </div>
+          <div class="row h-50">
+            <div id="device-filter" class="col-sm-4">
+              <label for="device-type-select">Device Type(s):</label>
+              <select id="device-type-select" class="form-control mt-1" multiple>
+                {% for type in device_type_list %}
+                  <option value="{{ type.id }}">{{ type.name }}</option>
+                {% endfor %}
+              </select>
+              <button type="button" id="search-devices-btn" class="btn btn-sm btn-dark w-50 mt-2" data-ajax-url="{% url 'search_devices_for_setup' %}">
+                Search
+              </button>
+            </div>
+            <div id="device-list" class="col-sm ml-1">
+              <label for="device-select">Devices:</label>
+            </div>
+          </div>
+          <div class="border-top h-50 my-2 selected-devices-status">
+            <b>Number of Devices selected:&nbsp;</b>
+            <text>0</text>
+          </div>
+        </div>
+      </div>
+    {% else %}
+      {% include 'form_template.html' with form=add_or_modify_form %}
+    {% endif %}
   </div>
   <div class="modal-footer justify-content-center">
     <button type="submit" class="btn btn-dark w-25">

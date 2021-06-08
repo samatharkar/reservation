@@ -11,17 +11,92 @@ function addMessages(url, message_type, message){
 	);
 }
 
+// View all items in the Dashboard
+function viewAllItems(){
+	$.get($('.dashboard-body').data('ajaxUrl'),
+	function(data){
+		$('.dashboard-body').html(data);
+		inputCheckBoxes();
+	},
+	'html'
+	);
+}
+
+// Add devices on click of add button in the Setup Add form in the Dashboard
+function addDevicesToSetup(){
+  	$('#add-selected-devices-btn').click(function(){
+		var device_id_list = $('#device-select').val();
+		var msg = device_id_list.length;
+		if(device_id_list.length){
+			$('#device-add-error-text').addClass('invisible');
+			$.get($(this).data('ajaxUrl'),{
+				'device_id_list[]': device_id_list
+			},
+			function(data){
+				$('input[name="device_id_list[]"]').remove();
+				console.log(data);
+				$('.dashboard-modal-form').prepend(data);
+				msg = "Device added";
+				$('.device-to-setup-status text').removeClass('text-danger').addClass('text-success').text(msg);
+				msg = device_id_list.length;
+				$('.selected-devices-status text').text(msg);
+	  		},
+	  		'html'
+	  		);
+	  	}
+	  	else{
+	  		msg = "Please select a Device first.";
+	  		$('.device-to-setup-status text').removeClass('text-success').addClass('text-danger').text(msg);
+	  	}
+  	});
+}
+
+// Search devices on click of search button in the Setup Add form in the Dashboard
+function searchDevices(){
+	$('#search-devices-btn').click(function(){
+		var device_type_id_list = $('#device-type-select').val();
+		var msg;
+		if(device_type_id_list.length){
+			$('.device-to-setup-status text').text('');
+			$.get($(this).data('ajaxUrl'),{
+				'device_type_id_list[]': device_type_id_list
+			},
+			function(data){
+				if(data){
+					$('#device-list').html(data);
+				}
+				else{
+					msg = "No device found. Please select another Device Type.";
+					$('.device-to-setup-status text').removeClass('text-success').addClass('text-danger').text(msg);
+				}
+				addDevicesToSetup();
+	  		},
+	  		'html'
+	  		);
+		}
+		else{
+			msg = "Please select a Device Type first.";
+	  		$('.device-to-setup-status text').removeClass('text-success').addClass('text-danger').text(msg);
+	  	}
+  	});
+}
+
 // Handle submit of the Modal form in a Dashboard
 function submitForm(id=null){
   	$('.dashboard-modal-form').submit(function(event){
   		event.preventDefault();
   		var mode = $(this).data('mode');
+  		var title = $(this).data('title');
   		var formData = $(this).serializeArray().concat(
   			{ name: 'mode', value: mode },
   			{ name: 'id', value: id }
   		);
+  		if(title == 'Setup'){
+  			formData.concat(
+  				{ 'device_id_list[]': $('input[name="device_id_list[]"]').val() }
+  			);
+  		}
   		var msg;
-  		console.log(formData);
   		$.post($(this).data('ajaxUrl'), formData,
   		function(data){
   			// Handle success Status
@@ -34,31 +109,19 @@ function submitForm(id=null){
 	  			else{
 	  				msg = 'Successfully modified the selected ' + name + '.';
 	  			}
-	  			$('.dashboard-operation-status text').removeClass('text-danger').addClass('text-success');
+	  			$('.dashboard-operation-status text').removeClass('text-danger').addClass('text-success').text(msg);;
 	  			$('#addOrModifyObjectModal').modal('hide');
 	  			// Refresh items in the Dashboard
 		  		viewAllItems();
   			}
   			else{
   				msg = 'Unable to ' + mode + ' the ' + name + '. Please try again.';
-  				$('.dashboard-operation-status text').removeClass('text-success').addClass('text-danger');
+  				$('.dashboard-operation-status text').removeClass('text-success').addClass('text-danger').text(msg);;
   			}
-  			$('.dashboard-operation-status text').text(msg);
   		},
   		'json'
   		);
   	});
-}
-
-// View all items in the Dashboard
-function viewAllItems(){
-	$.get($('.dashboard-body').data('ajaxUrl'),
-	function(data){
-		$('.dashboard-body').html(data);
-		inputCheckBoxes();
-	},
-	'html'
-	);
 }
 
 // On document load
@@ -72,64 +135,16 @@ $(function(){
 	    }
 	});
 
-	$('#search-devices-btn').click(function(){
-		$('#add-selected-devices-btn').removeAttr('disabled');
-		var device_type_id_list = $('#device-type-select').val();
-		if(device_type_id_list.length){
-			$('#device-search-error').text('');
-			$.get($(this).data('ajaxUrl'),{
-				'device_type_id_list[]': device_type_id_list
-			},
-			function(data){
-				$('#device-list').html(data);
-				if($('.no-device-found').length){
-					$('#add-selected-devices-btn').attr('disabled', '');
-				}
-	  		},
-	  		'html'
-	  		);
-		}
-		else{
-	  		$('#device-search-error').text('Please select a Device type first!');
-	  	}
-  	});
-
-  	$('#add-selected-devices-btn').click(function(){
-		var device_id_list = $('#device-select').val();
-		var msg = "<small>" + device_id_list.length;
-		if(device_id_list.length > 1)
-			msg += " Devices selected</small>";
-		else
-			msg += " Device selected</small>";
-		if(device_id_list.length){
-			$('#device-add-error').text('');
-			$.get($(this).data('ajaxUrl'),{
-				'device_id_list[]': device_id_list
-			},
-			function(data){
-				$('input[name="device_id_list[]"]').remove();
-				$('form[name="setup-form"]').prepend(data);
-				$('#selected-devices').html(msg);
-				$('#device-modal-messages-div').removeAttr('hidden');
-				$('#device-modal-messages').fadeTo(3000, 1).slideUp(800);
-				$('#device-modal-messages').addClass('alert-success');
-				$('#device-modal-messages').html('Device added!');
-	  		},
-	  		'html'
-	  		);
-	  	}
-	  	else{
-	  		$('#device-add-error').text('Please select a Device first!');
-	  	}
-  	});
-
   	// Handle click of Add button on a Dashboard
   	$('.dashboard-add-btn').click(function(){
+  		var title = $(this).data('title');
   		$.get($(this).data('ajaxUrl'), {
   			'mode': $(this).data('mode')
   		},
   		function(data){
   			$('#addOrModifyObjectModal').find('.modal-content').html(data);
+  			if(title == 'Setup')
+  				searchDevices();
   			submitForm();
   		},
   		'html'
@@ -163,8 +178,7 @@ $(function(){
 		  		msg = 'Please select only 1 ' + name + '.';
 		  	else
 		  		msg = 'Please select any ' + name + '.';
-	  		$('.dashboard-operation-status text').removeClass('text-success').addClass('text-danger');
-	  		$('.dashboard-operation-status text').text(msg);
+	  		$('.dashboard-operation-status text').removeClass('text-success').addClass('text-danger').text(msg);
   		}
   	});
 
@@ -178,13 +192,13 @@ $(function(){
   			if(data){
 	  			$('.dashboard-body').html(data);
 	  			inputCheckBoxes();
+	  			countObjects();
   			}
   			else{
   				// Handle no results found Status
   				var name = $('.dashboard-operation-status').data('objectName');
   				var msg = 'No ' + name + ' found. Try searching something else.';
-  				$('.dashboard-operation-status text').removeClass('text-success').addClass('text-danger');
-  				$('.dashboard-operation-status text').text(msg);
+  				$('.dashboard-operation-status text').removeClass('text-success').addClass('text-danger').text(msg);
   			}
   		},
   		'html'
@@ -215,18 +229,16 @@ $(function(){
 			  	var msg;
 			  	if(data.deleted_count == '0'){
 			  		msg = 'No selected ' + name + ' deleted. ';
-			  		$('.dashboard-operation-status text').removeClass('text-success').addClass('text-danger');
+			  		$('.dashboard-operation-status text').removeClass('text-success').addClass('text-danger').text(msg);;
 			  	}
 			  	else{
 			  		msg = 'Successfully deleted ' + data.deleted_count + '/' + total + ' selected ' + name + '. ';
-			  		$('.dashboard-operation-status text').removeClass('text-danger').addClass('text-success');	
+			  		$('.dashboard-operation-status text').removeClass('text-danger').addClass('text-success').text(msg);;	
 			  	}
 			  	if(data.not_deleted_count == '1')
 		  			msg += '1 has an existing relationship.';
 		  		else if(data.not_deleted_count >= '1')
 		  			msg += data.not_deleted_count + ' have an existing relationship.';
-		  		
-		  		$('.dashboard-operation-status text').text(msg);
 		  		// Refresh items in the Dashboard
 		  		viewAllItems();
 	  		},
@@ -238,8 +250,7 @@ $(function(){
 	  		var name = $('.dashboard-operation-status').data('objectName');
 	  		name = name.slice(0, -1);
 	  		var msg = 'Please select at least 1 ' + name + '.';
-	  		$('.dashboard-operation-status text').removeClass('text-success').addClass('text-danger');
-	  		$('.dashboard-operation-status text').text(msg);
+	  		$('.dashboard-operation-status text').removeClass('text-success').addClass('text-danger').text(msg);
 	  	}
   	});
 

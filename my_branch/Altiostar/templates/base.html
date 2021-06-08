@@ -27,41 +27,37 @@
         <i class="fa fa-chevron-right"></i>
       </button>
       <div class="dropdown-container">
-        <a href="{% url 'add_device' %}" class="ml-3">Add Device</a>
-        <a href="{% url 'add_device_type' %}" class="ml-3">Add Device Type</a>
-        <a href="{% url 'search_device' %}" class="ml-3">Search Devices</a>
-        <a href="{% url 'view_device' %}" class="ml-3">View Devices</a>
+        <a href="{% url 'dashboard' name='Device' %}" class="ml-3">Device Dashboard</a>
+        <a href="{% url 'dashboard' name='DeviceType' %}" class="ml-3">Device Type Dashboard</a>
       </div>
 
       <button class="dropdown-btn">Setup 
         <i class="fas fa-chevron-right"></i>
       </button>
       <div class="dropdown-container">
-        <a href="{% url 'add_setup_type' %}" class="ml-3">Add Setup Type</a>
-        <a href="{% url 'make_setup' %}" class="ml-3">Make Setup</a>
-        <a href="{% url 'search_setup' %}" class="ml-3">Search Setups</a>
-        <a href="{% url 'view_setup' %}" class="ml-3">View Setup</a>
+        <a href="{% url 'dashboard' name='SetupType' %}" class="ml-3">Setup Type Dashboard</a>
+        <a href="{% url 'dashboard' name='Setup' %}" class="ml-3">Setup Dashboard</a>
       </div>
 
       <button class="dropdown-btn">Vendor 
         <i class="fa fa-chevron-right"></i>
       </button>
       <div class="dropdown-container">
-        <a href="{% url 'vendor' %}" class="ml-3">Vendor Dashboard</a>
+        <a href="{% url 'dashboard' name='Vendor' %}" class="ml-3">Vendor Dashboard</a>
       </div>
 
       <button class="dropdown-btn">Team 
         <i class="fa fa-chevron-right"></i>
       </button>
       <div class="dropdown-container">
-        <a href="{% url 'add_team' %}" class="ml-3">Add Team</a>
+        <a href="{% url 'dashboard' name='Team' %}" class="ml-3">Team Dashboard</a>
       </div>
 
       <button class="dropdown-btn">Consumable 
         <i class="fa fa-chevron-right"></i>
       </button>
       <div class="dropdown-container">
-        <a href="/add_consumable" class="ml-3">Add Consumable</a>
+        <a href="{% url 'dashboard' name='Consumable' %}" class="ml-3">Consumable Dashboard</a>
       </div>
 
     </div>

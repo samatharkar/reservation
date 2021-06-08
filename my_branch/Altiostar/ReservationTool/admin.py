@@ -2,7 +2,7 @@ from django.contrib import admin
 from ReservationTool.models import *
 from import_export.admin import ImportExportModelAdmin
 
-
+# Creates TabularInline view for the Device model on required admin page
 class DeviceInline(admin.TabularInline):
 	model = Device
 
@@ -16,7 +16,7 @@ class DeviceInline(admin.TabularInline):
 			extra = 1
 		return extra
 
-
+# Creates TabularInline view for the Setup model on required admin page
 class SetupInline(admin.TabularInline):
 	model = Setup
 
