@@ -1,3 +1,8 @@
 {% for device in added_device_list %}
-	<input type="hidden" name="device_id_list[]" value="{{ device.id }}">
+	<li class="list-group-item d-flex justify-content-between align-items-center added-device-list-li" data-id="{{ device.id }}">
+		{{device.name}}
+		<button type="button" class="btn btn-sm btn-outline-danger added-device-list-remove-btn" data-id="{{ device.id }}">
+			<i class="justify-content-center fas fa-minus"></i>
+		</button>
+	</li>
 {% endfor %}

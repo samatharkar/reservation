@@ -17,7 +17,7 @@ function countObjects(){
 function inputCheckBoxes(){
   // Handle click anywhere on the th-0 to select the select all checkbox 
   // and selection of all checkboxes using select all in a Dashboard
-  $('.th-0, #dashboard-item-select-all').click(function(){
+  $('.th-0, #dashboard-item-select-all', ).click(function(){
     var obj = $('#dashboard-item-select-all');
     var checked = obj.prop('checked');
     obj.prop('checked', !checked);
@@ -27,7 +27,7 @@ function inputCheckBoxes(){
   });
 
   // Handle click anywhere on the table row to select the checbox
-  $('tbody tr').click(function(){
+  $('.general-table tbody tr').add('.special-table tbody tr .td-col-0').click(function(){
     var obj = $(this).find('input[name="dashboard-item-checkbox"]');
     var current = obj.prop('checked');
     obj.prop('checked', !current);
@@ -72,5 +72,8 @@ $(function(){
 
   // On document load, perform all checkbox functions
   inputCheckBoxes();
+
+  // Handle events for Device table
+  deviceTable();
 
 });

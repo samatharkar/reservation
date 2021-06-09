@@ -1,20 +1,6 @@
 from django.db import models
 
 
-class DeviceType(models.Model):
-    name = models.CharField(max_length=125, default="NA")
-    make  = models.CharField(max_length=125, default="NA")
-    model = models.CharField(max_length=125, default="NA")
-    part_no = models.CharField(max_length=125, default="NA")
-    remark = models.CharField(max_length=125, default="NA")
-
-    def __str__(self):
-        return self.name
-    
-    class Meta:
-        db_table = "device_types"
-
-
 class Vendor(models.Model):
     name = models.CharField(max_length=125)
     email  = models.CharField(max_length=125)
@@ -84,6 +70,21 @@ class Setup(models.Model):
 
     class Meta:
         db_table = "setups"
+
+
+class DeviceType(models.Model):
+    name = models.CharField(max_length=125, default="NA")
+    make  = models.CharField(max_length=125, default="NA")
+    model = models.CharField(max_length=125, default="NA")
+    part_no = models.CharField(max_length=125, default="NA")
+    remark = models.CharField(max_length=125, default="NA")
+    setup = models.ManyToManyField(Setup, blank=True, related_name="device_types")
+
+    def __str__(self):
+        return self.name
+    
+    class Meta:
+        db_table = "device_types"
 
 
 class Device(models.Model):

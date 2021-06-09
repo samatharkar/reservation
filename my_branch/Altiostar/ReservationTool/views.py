@@ -135,9 +135,9 @@ def add_or_modify_object(request, name):
                     device_list = Device.objects.filter(
                                 id__in=device_id_list
                             )
-                    print(device_list)
                     for device in device_list:
                         setup.devices.add(device)
+                        setup.device_types.add(device.type)
                 else:
                     object_form.save()
                 completed = True
@@ -152,12 +152,16 @@ def view_objects(request, name):
     if request.is_ajax():
         object_list = MODELS[name].objects.all()
         field_names = MODELS[name]._meta.fields[1:]
+        if name == 'Device' or name == 'Setup':
+            template = 'dashboard_body_template_special.html'
+        else:
+            template = 'dashboard_body_template.html'
         context = {
                 'object': PLURAL_NAMES[name],
                 'list': object_list,
                 'field_names': field_names,
             }
-        return render(request, 'dashboard_body_template.html', context)
+        return render(request, template, context)
     return Http404()
 
 # Search objects of any model
@@ -168,13 +172,17 @@ def search_objects(request, name):
                             Q(name__icontains = search_text)
                         )
         field_names = MODELS[name]._meta.fields[1:]
+        if name == 'Device' or name == 'Setup':
+            template = 'dashboard_body_template_special.html'
+        else:
+            template = 'dashboard_body_template.html'
         context = {
                     'object': PLURAL_NAMES[name],
                     'list': object_list,
                     'field_names': field_names,
                 }
         if len(object_list):
-            return render(request, 'dashboard_body_template.html', context)
+            return render(request, template, context)
         else:
             return HttpResponse('')
     return Http404()
@@ -182,28 +190,23 @@ def search_objects(request, name):
 # Delete objects of any model
 def delete_objects(request, name):
     if request.is_ajax():
-        fk = None
         id_list = request.POST.getlist('id_list[]')
         object_list = MODELS[name].objects.first()
         try:
             # Check if the object passed has a foreignkey with Device model
-            print('checking for relation with Device model')
             object_list.devices.exists()
         except:
             try:
                 # Check if the object passed has a foreignkey with Setup model
-                print('checking for relation with Setup model')
                 object_list.setups.exists()
             except:
                 # Exception occured meaning an object not related to both Device & Setup 
                 # model found, hence the object is of Device Model
-                print('Relation found with none')
                 object_list = MODELS[name].objects.filter(
                                 id__in=id_list,
                             )
             else:
                 # Safely executed meaning an object related to Setup model found
-                print('Relation found with Setup model')
                 object_list = MODELS[name].objects.filter(
                                 id__in=id_list,
                                 setups__isnull=True,
@@ -211,7 +214,6 @@ def delete_objects(request, name):
             
         else:
             # Safely executed meaning an object related to Device model found
-            print('Relation found with Device model')
             object_list = MODELS[name].objects.filter(
                                 id__in=id_list,
                                 devices__isnull=True,
@@ -227,38 +229,19 @@ def delete_objects(request, name):
         return JsonResponse(response)
     return Http404()
 
-
-def make_setup(request):
-    if request.method == "POST":
-        setup_form = MakeSetupForm(request.POST)
-        device_id_list = request.POST.getlist('device_id_list[]')
-        if setup_form.is_valid():
-            setup = setup_form.save()
-            device_list = Device.objects.filter(
-                        id__in=device_id_list
-                    )
-            for device in device_list:
-                setup.devices.add(device)
-            messages.success(request,f'Setup Formed!')
-    else:
-        setup_form = MakeSetupForm()
-    device_type_list = DeviceType.objects.all()
-    return render(request, 'make_setup.html', {
-                'form': setup_form,
-                'device_type_list': device_type_list,
-            }
-        )
-
 # Render device(s) based on the device type(s) searched in the modal of a dashboard
 def search_devices_for_setup(request):
     if request.is_ajax():
         id_list = request.GET.getlist('device_type_id_list[]')
+        print(request.GET)
+        do_not_inlcude_id_list = request.GET.getlist('do_not_include_list[]')
         device_type_list = DeviceType.objects.filter(
                             id__in=id_list
                         )
         device_list = Device.objects.none()
         for device_type in device_type_list:
             device_list |= device_type.devices.filter(setup__isnull=True)
+        device_list = device_list.exclude(id__in=do_not_inlcude_id_list)
         if len(device_list):
             context = { 
                         'device_list': device_list, 

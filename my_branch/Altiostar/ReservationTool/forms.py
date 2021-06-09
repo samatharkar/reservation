@@ -29,12 +29,12 @@ class TeamForm(forms.ModelForm):
 		model = Team
 		fields = '__all__'
 
-# Model form for Device model with all fields exlcuding setup
+# Model form for Device model with all fields
 class DeviceForm(forms.ModelForm):
 
 	class Meta:
 		model = Device
-		exclude = ['setup']
+		fields = '__all__'
 		# Convert all date fields into input type=date for the templates
 		widgets = {
             'po_date': forms.DateInput(attrs={'type': 'date'}),

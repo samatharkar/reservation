@@ -1,6 +1,7 @@
 :root {
   --division: 220px;
-  --dashboard-height: 320px;
+  --dashboard-height: 350px;
+  --select-box-height: 400px;
 }
 
 /* Styling of messages on top*/
@@ -92,10 +93,19 @@
   font-size: smaller;
 }
 
-.th-0 {
-  width: 130px;
-}
-
-.device-to-setup-status, .selected-devices-status {
+.device-to-setup-status {
   font-size: medium;
 }
+
+#device-type-select, #device-select {
+  height: var(--select-box-height);
+}
+
+#added-device-list {
+  overflow-y: scroll;
+  height: var(--select-box-height);
+}
+
+.special-table-modal-call {
+  cursor: pointer;
+ }

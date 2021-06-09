@@ -3,15 +3,15 @@
   {{title}} Dashboard
 {% endblock %}
 
+{% block heading %}
+  {{title}} Dashboard
+{% endblock %}
+
 {% block content %}
   <div class="container dashboard">
     {% csrf_token %}
-    
-    <div class="row border-bottom justify-content-center m-2 dashboard-heading">
-      <h3>{{title}} Dashboard</h3>
-    </div>
 
-    <div class="row border-bottom m-2 dashboard-searchbar">
+    <div class="border-bottom mt-4 mb-2 dashboard-searchbar">
       <div class="input-group">
         <input type="search" id="dashboard-searchbar-input" class="form-control" autocomplete="off" placeholder="Search {{object}} here. Type and click the search icon." data-ajax-url="{{search_url}}">
         <div class="input-group-append">
@@ -23,7 +23,11 @@
     </div>
     
     <div class="container-fluid my-2 dashboard-body" data-ajax-url="{{view_url}}">
-      {% include 'dashboard_body_template.html' with object=object list=list field_names=field_names %}
+      {% if title == 'Device' or title == 'Setup' %}
+        {% include 'dashboard_body_template_special.html' with object=object list=list field_names=field_names %}
+      {% else %}
+        {% include 'dashboard_body_template.html' with object=object list=list field_names=field_names %}
+      {% endif %}
     </div>
 
     <div class="row border-top my-2 mx-3 dashboard-operation-status" data-object-name="{{object}}">

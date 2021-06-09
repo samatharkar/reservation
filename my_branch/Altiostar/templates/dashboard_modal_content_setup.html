@@ -1,0 +1,31 @@
+<div class="col-sm ml-1 dashboard-modal-body-second-col">
+  <div class="border-bottom mb-3 device-to-setup-status">
+    <b>Status:&nbsp;</b>
+    <text><text>
+  </div>
+  <div class="row my-3">
+    <div id="device-filter" class="col-sm-4 border-right">
+      <label for="device-type-select">Device Type(s):</label>
+      <select id="device-type-select" class="form-control mt-1" multiple>
+        {% for type in device_type_list %}
+          <option class="my-1" value="{{type.id}}">{{type.name}}</option>
+        {% endfor %}
+      </select>
+      <button type="button" id="search-devices-btn" class="btn btn-sm btn-dark w-50 mt-2" data-ajax-url="{% url 'search_devices_for_setup' %}">
+        Search
+      </button>
+    </div>
+    <div id="available-device-list" class="col-sm-4 border-right ml-1">
+      <label for="device-select">Available Devices:</label>
+    </div>
+    <div class="col-sm ml-1">
+      <text>Added Devices:</text>
+      <ul id="added-device-list" class="list-group border mt-2">
+      </ul>
+      <div class="d-flex justify-content-between my-2 added-devices-status">
+        <b class="mt-1">Total:&nbsp;</b>
+        <span id="added-devices-count" class="badge badge-dark text-center mt-2 w-25">0</span>
+      </div>
+    </div>
+  </div>
+</div>
