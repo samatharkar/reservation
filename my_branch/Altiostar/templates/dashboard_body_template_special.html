@@ -63,6 +63,32 @@
 				                      		</div>
 				                      	</li>
 			                    	{% endfor %}
+			                    	{% if object == 'setups' %}
+			                    		{% with device_list=i|get_device_list %}
+				                    		<li class="list-group-item">
+				                    			<div class="row justify-content-between">
+				                    				<div class="col-sm">
+				                    					Number of devices:
+				                    				</div>
+				                    				<div class="col-sm">
+				                    					{{device_list|length}}
+				                    				</div>
+				                    			</div>
+				                    		</li>
+				                    		<li class="list-group-item">
+				                    			<div class="row justify-content-between">
+				                    				<div class="col-sm">
+				                    					All devices:
+				                    				</div>
+				                    				<div class="col-sm">
+				                    					{% for device in device_list %}
+				                    						{{device.name}},
+				                    					{% endfor %}
+				                    				</div>
+				                    			</div>
+				                    		</li>
+			                    		{% endwith %}
+				          			{% endif %}
 			                    </ul>
 		                  	</div>
 		                  	<div class="modal-footer">

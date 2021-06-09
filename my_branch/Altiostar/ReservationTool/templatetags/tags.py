@@ -12,3 +12,8 @@ def get_tag(tags):
 @register.filter
 def get_field_value(object, field):
     return getattr(object, field)
+
+# Get the list of devices attached to a setup
+@register.filter
+def get_device_list(setup):
+	return setup.devices.all()
