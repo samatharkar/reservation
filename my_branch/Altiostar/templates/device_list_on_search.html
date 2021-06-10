@@ -1,9 +1,36 @@
 <label for="device-select">Available Devices:</label>
 <select id="device-select" class="form-control mt-1" multiple>
 	{% for device in device_list %}
-		<option class="my-1" value="{{ device.id }}">{{ device.name }}</option>
+		<option class="my-1" value="{{device.id}}">
+			{{device.name}}
+		</option>
   	{% endfor %}
 </select>
+<!-- <div class="device-details">
+	<span>
+		<i class="fas fa-info-circle"></i>
+	</span>
+  	<span class="device-details-body">
+  		<table>
+  			<thead>
+  				<tr>
+  					<th scope="col">Model</th>
+  					<th scope="col">Make</th>
+  					<th scope="col">Sr.No.</th>
+  				</tr>
+  			</thead>
+  			<tbody>
+  				<tr>
+  					{% with device=device_list|first %}
+  					<td>{{device.type.model}}</td>
+  					<td>{{device.type.make}}</td>
+  					<td>{{device.srno}}</td>
+  					{% endwith %}
+  				</tr>
+  			</tbody>
+  		</table>
+  	</span>
+</div> -->
 <button type="button" id="add-selected-devices-btn" class="btn btn-sm btn-dark mt-2 w-50" data-ajax-url="{% url 'add_devices_to_setup' %}">
 	Add
 </button>

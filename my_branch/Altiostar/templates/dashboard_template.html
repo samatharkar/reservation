@@ -8,14 +8,33 @@
 {% endblock %}
 
 {% block content %}
+  {% load tags %}
   <div class="container dashboard">
     {% csrf_token %}
 
     <div class="border-bottom mt-4 mb-2 dashboard-searchbar">
       <div class="input-group">
+        {% if title == 'Device' or title == 'Setup' %}
+          <div class="input-group-prepend">
+            <div class="dropdown">
+              {% with first_field=field_names|first %}
+                <button type="button" class="btn btn-outline-dark dropdown-toggle" id="dashboard-searchbar-selector" data-toggle="dropdown" data-search-by="{{first_field.name}}" aria-haspopup="true" aria-expanded="false">
+                    {{first_field.name}}
+                </button>
+              {% endwith %}
+              <div id="dashboard-searchbar-selector-menu" class="dropdown-menu" aria-labelledby="dashboard-searchbar-selector">
+                {% for field in field_names %}
+                  {% if field|search_allowed:title %}
+                    <a class="dropdown-item" href="#">{{field.name}}</a>
+                  {% endif %}
+                {% endfor %}
+              </div>
+            </div>
+          </div>
+        {% endif %}
         <input type="search" id="dashboard-searchbar-input" class="form-control" autocomplete="off" placeholder="Search {{object}} here. Type and click the search icon." data-ajax-url="{{search_url}}">
         <div class="input-group-append">
-          <button type="button" id="dashboard-searchbar-btn" class="btn input-group-text">
+          <button type="button" id="dashboard-searchbar-btn" class="btn input-group-text" data-title="{{title}}">
             <span class="fa fa-search"></span>
           </button>
         </div>
@@ -35,7 +54,7 @@
       <text>0 {{object}} selected<text>
     </div>
 
-    <div class="row border-top justify-content-around m-2 dashboard-buttons">
+    <div class="row border-top justify-content-around m-3 dashboard-buttons">
       <button type="button" class="col-sm btn btn-dark mt-2 mx-1 dashboard-add-btn" data-toggle="modal" data-target="#addOrModifyObjectModal" data-ajax-url="{{load_form_url}}" data-mode="add" data-title="{{title}}">
         Add
       </button>
@@ -47,6 +66,10 @@
       <button type="button" class="col-sm btn btn-dark mt-2 mx-1 dashboard-delete-btn" data-ajax-url="{{delete_url}}">
         Delete
       </button>
+
+      <a href="{% url 'export_objects' name=title %}" class="col-sm btn btn-dark mt-2 mx-1 dashboard-export-btn">
+        Export
+      </a>
 
       <div class="modal fade" id="addOrModifyObjectModal">
         {% if title == 'Setup' %}

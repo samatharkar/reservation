@@ -73,7 +73,11 @@ $(function(){
   // On document load, perform all checkbox functions
   inputCheckBoxes();
 
-  // Handle events for Device table
-  deviceTable();
+  // Handle dashboard searchbar search selector for Device and Setup model
+  $('#dashboard-searchbar-selector-menu a').click(function(){
+    var field = $(this).text();
+    $('#dashboard-searchbar-selector').text(field);
+    $('#dashboard-searchbar-selector').data('searchBy', field);
+  });
 
 });

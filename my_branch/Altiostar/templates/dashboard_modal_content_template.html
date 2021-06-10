@@ -17,7 +17,7 @@
         <div class="col-sm-4 border-right mr-1 dashboard-modal-body-first-col">
           {% include 'form_template.html' with form=add_or_modify_form %}
         </div>
-        {% include 'dashboard_modal_content_setup.html' with device_type_list=device_type_list %}
+        {% include 'dashboard_modal_content_setup.html' with mode=mode device_type_list=device_type_list device_list=device_list %}
       </div>
     {% else %}
       {% include 'form_template.html' with form=add_or_modify_form %}

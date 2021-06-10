@@ -6,7 +6,7 @@ class DeviceTypeForm(forms.ModelForm):
 
 	class Meta:
 		model = DeviceType
-		fields = '__all__'
+		exclude = ['setup']
 
 # Model form for Vendor model with all fields
 class VendorForm(forms.ModelForm):
@@ -34,7 +34,7 @@ class DeviceForm(forms.ModelForm):
 
 	class Meta:
 		model = Device
-		fields = '__all__'
+		exclude = ['setup']
 		# Convert all date fields into input type=date for the templates
 		widgets = {
             'po_date': forms.DateInput(attrs={'type': 'date'}),

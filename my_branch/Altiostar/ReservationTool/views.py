@@ -5,9 +5,9 @@ from django.contrib import messages
 from django.db.models import Q
 from .models import *
 from .forms import *
+from .search_helpers import *
 import csv
-from .filters import SetupFilter
-from .filters import DeviceFilter
+import datetime
 
 
 # Dictionary of models and their names
@@ -52,6 +52,17 @@ FORMS = {
     'SetupType': SetupTypeForm,
     'Setup': MakeSetupForm,
     'Device': DeviceForm,
+}
+
+# Dictionary of models and csv export file names
+FILE_NAMES = {
+    'DeviceType': 'device_types',
+    'Vendor': 'vendors',
+    'Consumable': 'consumables',
+    'Team': 'teams',
+    'SetupType': 'setup_types',
+    'Setup': 'setups',
+    'Device': 'devices',
 }
 
 # Home
@@ -113,6 +124,9 @@ def load_object_form(request, name):
         if name == 'Setup':
             device_type_list = DeviceType.objects.all()
             context['device_type_list'] = device_type_list
+            if mode == 'modify':
+                device_list = current_object.devices.all()
+                context['device_list'] = device_list
         return render(request, 'dashboard_modal_content_template.html', context)
     return Http404()
 
@@ -137,7 +151,6 @@ def add_or_modify_object(request, name):
                             )
                     for device in device_list:
                         setup.devices.add(device)
-                        setup.device_types.add(device.type)
                 else:
                     object_form.save()
                 completed = True
@@ -168,9 +181,17 @@ def view_objects(request, name):
 def search_objects(request, name):
     if request.is_ajax():
         search_text = request.GET.get('search_text')
-        object_list = MODELS[name].objects.filter(
-                            Q(name__icontains = search_text)
-                        )
+        object_list = None
+        if name == 'Device' or name == 'Setup':
+            search_by = request.GET.get('search_by')
+            if name == 'Device':
+                object_list = search_helper_devices(search_by, search_text)
+            else:
+                object_list = search_helper_setups(search_by, search_text)
+        else:
+            object_list = MODELS[name].objects.filter(
+                                name__icontains = search_text
+                            )
         field_names = MODELS[name]._meta.fields[1:]
         if name == 'Device' or name == 'Setup':
             template = 'dashboard_body_template_special.html'
@@ -229,15 +250,42 @@ def delete_objects(request, name):
         return JsonResponse(response)
     return Http404()
 
+# Export data
+def export_objects(request, name):
+    current_time = datetime.datetime.now().strftime('%d-%m-%y_%I-%M-%p')
+    filename = f'{FILE_NAMES[name]}_{str(current_time)}.csv'
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = f'attachment; filename="{filename}"'
+    writer = csv.writer(response)
+    field_names = MODELS[name]._meta.fields[1:]
+    field_names = [field.verbose_name for field in field_names]
+    values = MODELS[name].objects.all().values_list()
+    # If the model is Setup, make changes to append the list of devices attached
+    if name == 'Setup':
+        values = list(values)
+        field_names.append('All Devices')
+        setups = Setup.objects.all()
+        for i, setup in enumerate(setups):
+            devices = setup.devices.all()
+            devices = ', '.join([device.name for device in devices])
+            devices = '"' + devices + '"'
+            values[i] = list(values[i])
+            values[i].append(devices)
+    writer.writerow(field_names)
+    for row in values:
+        writer.writerow(row[1:])
+    return response
+
 # Render device(s) based on the device type(s) searched in the modal of a dashboard
 def search_devices_for_setup(request):
     if request.is_ajax():
         id_list = request.GET.getlist('device_type_id_list[]')
-        print(request.GET)
         do_not_inlcude_id_list = request.GET.getlist('do_not_include_list[]')
         device_type_list = DeviceType.objects.filter(
                             id__in=id_list
                         )
+        print(do_not_inlcude_id_list)
+        print(id_list)
         device_list = Device.objects.none()
         for device_type in device_type_list:
             device_list |= device_type.devices.filter(setup__isnull=True)
@@ -263,17 +311,23 @@ def add_devices_to_setup(request):
                 }
         return render(request, 'device_added_list.html', context)
     return Http404()
-    
 
-def export(request):
-    response = HttpResponse(content_type='text/csv')
-    response['Content-Disposition'] = 'attachment; filename="fields.csv"'
-
-
-    writer = csv.writer(response)
-    writer.writerow(['Hostname', 'IP', 'MAC', 'Device Type', 'Serial Number', 'Make/Model'])
-
-    for fields in Device.objects.all().values_list('hostname', 'ip', 'mac', 'device_type','serial_number', 'make'):
-        writer.writerow(fields)
-
-    return response
+# Remove the attached devices from the Setup 
+def remove_devices_from_setup(request):
+    if request.is_ajax():
+        id = request.GET.get('id')
+        completed = False
+        try:
+            device = Device.objects.get(id=id)
+        except:
+            pass
+        else:
+            if device.setup:
+                device.setup = None
+                device.save()
+            completed = True
+        response = {
+                    'completed': completed
+                }
+        return JsonResponse(response)
+    return Http404()

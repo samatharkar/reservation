@@ -2,6 +2,7 @@
   --division: 220px;
   --dashboard-height: 350px;
   --select-box-height: 400px;
+  --device-detail-width: 160px;
 }
 
 /* Styling of messages on top*/
@@ -109,3 +110,49 @@
 .special-table-modal-call {
   cursor: pointer;
  }
+
+.device-details {
+  position: relative;
+  display: inline-block;
+}
+
+.device-details-body {
+  visibility: hidden;
+  width: var(--device-detail-width);
+  background-color: #fcedc5;
+  border: 1px solid #eab76a;
+  border-radius: 8px;
+  font-size: medium;
+  text-align: center;
+  position: absolute;
+  z-index: 100;
+  top: -5px;
+  left: 105%;
+}
+
+.device-details-body::after {
+  content: "";
+  position: absolute;
+  top: 20%;
+  right: 100%;
+  border-width: 9px;
+  border-style: solid;
+  border-color: transparent #eab76a transparent transparent;
+}
+
+.device-details:hover .device-details-body {
+  visibility: visible;
+}
+
+.device-details-body table {
+  width: 100%;
+}
+
+.device-details-body table thead tr th {
+  background-color: #eab76a;
+  padding: 4px;
+}
+
+.device-details-body table tbody tr td {
+  padding: 4px;
+}

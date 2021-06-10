@@ -22,19 +22,6 @@ function viewAllItems(){
 	);
 }
 
-// Remove devices from added list on click of button beside any of them
-function removeDevicesFromAddedList(){
-	$('.added-device-list-remove-btn').click(function(){
-		$(this).parent().remove();
-		// Update status
-		var msg = "1 Device removed.";
-  		$('.device-to-setup-status text').removeClass('text-danger').addClass('text-success').text(msg);
-		// Update count
-		var count = $('.added-device-list-li').length;
-		$('#added-devices-count').text(count);
-	});
-}
-
 // Intermediate operation in searching
 function searchHelper(extra=null){
 	var device_type_id_list = $('#device-type-select').val();
@@ -64,6 +51,36 @@ function searchHelper(extra=null){
 	},
 	'html'
 	);
+}
+
+// Remove devices from added list on click of button beside any of them
+function removeDevicesFromAddedList(){
+	$('.added-device-list-remove-btn').click(function(){
+		var obj = $(this);
+		var id = obj.data('id');
+		var msg;
+		$.get(obj.data('ajaxUrl'), {
+			'id': id
+		},
+		function(data){
+			if(data.completed){
+				obj.parent().remove();
+				// Update status
+				msg = "1 Device removed.";
+		  		$('.device-to-setup-status text').removeClass('text-danger').addClass('text-success').text(msg);
+				// Update count of added devices
+				var count = $('.added-device-list-li').length;
+				$('#added-devices-count').text(count);
+				// Refresh the list of available devices
+			}
+			else{
+				msg = "Device not removed. Please try again.";
+		  		$('.device-to-setup-status text').removeClass('text-success').addClass('text-danger').text(msg);
+			}
+		},
+		'json'
+		);
+	});
 }
 
 // Add devices on click of add button in the Setup Add form in the Dashboard
@@ -98,7 +115,6 @@ function addDevicesToSetup(){
 	  		msg = "Please select a Device first.";
 	  		$('.device-to-setup-status text').removeClass('text-success').addClass('text-danger').text(msg);
 	  	}
-
 	  	// Refresh the list of available devices
 	  	searchHelper(device_id_list);
 
@@ -202,9 +218,10 @@ $(function(){
 
   	// Handle click of Modify button on a Dashboard
   	$('.dashboard-modify-btn').click(function(){
-  		var selected_checboxes = $('input:checkbox:checked');
-  		if(selected_checboxes.length == 1){
-  			var id = selected_checboxes.val();
+  		var selected_checkboxes = $('input:checkbox:checked');
+  		var title = $(this).data('title');
+  		if(selected_checkboxes.length == 1){
+  			var id = selected_checkboxes.val();
   			$.get($(this).data('ajaxUrl'), {
   				'mode': $(this).data('mode'),
   				'id': id
@@ -212,18 +229,21 @@ $(function(){
   			function(data){
   				$('#addOrModifyObjectModal').find('.modal-content').html(data);
   				$('#addOrModifyObjectModal').modal('show');
+  				if(title == 'Setup'){
+	  				searchDevices();
+	  				removeDevicesFromAddedList();
+  				}
   				submitForm(id);
   			},
   			'html'
   			);
-
   		}
   		else{
   			// Handle not permitted Status
   			var name = $('.dashboard-operation-status').data('objectName');
 	  		name = name.slice(0, -1);
 	  		var msg;
-	  		if(selected_checboxes.length)
+	  		if(selected_checkboxes.length)
 		  		msg = 'Please select only 1 ' + name + '.';
 		  	else
 		  		msg = 'Please select any ' + name + '.';
@@ -234,8 +254,13 @@ $(function(){
   	// Handle click of Search button on a Dashboard
   	$('#dashboard-searchbar-btn').click(function(){
   		var search_text = $('#dashboard-searchbar-input').val();
+  		var title = $(this).data('title');
+  		var search_by = null;
+  		if(title == 'Device' || title == 'Setup')
+	  		search_by = $('#dashboard-searchbar-selector').data('searchBy');
   		$.get($('#dashboard-searchbar-input').data('ajaxUrl'), {
-  			'search_text': search_text
+  			'search_text': search_text,
+  			'search_by': search_by
   		},
   		function(data){
   			if(data){
@@ -301,6 +326,15 @@ $(function(){
 	  		var msg = 'Please select at least 1 ' + name + '.';
 	  		$('.dashboard-operation-status text').removeClass('text-success').addClass('text-danger').text(msg);
 	  	}
+  	});
+
+  	// Handle click of Export button on a Dashboard
+  	$('.dashboard-export-btn').click(function(){
+  		$.get($(this).data('ajaxUrl'),
+  		function(data){
+  			console.log(data);
+  		}
+  		);
   	});
 
 });
