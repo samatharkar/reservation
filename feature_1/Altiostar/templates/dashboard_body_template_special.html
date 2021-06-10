@@ -1,0 +1,133 @@
+{% load tags %}
+
+<div class="row border-bottom font-italic m-2">
+  Total {{ object }} found: {{ list|length }}
+</div>
+
+<div class="table-responsive-sm">
+  	<table class="table table-bordered table-hover special-table">
+	    <caption hidden>List of {{ object }}</caption>
+	    <thead class="thead-dark">
+	      	<tr>
+	        	<th scope="col" class="th-0">
+		          	<div class="form-check">
+		            	<input type="checkbox" id="dashboard-item-select-all" class="form-check-input">
+		            	<label class="form-check-label ml-3">
+		              		<small>Select All</small>
+		            	</label>
+		          	</div>
+	        	</th>
+          		<th scope="col" class="th-{{ field.name }}">
+          			{% if object == 'devices' %}
+          				Name of the Device
+          			{% else %}
+	          			Name of the Setup
+          			{% endif %}
+          		</th>
+	      	</tr>
+	    </thead>
+	    <tbody>
+	      	{% for i in list %}
+	        	<tr>
+	            	<td class="td-row-{{ row }} td-col-0">
+	              		<div class="form-check">
+	                		<input type="checkbox" name="dashboard-item-checkbox" class="form-check-input" value="{{ i.id }}">
+	              		</div>
+	            	</td>
+	            	<td class="td-row-{{ row }} td-col-1">
+	            		<div class="special-table-modal-call" data-toggle="modal" data-target="#{{i.name}}DetailsModal">
+			              	{{i.name}}
+			            </div>
+	            	</td>
+          		</tr>
+          		<div class="modal fade" id="{{i.name}}DetailsModal" tabindex="-1" role="dialog" aria-labelledby="detailsModalTitle" aria-hidden="true">
+		            <div class="modal-dialog modal-dialog-centered" role="document">
+		                <div class="modal-content">
+		                  	<div class="modal-header">
+		                    	<h5 class="modal-title" id="detailsModalTitle">{{i.name}} Details</h5>
+		                    	<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+		                      		<span aria-hidden="true">&times;</span>
+		                    	</button>
+		                  	</div>
+		                  	<div class="modal-body">
+		                  		<ul class="list-group list-group-flush">
+			                    	{% for field in field_names %}
+				                      	<li class="list-group-item">
+				                      		<div class="row justify-content-between">
+				                      			<div class="col-sm">
+				                      				{{field.verbose_name}}:
+				                      			</div>
+				                      			<div class="col-sm">
+				                      				{{ i|get_field_value:field.name }}
+				                      			</div>
+				                      		</div>
+				                      	</li>
+			                    	{% endfor %}
+			                    	{% if object == 'setups' %}
+			                    		{% with device_list=i|get_device_list %}
+				                    		<li class="list-group-item">
+				                    			<div class="row justify-content-between">
+				                    				<div class="col-sm">
+				                    					Number of devices:
+				                    				</div>
+				                    				<div class="col-sm">
+				                    					{{device_list|length}}
+				                    				</div>
+				                    			</div>
+				                    		</li>
+				                    		<li class="list-group-item">
+				                    			<div class="row justify-content-between">
+				                    				<div class="col-sm">
+				                    					All devices:
+				                    				</div>
+				                    				<div class="col-sm">
+				                    					{% for device in device_list %}
+				                    						{{device.name}},
+				                    					{% endfor %}
+				                    				</div>
+				                    			</div>
+				                    		</li>
+			                    		{% endwith %}
+				          			{% endif %}
+			                    </ul>
+		                  	</div>
+		                  	<div class="modal-footer">
+		                    	<button type="button" class="btn btn-secondary" data-dismiss="modal">
+		                    		Close
+		                    	</button>
+		                  	</div>
+		                </div>
+		              </div>
+	            </div>
+	      	{% endfor %}
+	    </tbody>
+  	</table>
+</div>
+<!-- <ul class="list-group list-group-flush">
+  	<li class="list-group-item">
+  		<div class="row">
+	  		<div class="form-check col-sm-4">
+	  	  		<input type="checkbox" id="dashboard-item-select-all" class="form-check-input mx-1 my-2">
+	  	  		<label class="form-check-label">
+	  	    		<small class="ml-5">Select All</small>
+	  	  		</label>
+	  		</div>
+	  		<div class="col-sm font-weight-bold">
+	  			Device Name
+	  		</div>
+  		</div>
+  	</li>
+  	{% for device in device_list %}
+		<li class="list-group-item">
+			<div class="row">
+        		<div class="form-check col-sm-4">
+                	<input type="checkbox" name="dashboard-item-checkbox" class="form-check-input mx-1 my-2" value="{{ device.id }}">
+              	</div>
+              	<div class="col-sm" data-toggle="modal" data-target="#{{device.name}}DetailsModal">
+	              	{{device.name}}
+	            </div> -->
+	            
+        	<!-- </div> -->
+        <!-- </li>
+    {% endfor %}
+</ul> -->

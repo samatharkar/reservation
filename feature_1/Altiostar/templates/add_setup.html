@@ -1,0 +1,115 @@
+<!-- {% extends 'base.html' %}
+{% block title %}
+Create Setup
+{% endblock %}
+
+
+{% block content %}
+<h3>Create Setup </h3>
+
+
+<div class="container">
+    <form method="POST" action="{% url 'add_setup' %}">
+        {% csrf_token %}
+
+        <div class="form-group">
+          <label for="name">Name Of The Setup</label>
+          <input type="text" class="form-control" name= "name" required>
+        </div>
+
+
+        <div class="form-group">
+          <label for="remark">Remark</label>
+          <input type="text" class="form-control" name= "remark" >
+        </div>
+
+
+         {% comment %} <label for="exampleFormControlInput1">Add Device</label><br>
+        <select name = "device_type" >
+          {% for device in devices %}
+          <option value = "{{device.id}}"> {{ device.device_type }} || {{device.hostname}} || {{ device.serial_number}} || {{device.ip}} </option>
+          {% endfor %}
+
+        </select>  {% endcomment %}
+    
+           {% comment %} <div class="form-group">
+            <label for="exampleFormControlInput1">Type of The Setup</label>
+            <select input type="text" class="form-control" id="exampleFormControlInput1" name= "setup_type" required>
+            <option>Single UE Setup </option>
+            <option>Single UE TM 500 Setup </option>
+            <option>Two UE Setup </option>
+            <option>Multi UE TM 500 Setup </option>
+            <option>CA Setup </option>
+            <option>RCT Setup </option>
+
+
+          </select>          
+          </div> {% endcomment %}
+  
+       {% comment %} <div id="attenuator">
+        <div class='label' >Attenuator</div>
+            <div id="content">
+                <span>Quantity :<input type="number" name="attenuator_quantity" value="" /></span>
+                <span>DB :<input type="text"  name="attenuator_db" value="" /></span>
+                
+            </div>
+                 <input type="button" id="more_fields" onclick="add_fields();" value="Add 1 More Attenuator" />
+
+        </div><ul>
+  <li id="profile-contact-select">
+    <select name="contact_options" id="id_contact_options">
+    <option value="1">Add MISC to Setup</option>
+    <option value="2">RF Shield Box</option>
+    <option value="3">RF Cables</option>
+    </select>
+  </li>
+  <li>
+    <ul class="new_option">
+    </ul>
+  </li>
+</ul> 
+
+          </div> {% endcomment %}
+          <button type="submit" class="btn btn-primary"> Create </button>
+      </form>
+
+      {% if msg %}
+      <h1>{{msg}}</h1>
+      {% endif %}
+{% endblock %}
+{% block script_block %}
+
+ {% comment %} JS for adding add misc button start {% endcomment %}
+
+{% comment %} var rf_shield_box = "<li><label>RF Shield Box</label></li><li><input type='tel' pattern='[0-9]{10}' class='added_rf_shield_box' name='mobilephone' value='' maxlength='20' /></li>";
+var rf_cable = "<li><label>RF Cable :</label></li><li><input type='tel' pattern='[0-9]{10}' class='added_workphone' name='workphone' value='' maxlength='20' /></li>";
+
+    $('#id_contact_options').unbind('change').bind('change', function() {
+    var v = $(this).val();
+    switch (v) {
+      case '2':
+        $('.new_option').append(rf_shield_box);
+        $('.added_rf_shield_box').keypress(function(event){ 
+                 });
+        break;
+      case '3':
+        $('.new_option').append(rf_cable);
+        $('.added_rf_cable').keypress(function(event){ 
+                 });
+        break;
+      };
+}); 
+ {% endcomment %}
+
+{% comment %} JS for adding add misc button END {% endcomment %} 
+
+{% comment %} function add_fields() {
+   var d = document.getElementById("content");
+  
+   d.innerHTML += "<br /><span>Quantity :<input type='number' value=''/></span> <span>DB :<input type='text' value='' /></span>";
+
+}  {% endcomment %}
+
+
+{% endblock %}
+ -->

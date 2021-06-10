@@ -1,0 +1,42 @@
+{% load tags %}
+
+<div class="row border-bottom font-italic m-2">
+  Total {{ object }} found: {{ list|length }}
+</div>
+
+<div class="table-responsive-sm">
+  <table class="table table-bordered table-hover general-table">
+    <caption hidden>List of {{ object }}</caption>
+    <thead class="thead-dark">
+      <tr>
+        <th scope="col" class="th-0">
+          <div class="form-check">
+            <input type="checkbox" id="dashboard-item-select-all" class="form-check-input">
+            <label class="form-check-label ml-3">
+              <small>Select All</small>
+            </label>
+          </div>
+        </th>
+        {% for field in field_names %}
+          <th scope="col" class="th-{{ field.name }}">{{ field.verbose_name }}</th>
+        {% endfor %}
+      </tr>
+    </thead>
+    <tbody>
+      {% for i in list %}
+        {% with row=forloop.counter %}
+          <tr>
+            <td class="td-row-{{ row }} td-col-0">
+              <div class="form-check">
+                <input type="checkbox" name="dashboard-item-checkbox" class="form-check-input" value="{{ i.id }}">
+              </div>
+            </td>
+            {% for field in field_names %}
+              <td class="td-row-{{ row }} td-col-{{ forloop.counter }}">{{ i|get_field_value:field.name }}</td>
+            {% endfor %}
+          </tr>
+        {% endwith %}
+      {% endfor %}
+    </tbody>
+  </table>
+</div>

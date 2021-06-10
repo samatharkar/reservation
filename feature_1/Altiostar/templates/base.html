@@ -1,0 +1,86 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <title>{% block title %}{% endblock %}</title>
+    <meta charset="utf-8">
+    <meta name="description" content="">
+    <meta name="keywords" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="{% static 'js/main.js' %}" defer></script>
+    <script src="{% static 'js/ajax_calls.js' %}" defer></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css" integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}"> 
+  </head>
+
+  <body>
+    <!-- Side navigation -->
+    <div class="sidenav">
+      <a href="/">Home</a>
+
+      <button class="dropdown-btn">Device 
+        <i class="fa fa-chevron-right"></i>
+      </button>
+      <div class="dropdown-container">
+        <a href="{% url 'dashboard' name='Device' %}" class="ml-3">Device Dashboard</a>
+        <a href="{% url 'dashboard' name='DeviceType' %}" class="ml-3">Device Type Dashboard</a>
+      </div>
+
+      <button class="dropdown-btn">Setup 
+        <i class="fas fa-chevron-right"></i>
+      </button>
+      <div class="dropdown-container">
+        <a href="{% url 'dashboard' name='SetupType' %}" class="ml-3">Setup Type Dashboard</a>
+        <a href="{% url 'dashboard' name='Setup' %}" class="ml-3">Setup Dashboard</a>
+      </div>
+
+      <button class="dropdown-btn">Vendor 
+        <i class="fa fa-chevron-right"></i>
+      </button>
+      <div class="dropdown-container">
+        <a href="{% url 'dashboard' name='Vendor' %}" class="ml-3">Vendor Dashboard</a>
+      </div>
+
+      <button class="dropdown-btn">Team 
+        <i class="fa fa-chevron-right"></i>
+      </button>
+      <div class="dropdown-container">
+        <a href="{% url 'dashboard' name='Team' %}" class="ml-3">Team Dashboard</a>
+      </div>
+
+      <button class="dropdown-btn">Consumable 
+        <i class="fa fa-chevron-right"></i>
+      </button>
+      <div class="dropdown-container">
+        <a href="{% url 'dashboard' name='Consumable' %}" class="ml-3">Consumable Dashboard</a>
+      </div>
+
+    </div>
+    <!-- Page content -->
+    <div class="main">
+      <div class="row justify-content-center">
+        <div class="col-sm mx-5">
+          <h1 class="mt-2">{% block heading %}{% endblock %}</h1>
+          <hr class="mt-0 mb-4">
+          {% block content %}
+          {% endblock %}
+        </div>
+      </div>
+    </div>
+
+    <div id="messages" class="container-fluid">
+      {% if messages %}
+        {% include 'messages.html' %}
+      {% endif %}
+    </div>
+    
+    
+    </div>
+
+  </body>
+</html>
