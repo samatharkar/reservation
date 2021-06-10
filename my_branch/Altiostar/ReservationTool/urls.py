@@ -18,4 +18,7 @@ urlpatterns = [
     path("search-devices-for-setup/", views.search_devices_for_setup, name='search_devices_for_setup'),
     path("add-devices-to-setup/", views.add_devices_to_setup, name='add_devices_to_setup'),
     path("remove-devices-from-setup/", views.remove_devices_from_setup, name='remove_devices_from_setup'),
+    path("book-setups/", views.book_setups, name='book_setups'),
+    path("my-bookings/", views.user_bookings, name='user_bookings'),
+    path("my-booking-history/", views.user_booking_history, name='user_booking_history'),
 ]

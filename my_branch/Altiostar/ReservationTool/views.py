@@ -87,7 +87,7 @@ def userlogin(request):
             loginusername = form.cleaned_data.get('username')
             loginpassword = form.cleaned_data.get('password')
             user = authenticate(username=loginusername, password=loginpassword)
-            if user is not None:
+            if user:
                 login(request, user)    
                 messages.success(request, "Logged in")
                 return redirect('home')
@@ -388,3 +388,21 @@ def remove_devices_from_setup(request):
                 }
         return JsonResponse(response)
     return Http404()
+
+
+# Book setups
+@require_http_methods(["GET", "POST"])
+def book_setups(request):
+    pass
+
+
+# Show bookings of the user
+@require_safe
+def user_bookings(request):
+    pass
+
+
+# Show booking history of the user
+@require_safe
+def user_booking_history(request):
+    pass
