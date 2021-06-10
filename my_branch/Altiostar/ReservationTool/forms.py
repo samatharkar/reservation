@@ -56,3 +56,14 @@ class MakeSetupForm(forms.ModelForm):
 	class Meta:
 		model = Setup
 		fields = '__all__'
+
+# Model form for Booking model with all fields
+class BookingForm(forms.ModelForm):
+
+	class Meta:
+		model = Booking
+		exclude = ['user']
+		widgets = {
+            'start': forms.DateInput(attrs={'type': 'date'}),
+            'end': forms.DateInput(attrs={'type': 'date'}),
+        }

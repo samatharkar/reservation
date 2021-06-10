@@ -66,5 +66,8 @@ class TeamAdmin(admin.ModelAdmin):
 class DeviceAdmin(admin.ModelAdmin):
 	pass
 
+@admin.register(Booking)
+class DeviceAdmin(admin.ModelAdmin):
+	pass
 
 # admin.site.register(Test)

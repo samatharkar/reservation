@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% block title %}
+  Book Setups
+{% endblock %}
+
+{% block heading %}
+  Book Setups
+{% endblock %}
+
+{% block content %}
+  <div class="container">
+    <form method="post" id="book-setups-form" class="border boder-dark p-2">
+      {% include 'form_template.html' with form=booking_form title=title %}
+      <div class="row border-top justify-content-center m-3">
+        <button type="submit" class="btn btn-dark m-2 w-25">
+          Book
+        </button>
+      </div>
+    </form>
+  </div>
+{% endblock %}

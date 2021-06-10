@@ -5,7 +5,6 @@ from django.contrib import messages
 from django.db.models import Q
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
-from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.http import require_safe, require_http_methods
 from .models import *
@@ -24,6 +23,7 @@ PLURAL_NAMES = {
     'SetupType': 'setup types',
     'Setup': 'setups',
     'Device': 'devices',
+    'Booking': 'bookings',
 }
 
 # Dictionary of models and their titles
@@ -35,6 +35,7 @@ TITLES = {
     'SetupType': 'Setup Type',
     'Setup': 'Setup',
     'Device': 'Device',
+    'Booking': 'Booking',
 }
 
 # Dictionary of models and their class instances
@@ -46,6 +47,7 @@ MODELS = {
     'SetupType': SetupType,
     'Setup': Setup,
     'Device': Device,
+    'Booking': Booking,
 }
 
 # Dictionary of models and their model form function instances
@@ -57,6 +59,7 @@ FORMS = {
     'SetupType': SetupTypeForm,
     'Setup': MakeSetupForm,
     'Device': DeviceForm,
+    'Booking': BookingForm,
 }
 
 # Dictionary of models and csv export file names
@@ -68,6 +71,7 @@ FILE_NAMES = {
     'SetupType': 'setup_types',
     'Setup': 'setups',
     'Device': 'devices',
+    'Booking': 'bookings',
 }
 
 
@@ -79,26 +83,19 @@ def home(request):
 
 
 # User login
-@require_http_methods(["GET", "POST"])
+@require_http_methods(['GET', 'POST'])
 def userlogin(request):
     if request.method == 'POST':
-        form = AuthenticationForm(request,request.POST)
-        if form.is_valid():
-            loginusername = form.cleaned_data.get('username')
-            loginpassword = form.cleaned_data.get('password')
-            user = authenticate(username=loginusername, password=loginpassword)
-            if user:
-                login(request, user)    
-                messages.success(request, "Logged in")
-                return redirect('home')
-            else:
-                raise Http404()
-    else:
-        form = AuthenticationForm()
-    context = {
-        'form': form
-    }
-    return render(request, 'login.html', context)
+        loginusername = request.POST["loginusername"]
+        loginpassword = request.POST["loginpassword"]    
+        user = authenticate(username=loginusername, password=loginpassword)
+        if user:
+            login(request, user)    
+            messages.success(request, "Logged in")
+            return redirect('home')
+        else:
+            messages.error(request, "Wrong Creds")
+    return render(request, 'login.html')
 
 
 # User logout
@@ -173,7 +170,7 @@ def load_object_form(request, name):
 
 
 # Add/Modify objects of any model
-@require_http_methods(["POST"])
+@require_http_methods(['POST'])
 def add_or_modify_object(request, name):
     if request.is_ajax():
         if request.method == "POST":
@@ -257,7 +254,7 @@ def search_objects(request, name):
 
 
 # Delete objects of any model
-@require_http_methods(["POST"])
+@require_http_methods(['POST'])
 def delete_objects(request, name):
     if request.is_ajax():
         id_list = request.POST.getlist('id_list[]')
@@ -391,9 +388,48 @@ def remove_devices_from_setup(request):
 
 
 # Book setups
-@require_http_methods(["GET", "POST"])
+@require_http_methods(['GET', 'POST'])
+@login_required
 def book_setups(request):
-    pass
+    if request.method == 'POST':
+        booking_form = BookingForm(request.POST)
+        if booking_form.is_valid():
+            booking = booking_form.save(commit=False)
+            booking.user = request.user
+            booking.save()
+            return redirect('book_setups_complete', id=booking.id)
+        else:
+            messages.error(request, 'Unable to book. Please fill correct details.')
+    else:
+        
+        booking_form = BookingForm()
+    context = {
+        'booking_form': booking_form,
+        'title': TITLES['Booking']
+    }
+    return render(request, 'book_setups.html', context)
+
+
+# Book setups
+@require_safe
+@login_required
+def book_setups_complete(request, id):
+    # Checking for illegal requests
+    try:
+        booking = Booking.objects.get(id=id)
+    except:
+        return Http404()
+    # Checking if the booking id received is actually the requested user's last booking id
+    last_booking = Booking.objects.filter(user=request.user).last()
+    if booking.id == last_booking.id:
+        field_names = Booking._meta.fields[1:]
+        context = {
+            'booking': booking,
+            'field_names': field_names,
+        }
+    else:
+        return Http404()
+    return render(request, 'book_setups_complete.html', context)
 
 
 # Show bookings of the user

@@ -19,6 +19,7 @@ urlpatterns = [
     path("add-devices-to-setup/", views.add_devices_to_setup, name='add_devices_to_setup'),
     path("remove-devices-from-setup/", views.remove_devices_from_setup, name='remove_devices_from_setup'),
     path("book-setups/", views.book_setups, name='book_setups'),
+    path("book-setups-complete/<int:id>/", views.book_setups_complete, name='book_setups_complete'),
     path("my-bookings/", views.user_bookings, name='user_bookings'),
     path("my-booking-history/", views.user_booking_history, name='user_booking_history'),
 ]

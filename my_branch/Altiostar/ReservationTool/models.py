@@ -99,20 +99,20 @@ class Device(models.Model):
     ]
 
     name = models.CharField('Name', max_length=125 , default="NA")
-    type = models.ForeignKey(DeviceType ,  on_delete=models.PROTECT, related_name='devices' )
+    type = models.ForeignKey(DeviceType , on_delete=models.PROTECT, related_name='devices' )
     srno = models.CharField('Serial No.', max_length=125 , default="NA")
     po_number = models.CharField('PO No.', max_length=125 , default="NA")
-    po_date = models.DateField()
+    po_date = models.DateField('PO Date')
     vendor = models.ForeignKey(Vendor, on_delete=models.PROTECT, related_name='devices')
     invoice_number = models.CharField('Invoice No.', max_length=125, default="NA")
-    bonded = models.BooleanField(default=False) #If bonded is ticked as yes, It should ask for the bond number 
+    bonded = models.BooleanField('Bonded', default=False) #If bonded is ticked as yes, It should ask for the bond number 
     bond_number = models.CharField('Bond No.', max_length=125 , default="NA")
     setup = models.ForeignKey(Setup, on_delete=models.PROTECT , null=True, blank=True, related_name="devices")
-    shipped_date = models.DateField()
-    arrival_date = models.DateField()
+    shipped_date = models.DateField('Shipped date')
+    arrival_date = models.DateField('Arrival date')
     warranty_inmonths = models.IntegerField('Warranty(In months)', choices=list(zip(range(1, 37), range(1, 37))))
     added_byuser = models.CharField('Added by user', max_length=125, default="NA")
-    added_date = models.DateField()
+    added_date = models.DateField('Added date')
     ownership = models.CharField('Ownership', max_length=2, choices=CHOICES, default=TYPE1,)
     remark = models.CharField('Remark', max_length=125, default="NA")
   
@@ -124,12 +124,18 @@ class Device(models.Model):
 
 
 class Booking(models.Model):
-    user = models.OneToOneField(User , on_delete=models.PROTECT , related_name= "Booking" )
-    start = models.DateTimeField()
-    end = models.DateTimeField()
-    permanent = models.BooleanField(default=False)
-    setup = models.OneToOneField(Setup , on_delete=models.PROTECT , related_name= "Booking")
+    user = models.ForeignKey(User, on_delete=models.PROTECT, related_name= "Booking" )
+    setup = models.OneToOneField(Setup , on_delete=models.PROTECT, related_name= "Booking")
+    start = models.DateTimeField('Start date-time')
+    end = models.DateTimeField('End date-time')
+    permanent = models.BooleanField('Permanently booked', default=False)
+    added_on = models.DateTimeField('Added on date-time', auto_now_add=True)
 
+    def __str__(self):
+        if self.permanent:
+            return f'{self.setup} permanently booked by {self.user} from {self.start}'
+        else:
+            return f'{self.setup} booked by {self.user} from {self.start} to {self.end}' 
 
     class Meta:
         db_table = "booking"

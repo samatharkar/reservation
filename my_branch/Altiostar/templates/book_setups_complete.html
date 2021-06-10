@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% block title %}
+  Booking Confirmation Details
+{% endblock %}
+
+{% block heading %}
+  Booking Confirmation Details
+{% endblock %}
+
+{% block content %}
+  {% load tags %}
+  <div class="container">
+    <ul class="list-group border border-dark p-2">
+      {% for field in field_names %}
+        <li class="list-group-item">
+          <div class="row justify-content-between">
+            <div class="col-sm">
+              {{field.verbose_name}}:
+            </div>
+            <div class="col-sm">
+              {{booking|get_field_value:field.name}}
+            </div>
+          </div>
+        </li>
+      {% endfor %}
+    </ul>
+  </div>
+{% endblock %}

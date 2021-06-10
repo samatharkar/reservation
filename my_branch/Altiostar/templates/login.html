@@ -8,10 +8,25 @@
     <h3>LDAP Login </h3>
 
     <div class="container">
-        <form method="POST" action="{% url 'login' %}">
-            {% csrf_token %}
-            {% include 'form_template.html' with form=form title='Login' %}
-            <button type="submit" class="btn btn-primary">Log in</button>
-        </form>
+        <div class="row justify-content-center">
+            <div class="col-sm-7">
+                <form method="POST" class="border boder-dark mt-2 p-3" action="{% url 'login' %}">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label for="loginusername">Username</label>
+                        <input type="text" class="form-control" id="loginusername" name = "loginusername" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="loginpassword">Password</label>
+                        <input type="password" class="form-control" id="loginpassword" name = "loginpassword" required>
+                    </div>
+                    <div class="mt-2">
+                        <button type="submit" class="btn btn-dark">
+                            Log In
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
     </div>
 {% endblock %}
