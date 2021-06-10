@@ -138,6 +138,9 @@ STATICFILES_DIRS = [
     BASE_DIR + "/static/",
 ]
 
+LOGIN_REDIRECT_URL = 'home'
+LOGIN_URL = 'login'
+
 # # Baseline configuration.
 # AUTH_LDAP_SERVER_URI = "ldap://ldap.example.com"
 
@@ -190,5 +193,3 @@ STATICFILES_DIRS = [
 #     "django_auth_ldap.backend.LDAPBackend",
 #     "django.contrib.auth.backends.ModelBackend",
 # )
-
-CRISPY_FAIL_SILENTLY = not DEBUG

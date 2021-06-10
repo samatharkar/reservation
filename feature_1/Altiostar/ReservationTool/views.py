@@ -1,8 +1,13 @@
-from django.shortcuts import render, HttpResponse
-from django.http import Http404, JsonResponse
+from django.shortcuts import render, redirect
+from django.http import HttpResponse, Http404, JsonResponse
 from django.urls import reverse
 from django.contrib import messages
 from django.db.models import Q
+from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.models import User
+from django.contrib.auth.forms import AuthenticationForm
+from django.contrib.auth.decorators import login_required
+from django.views.decorators.http import require_safe, require_http_methods
 from .models import *
 from .forms import *
 from .search_helpers import *
@@ -65,16 +70,48 @@ FILE_NAMES = {
     'Device': 'devices',
 }
 
+
 # Home
+@require_safe
+@login_required
 def home(request):
 	return render(request, 'home.html')
 
-# Login
-def login(request):
-    pass
-    return render(request, 'login.html')
+
+# User login
+@require_http_methods(["GET", "POST"])
+def userlogin(request):
+    if request.method == 'POST':
+        form = AuthenticationForm(request,request.POST)
+        if form.is_valid():
+            loginusername = form.cleaned_data.get('username')
+            loginpassword = form.cleaned_data.get('password')
+            user = authenticate(username=loginusername, password=loginpassword)
+            if user is not None:
+                login(request, user)    
+                messages.success(request, "Logged in")
+                return redirect('home')
+            else:
+                raise Http404()
+    else:
+        form = AuthenticationForm()
+    context = {
+        'form': form
+    }
+    return render(request, 'login.html', context)
+
+
+# User logout
+@require_safe
+@login_required
+def userlogout(request):
+    logout(request)
+    messages.success(request,"Logged out")
+    return redirect('login')
+
 
 # Rendering the messages on top of the page
+@require_safe
 def view_messages(request):
     if request.is_ajax():
         message_type = request.GET.get('message_type')
@@ -87,7 +124,9 @@ def view_messages(request):
         return render(request, 'messages.html')
     return Http404()
 
+
 # Dashboard of any model
+@require_safe
 def dashboard(request, name):
     object_list = MODELS[name].objects.all()
     field_names = MODELS[name]._meta.fields[1:]
@@ -104,7 +143,9 @@ def dashboard(request, name):
             }
     return render(request, 'dashboard_template.html', context)
 
+
 # Load the form dynamically of any model
+@require_safe
 def load_object_form(request, name):
     if request.is_ajax():
         mode = request.GET.get('mode')
@@ -130,7 +171,9 @@ def load_object_form(request, name):
         return render(request, 'dashboard_modal_content_template.html', context)
     return Http404()
 
+
 # Add/Modify objects of any model
+@require_http_methods(["POST"])
 def add_or_modify_object(request, name):
     if request.is_ajax():
         if request.method == "POST":
@@ -160,7 +203,9 @@ def add_or_modify_object(request, name):
             return JsonResponse(response)
     return Http404()
 
+
 # View objects of any model
+@require_safe
 def view_objects(request, name):
     if request.is_ajax():
         object_list = MODELS[name].objects.all()
@@ -177,7 +222,9 @@ def view_objects(request, name):
         return render(request, template, context)
     return Http404()
 
+
 # Search objects of any model
+@require_safe
 def search_objects(request, name):
     if request.is_ajax():
         search_text = request.GET.get('search_text')
@@ -208,7 +255,9 @@ def search_objects(request, name):
             return HttpResponse('')
     return Http404()
 
+
 # Delete objects of any model
+@require_http_methods(["POST"])
 def delete_objects(request, name):
     if request.is_ajax():
         id_list = request.POST.getlist('id_list[]')
@@ -250,7 +299,9 @@ def delete_objects(request, name):
         return JsonResponse(response)
     return Http404()
 
+
 # Export data
+@require_safe
 def export_objects(request, name):
     current_time = datetime.datetime.now().strftime('%d-%m-%y_%I-%M-%p')
     filename = f'{FILE_NAMES[name]}_{str(current_time)}.csv'
@@ -276,7 +327,9 @@ def export_objects(request, name):
         writer.writerow(row[1:])
     return response
 
+
 # Render device(s) based on the device type(s) searched in the modal of a dashboard
+@require_safe
 def search_devices_for_setup(request):
     if request.is_ajax():
         id_list = request.GET.getlist('device_type_id_list[]')
@@ -299,7 +352,9 @@ def search_devices_for_setup(request):
             return HttpResponse('')
     return Http404()
 
+
 # Attach the added devices with the Setup form as hidden inputs
+@require_safe
 def add_devices_to_setup(request):
     if request.is_ajax():
         id_list = request.GET.getlist('device_id_list[]')
@@ -312,7 +367,9 @@ def add_devices_to_setup(request):
         return render(request, 'device_added_list.html', context)
     return Http404()
 
+
 # Remove the attached devices from the Setup 
+@require_safe
 def remove_devices_from_setup(request):
     if request.is_ajax():
         id = request.GET.get('id')

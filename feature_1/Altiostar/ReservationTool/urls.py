@@ -5,7 +5,8 @@ from ReservationTool import views
 
 urlpatterns = [
     path("", views.home, name='home'),
-    path("login/", views.login, name='login'),
+    path("login/", views.userlogin, name='login'),
+    path("logout/", views.userlogout, name='logout'),
     path("view-messages/", views.view_messages, name='view_messages'),
     path("dashboard/<str:name>/", views.dashboard, name='dashboard'),
     path("load-form/<str:name>/", views.load_object_form, name='load_object_form'),

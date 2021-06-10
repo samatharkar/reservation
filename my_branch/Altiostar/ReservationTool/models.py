@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.auth.models import User
 
 
 class Vendor(models.Model):
@@ -120,3 +121,15 @@ class Device(models.Model):
     
     class Meta:
         db_table = "devices"
+
+
+class Booking(models.Model):
+    user = models.OneToOneField(User , on_delete=models.PROTECT , related_name= "Booking" )
+    start = models.DateTimeField()
+    end = models.DateTimeField()
+    permanent = models.BooleanField(default=False)
+    setup = models.OneToOneField(Setup , on_delete=models.PROTECT , related_name= "Booking")
+
+
+    class Meta:
+        db_table = "booking"
