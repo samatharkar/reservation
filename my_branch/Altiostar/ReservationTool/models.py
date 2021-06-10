@@ -1,5 +1,5 @@
 from django.db import models
-
+from django.contrib.auth.models import User
 
 class Vendor(models.Model):
     name = models.CharField(max_length=125)
@@ -120,3 +120,17 @@ class Device(models.Model):
     
     class Meta:
         db_table = "devices"
+
+
+
+class Booking(models.Model):
+    user = models.OneToOneField(User , on_delete=models.PROTECT , related_name= "Booking" )
+    start = models.DateTimeField()
+    end = models.DateTimeField()
+    setup = models.OneToOneField(Setup , on_delete=models.PROTECT , related_name= "Booking")
+
+    # def __str__(self):
+    #     return self.user
+
+    class Meta:
+        db_table = "booking"

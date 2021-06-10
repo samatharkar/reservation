@@ -56,3 +56,16 @@ class MakeSetupForm(forms.ModelForm):
 	class Meta:
 		model = Setup
 		fields = '__all__'
+
+class BookingForm(forms.ModelForm):
+
+
+	class Meta:
+		model = Booking
+		fields = '__all__'
+
+		widgets = {
+            'start': forms.DateTimeInput(attrs={'type': 'date'}),
+            'end': forms.DateTimeInput(attrs={'type': 'date'}),
+
+        }

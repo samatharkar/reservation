@@ -12,6 +12,7 @@ from .filters import DeviceFilter
 
 # Dictionary of models and their names
 PLURAL_NAMES = {
+    'Booking': 'booking',
     'DeviceType': 'device types',
     'Vendor': 'vendors',
     'Consumable': 'consumables',
@@ -23,6 +24,7 @@ PLURAL_NAMES = {
 
 # Dictionary of models and their titles
 TITLES = {
+    'Booking': 'Booking',
     'DeviceType': 'Device Type',
     'Vendor': 'Vendor',
     'Consumable': 'Consumable',
@@ -34,6 +36,7 @@ TITLES = {
 
 # Dictionary of models and their class instances
 MODELS = {
+    'Booking': Booking,
     'DeviceType': DeviceType,
     'Vendor': Vendor,
     'Consumable': Consumable,
@@ -45,6 +48,7 @@ MODELS = {
 
 # Dictionary of models and their model form function instances
 FORMS = {
+    'Booking':BookingForm,
     'DeviceType': DeviceTypeForm,
     'Vendor': VendorForm,
     'Consumable': ConsumableForm,
